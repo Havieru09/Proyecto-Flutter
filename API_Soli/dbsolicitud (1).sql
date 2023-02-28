@@ -85,8 +85,6 @@ CREATE TABLE IF NOT EXISTS `solicitud` (
   `detalle` text NOT NULL,
   `estado` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UQ_bloque_id` (`bloque_id`),
-  UNIQUE KEY `UQ_aula_id` (`aula_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
