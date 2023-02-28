@@ -29,9 +29,9 @@ class SolicitudModel {
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['usuario'] = usuario_id;
-    _data['nombre_bloque'] = bloque_id;
-    _data['nombre_aulas'] = aula_id;
+    _data['usuario_id'] = usuario_id;
+    _data['bloque_id'] = bloque_id;
+    _data['aula_id'] = aula_id;
     _data['tipo'] = tipo;
     _data['detalle'] = detalle;
     _data['estado'] = estado;

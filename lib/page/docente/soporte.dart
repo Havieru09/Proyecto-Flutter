@@ -35,6 +35,8 @@ class _soporteState extends State<soporte> {
   bool isImageSelected = false;
   var bloquevalue;
   var aulavalue;
+  String? estado = 'Pendiente';
+  String? usuario_id = '1';
 
   @override
   Widget build(BuildContext context) {
@@ -99,13 +101,7 @@ class _soporteState extends State<soporte> {
                 setState(() {
                   bloquevalue = newVal;
                   isBloquesSelect = true;
-                  print(bloquevalue);
                 });
-                print('antes de guardar');
-                (onSavedVal) => {
-                      solimodel!.bloque_id = bloquevalue.toString(),
-                    };
-                print(solimodel!.bloque_id);
               },
             ),
           ),
@@ -127,10 +123,6 @@ class _soporteState extends State<soporte> {
                   aulavalue = newVal;
                   isAulasSelect = true;
                 });
-                (onSavedVal) => {
-                      solimodel!.bloque_id = aulavalue,
-                    };
-                print(aulavalue);
               },
               value: aulavalue,
             ),
@@ -205,10 +197,11 @@ class _soporteState extends State<soporte> {
               "Save",
               () {
                 if (validateAndSave()) {
-                  solimodel!.bloque_id = bloquevalue.toString();
-                  solimodel!.aula_id = aulavalue.toString();
+                  solimodel!.usuario_id = usuario_id;
+                  solimodel!.estado = estado;
+                  solimodel!.bloque_id = bloquevalue;
+                  solimodel!.aula_id = aulavalue;
 
-                  print(solimodel!.bloque_id);
                   print(solimodel!.toJson());
 
                   setState(() {

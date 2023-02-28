@@ -47,7 +47,7 @@ class UserItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                model!.aula_id!,
+                model!.aula_id.toString(),
                 style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -57,14 +57,14 @@ class UserItem extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                model!.bloque_id!,
+                model!.bloque_id.toString(),
                 style: const TextStyle(color: Colors.blue),
               ),
               const SizedBox(
                 height: 10,
               ),
               Text(
-                model!.usuario_id!,
+                model!.usuario_id.toString(),
                 style: const TextStyle(color: Colors.red),
               ),
               const SizedBox(
