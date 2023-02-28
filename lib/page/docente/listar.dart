@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_plataforma/widgets/cabeceraBack.dart';
+import 'package:proyecto_plataforma/widgets/footer.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 
 import '../../Servicios/api_service.dart';
@@ -22,13 +24,16 @@ class _UserListState extends State<UserList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('NodeJS - CRUD'),
-        elevation: 0,
-      ),
       backgroundColor: Colors.grey[200],
       body: ProgressHUD(
-        child: loadUsers(),
+        // ignore: sort_child_properties_last
+        child: Column(
+          children: [
+            const CabeceraBack(),
+            loadUsers(),
+          ],
+        ),
+
         inAsyncCall: isApiCallProcess,
         opacity: 0.3,
         key: UniqueKey(),

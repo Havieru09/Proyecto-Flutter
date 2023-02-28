@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:proyecto_plataforma/widgets/cabeceraBack.dart';
+import 'package:proyecto_plataforma/widgets/footer.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
@@ -40,22 +42,27 @@ class _soporteState extends State<soporte> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('NodeJS - CRUD'),
-          elevation: 0,
-        ),
-        backgroundColor: Colors.grey[200],
-        body: ProgressHUD(
-          child: Form(
-            key: globalFormKey,
-            child: userForm(),
+    return Scaffold(
+      body: ProgressHUD(
+        // ignore: sort_child_properties_last
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const CabeceraBack(),
+              Form(
+                key: globalFormKey,
+                child: userForm(),
+              ),
+              const Padding(
+                  padding: EdgeInsets.all(3.5),
+                ),
+              const footer(),
+            ],
           ),
-          inAsyncCall: isApiCallProcess,
-          opacity: 0.3,
-          key: UniqueKey(),
         ),
+        inAsyncCall: isApiCallProcess,
+        opacity: 0.3,
+        key: UniqueKey(),
       ),
     );
   }
@@ -80,37 +87,45 @@ class _soporteState extends State<soporte> {
   Widget userForm() {
     return SingleChildScrollView(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 10,
-              top: 10,
-            ),
-            child: DropdownButton<String>(
-              value: bloquevalue,
-              hint: Text('Elige un edificio'),
-              items: bloquesList.map((item) {
-                return DropdownMenuItem(
-                  value: item['id'].toString(),
-                  child: Text(item['nombre_bloque'].toString()),
-                );
-              }).toList(),
-              onChanged: (newVal) {
-                setState(() {
-                  bloquevalue = newVal;
-                  isBloquesSelect = true;
-                });
-              },
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'Solicitar soporte',
+              style: TextStyle(
+                fontSize: 35.0,
+                color: Color.fromARGB(255, 13, 77, 130),
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 10,
-              top: 10,
-            ),
-            child: DropdownButton(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: DropdownButton<String>(
+                  value: bloquevalue,
+                  hint: Text('Elige un edificio'),
+                  items: bloquesList.map((item) {
+                    return DropdownMenuItem(
+                      value: item['id'].toString(),
+                      child: Text(item['nombre_bloque'].toString()),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    setState(() {
+                      bloquevalue = newVal;
+                      isBloquesSelect = true;
+                    });
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 10,
+                  top: 10,
+                ),
+                child: DropdownButton(
               hint: Text('Elige una aula'),
               items: aulasList.map((item) {
                 return DropdownMenuItem(
@@ -126,9 +141,13 @@ class _soporteState extends State<soporte> {
               },
               value: aulavalue,
             ),
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.only(
+              right: 20,
+              left: 20,
               bottom: 10,
               top: 10,
             ),
@@ -159,6 +178,8 @@ class _soporteState extends State<soporte> {
           ),
           Padding(
             padding: const EdgeInsets.only(
+              right: 20,
+              left: 20,
               bottom: 10,
               top: 10,
             ),
@@ -381,7 +402,7 @@ class _soporteState extends State<soporte> {
 
 //==================================================================API
 
-  Future getBloques() async {
+   Future getBloques() async {
     var url = Uri.http(
       Config.apiURL,
       Config.bloqueAPI,

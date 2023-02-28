@@ -51,73 +51,75 @@ class _openState extends State<open> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        child: Column(
-          //mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            const CabeceraBack(),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Abrir puerta',
-                style: TextStyle(
-                  fontSize: 35.0,
-                  color: Color.fromARGB(255, 13, 77, 130),
+        child: SingleChildScrollView(
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              const CabeceraBack(),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Abrir puerta',
+                  style: TextStyle(
+                    fontSize: 35.0,
+                    color: Color.fromARGB(255, 13, 77, 130),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Padding(
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        // ignore: unnecessary_const
+                        child: const Text(
+                          "Bloque: ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0,
+                          ),
+                        )),
+                    _dropdownBloque(),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Padding(
                       padding: EdgeInsets.all(8.0),
                       // ignore: unnecessary_const
                       child: const Text(
-                        "Bloque: ",
+                        '    Aula: ',
                         style: TextStyle(
-                          color: Colors.black,
                           fontSize: 20.0,
                         ),
-                      )),
-                  _dropdownBloque(),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    // ignore: unnecessary_const
-                    child: const Text(
-                      '    Aula: ',
-                      style: TextStyle(
-                        fontSize: 20.0,
                       ),
                     ),
-                  ),
-                  _dropdownAula(),
-                ],
+                    _dropdownAula(),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _bottoonSolicitud(),
-                  //_bottoonBack()
-                ],
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _bottoonSolicitud(),
+                    //_bottoonBack()
+                  ],
+                ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(41.0),
-            ),
-            const footer(),
-          ],
+              const Padding(
+                padding: EdgeInsets.all(41.0),
+              ),
+              const footer(),
+            ],
+          ),
         ),
       ),
     );

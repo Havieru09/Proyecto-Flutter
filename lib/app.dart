@@ -5,6 +5,7 @@ import 'package:proyecto_plataforma/page/docente/listar.dart';
 import 'package:proyecto_plataforma/page/docente/login.dart';
 import 'package:proyecto_plataforma/page/docente/open.dart';
 import 'package:proyecto_plataforma/page/docente/soporte.dart';
+import 'package:proyecto_plataforma/page/docente/splashScreen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: "/",
       routes: {
+        '/splash': (context) => SplashScreen(),
         "/": (context) => fromLogin(),
         "/home": (context) => const home(),
         "/open": (context) => open(),
