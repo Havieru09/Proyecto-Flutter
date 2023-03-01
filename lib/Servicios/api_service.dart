@@ -7,9 +7,38 @@ import '../config.dart';
 import '../models/aulas.dart';
 import '../models/bloques.dart';
 import '../models/solicitud.dart';
+import '../models/user.dart';
 
 class ApiService {
   static var client = http.Client();
+
+  static Future<List<UserModel>?> getUsuarios() async {
+    var url = Uri.http(
+      Config.apiURL,
+      Config.userAPI,
+    );
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      var response = await client.get(
+        url,
+        headers: requestHeaders,
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        return usuariosFromJson(data["usuarios"]);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   static Future<List<BloqueModel>?> getBloques() async {
     var url = Uri.http(

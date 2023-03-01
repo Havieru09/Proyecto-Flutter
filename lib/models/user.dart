@@ -1,4 +1,4 @@
-List<UserModel> aulasFromJson(dynamic str) =>
+List<UserModel> usuariosFromJson(dynamic str) =>
     List<UserModel>.from((str).map((x) => UserModel.fromJson(x)));
 
 class UserModel {
