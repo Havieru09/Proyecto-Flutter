@@ -167,7 +167,6 @@ class _loginApp extends State<loginApp> {
               final password = objeto['psw'];
               _nombres.add(nombre);
               _contra.add(password);
-              print(name);
             });
 
             String dato = _name.text;
@@ -175,18 +174,9 @@ class _loginApp extends State<loginApp> {
 
             _nombres.forEach((usuario) async {
               _contra.forEach((psw) async {
-                if (usuario == dato) {
+                if (dato == usuario && datopsw == psw) {
+                  name = _name.text;
                   existe = true;
-                  if (psw == datopsw) {
-                    name = _name.text;
-                    existe = true;
-                    // final SharedPreferences sharedPreferences =
-                    //     await SharedPreferences.getInstance();
-                    // sharedPreferences.setString('name', name);
-                    // Navigator.pushNamed(context, "/splash");
-                  } else {
-                    existe = false;
-                  }
                 } else {
                   existe = false;
                 }
@@ -260,7 +250,6 @@ class _loginApp extends State<loginApp> {
         //print(response.body);
         setState(() {
           UserList = data["usuario"];
-          print(UserList);
         });
         //return usuariosFromJson(data["usuario"]);
       } else {
