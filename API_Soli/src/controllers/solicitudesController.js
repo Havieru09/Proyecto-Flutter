@@ -4,7 +4,7 @@ const controller = {};
 //Select
 controller.list = (req, res) => {
     const { usuario_id, bloque_id, aula_id, tipo, detalle, estado } = req.body;
-    const query1 = `SELECT b.nombre_bloque as 'nombre_bloque', a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', 
+    const query1 = `SELECT s.id, b.nombre_bloque as 'nombre_bloque', a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', 
     tipo, detalle, estado FROM solicitud as s 
     INNER JOIN bloques as b on s.bloque_id = b.id
     INNER JOIN aulas as a on s.aula_id = a.id
