@@ -172,16 +172,15 @@ class _loginApp extends State<loginApp> {
             String dato = _name.text;
             String datopsw = _psw.text;
 
-            _nombres.forEach((usuario) async {
-              _contra.forEach((psw) async {
-                if (dato == usuario && datopsw == psw) {
-                  name = _name.text;
-                  existe = true;
-                } else {
-                  existe = false;
-                }
-              });
-            });
+            for (int i = 0; i < _nombres.length; i++) {
+              if (dato == _nombres[i] && datopsw == _contra[i]) {
+                existe = true;
+                name = _nombres[i];
+                break;
+              } else {
+                existe = false;
+              }
+            }
 
             if (existe) {
               final SharedPreferences sharedPreferences =
