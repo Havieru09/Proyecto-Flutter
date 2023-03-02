@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
-
 import '../../models/solicitud.dart';
 
-class UserItem extends StatelessWidget {
+  int finalName = 0;
+
+class UserItem extends StatefulWidget {
   final SolicitudModel? model;
   final Function? onDelete;
 
@@ -13,6 +14,32 @@ class UserItem extends StatelessWidget {
     this.model,
     this.onDelete,
   }) : super(key: key);
+
+  @override
+  _UserItemState createState() => _UserItemState();
+}
+
+class _UserItemState extends State<UserItem> {
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var obtName = sharedPreferences.getInt('name');
+      print('$finalName');
+
+      // Si no hay ningún valor guardado, utilizamos una cadena vacía
+      setState(() {
+        finalName = obtName! as int;
+      });
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,47 +57,52 @@ class UserItem extends StatelessWidget {
     );
   }
 
-
   Widget cartItem1(context) {
+    
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+      
         ListTile(
-          title: Text("Bloque: " + model!.bloque_id! + " - " + model!.aula_id!),
+          title: Text("Bloque: " +
+              widget.model!.bloque_id! +
+              " - " +
+              widget.model!.aula_id!),
           trailing: Column(
             children: [
               Icon(
-                model!.estado! == "terminado" || model!.estado! == "TERMINADO"
+                widget.model!.estado! == "terminado" ||
+                        widget.model!.estado! == "TERMINADO"
                     ? Icons.check_circle
-                    : model!.estado! == "en_camino"
+                    : widget.model!.estado! == "en_camino"
                         ? Icons.run_circle
                         : Icons.check_circle_outline,
-                color: model!.estado! == "terminado" ||
-                        model!.estado! == "TERMINADO"
+                color: widget.model!.estado! == "terminado" ||
+                        widget.model!.estado! == "TERMINADO"
                     ? Colors.green
-                    : model!.estado! == "en_camino"
+                    : widget.model!.estado! == "en_camino"
                         ? Colors.amber
                         : Colors.grey,
               ),
             ],
           ),
-          // leading: Image.network(
-          //   (model!.img == null || model!.img == "")
-          //       ? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.png"
-          //       : model!.img!,
-          //   height: 70,
-          //   fit: BoxFit.scaleDown,
-          // ),
-          // ignore: prefer_interpolation_to_compose_strings
+// leading: Image.network(
+// (widget.model!.img == null || widget.model!.img == "")
+// ? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.png"
+// : widget.model!.img!,
+// height: 70,
+// fit: BoxFit.scaleDown,
+// ),
+// ignore: prefer_interpolation_to_compose_strings
           subtitle: Text("Solicitado por: " +
-              model!.usuario_id! +
+              widget.model!.usuario_id! +
               " - " +
               " Tipo de soporte: " +
-              model!.tipo! +
+              widget.model!.tipo! +
               " - " +
               " Detalle: " +
-              model!.detalle!),
+              widget.model!.detalle!),
           isThreeLine: true,
         ),
       ],
