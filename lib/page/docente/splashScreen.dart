@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String finalName = '';
+String titulo= '';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -30,6 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     var obtName = sharedPreferences.getString('name');
+    if ('$finalName' == null) {
+    }
     // Si no hay ningún valor guardado, utilizamos una cadena vacía
     setState(() {
       finalName = obtName!;
@@ -48,12 +51,15 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // ignore: prefer_const_constructors
-            FlutterLogo(
-              size: 150.0,
-            ),
-            SizedBox(height: 50.0),
-            Text(
+            Image.asset(
+                  '../img/ups.png',
+                  height:200,
+                ),
+            SizedBox(height: 30.0),
+            // ignore: prefer_const_constructors
+            Text( 
               'Bienvenido',
+              // ignore: prefer_const_constructors
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,

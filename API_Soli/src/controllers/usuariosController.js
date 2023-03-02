@@ -3,9 +3,9 @@ const controller = {};
 
 //Select
 controller.list = (req, res) => {
-    const { usuario, contraseña, rol } = req.body;
+    const { usuario, psw, rol } = req.body;
     const query = `SELECT * FROM usuario`;
-    mysqlConnection.query(query, [usuario, contraseña, rol], (
+    mysqlConnection.query(query, [usuario, psw, rol], (
       err,
       rows
     ) => {
@@ -13,7 +13,7 @@ controller.list = (req, res) => {
         res.json({
           status_code: 202,
           message: "Listado",
-          usuarios: rows,
+          usuario: rows,
           //authData
         });
         console.log(rows);
@@ -29,10 +29,10 @@ controller.list = (req, res) => {
 
   //Insert
   controller.save = (req, res) => {
-      const { usuario, contraseña, rol } = req.body;
-      const query = `INSERT INTO usuario(usuario, contraseña, rol)
+      const { usuario, psw, rol } = req.body;
+      const query = `INSERT INTO usuario(usuario, psw, rol)
     VALUES(?,?,?)`;
-      mysqlConnection.query(query, [usuario, contraseña, rol], (err) => {
+      mysqlConnection.query(query, [usuario, psw, rol], (err) => {
         if (!err) {
           res.json({
             error: false,

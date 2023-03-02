@@ -4,24 +4,28 @@ List<UserModel> usuariosFromJson(dynamic str) =>
 class UserModel {
   late String? usuario;
   late String? psw;
-  late String? id_usuario;
+  late String? rol;
+  late int? id_usuario;
 
   UserModel({
     this.usuario,
     this.psw,
+    this.rol,
     this.id_usuario,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
     usuario = json['usuario'];
-    psw = json['contraseña'];
+    psw = json['psw'];
+    rol = json['rol'];
     id_usuario = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['usuario'] = usuario;
-    _data['contraseña'] = psw;
+    _data['psw'] = psw;
+    _data['rol'] = rol;
     _data['id'] = id_usuario;
     return _data;
   }

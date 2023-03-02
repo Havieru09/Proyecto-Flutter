@@ -27,11 +27,13 @@ class _UserListState extends State<UserList> {
       backgroundColor: Colors.grey[200],
       body: ProgressHUD(
         // ignore: sort_child_properties_last
-        child: Column(
-          children: [
-            const CabeceraBack(),
-            loadUsers(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const CabeceraBack(),
+              loadUsers(),
+            ],
+          ),
         ),
 
         inAsyncCall: isApiCallProcess,
