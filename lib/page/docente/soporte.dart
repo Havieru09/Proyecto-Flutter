@@ -37,6 +37,8 @@ class _soporteState extends State<soporte> {
   bool isImageSelected = false;
   var bloquevalue;
   var aulavalue;
+  var aulavalue2;
+  var laboratoriovalue;
   String? estado = 'Pendiente';
   String? usuario_id = '1';
 
@@ -54,8 +56,8 @@ class _soporteState extends State<soporte> {
                 child: userForm(),
               ),
               const Padding(
-                  padding: EdgeInsets.all(3.5),
-                ),
+                padding: EdgeInsets.all(3.5),
+              ),
               const footer(),
             ],
           ),
@@ -101,47 +103,106 @@ class _soporteState extends State<soporte> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: DropdownButton<String>(
-                  value: bloquevalue,
-                  hint: Text('Elige un edificio'),
-                  items: bloquesList.map((item) {
-                    return DropdownMenuItem(
-                      value: item['id'].toString(),
-                      child: Text(item['nombre_bloque'].toString()),
-                    );
-                  }).toList(),
-                  onChanged: (newVal) {
-                    setState(() {
-                      bloquevalue = newVal;
-                      isBloquesSelect = true;
-                    });
-                  },
+              if (bloquesList.isEmpty)
+                const Center(child: CircularProgressIndicator())
+              else
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: DropdownButton<String>(
+                    value: bloquevalue,
+                    hint: Text('Elige un edificio'),
+                    items: bloquesList.map((item) {
+                      return DropdownMenuItem(
+                        value: item['id'].toString(),
+                        child: Text(item['nombre_bloque'].toString()),
+                      );
+                    }).toList(),
+                    onChanged: (newVal) {
+                      setState(() {
+                        bloquevalue = newVal;
+                        isBloquesSelect = true;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 10,
-                  top: 10,
+              if (bloquevalue == '1')
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 10,
+                    top: 10,
+                  ),
+                  child: DropdownButton(
+                    hint: Text('Elija un laboratorio'),
+                    items: aulasList
+                        .where((item) =>
+                            item['nombre_aulas'].startsWith('Laboratorio E'))
+                        .map((item) {
+                      return DropdownMenuItem(
+                        value: item['id'].toString(),
+                        child: Text(item['nombre_aulas'].toString()),
+                      );
+                    }).toList(),
+                    onChanged: (newVal) {
+                      setState(() {
+                        laboratoriovalue = newVal;
+                        isAulasSelect = true;
+                      });
+                    },
+                    value: laboratoriovalue,
+                  ),
                 ),
-                child: DropdownButton(
-              hint: Text('Elige una aula'),
-              items: aulasList.map((item) {
-                return DropdownMenuItem(
-                  value: item['id'].toString(),
-                  child: Text(item['nombre_aulas'].toString()),
-                );
-              }).toList(),
-              onChanged: (newVal) {
-                setState(() {
-                  aulavalue = newVal;
-                  isAulasSelect = true;
-                });
-              },
-              value: aulavalue,
-            ),
-              ),
+              if (bloquevalue == '2')
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 10,
+                    top: 10,
+                  ),
+                  child: DropdownButton(
+                    hint: Text('Elija un aula'),
+                    items: aulasList
+                        .where(
+                            (item) => item['nombre_aulas'].startsWith('Aula D'))
+                        .map((item) {
+                      return DropdownMenuItem(
+                        value: item['id'].toString(),
+                        child: Text(item['nombre_aulas'].toString()),
+                      );
+                    }).toList(),
+                    onChanged: (newVal) {
+                      setState(() {
+                        aulavalue2 = newVal;
+                        isAulasSelect = true;
+                      });
+                    },
+                    value: aulavalue2,
+                  ),
+                ),
+              if (bloquevalue == '3')
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 10,
+                    top: 10,
+                  ),
+                  child: DropdownButton(
+                    hint: Text('Elija un aula'),
+                    items: aulasList
+                        .where(
+                            (item) => item['nombre_aulas'].startsWith('Aula B'))
+                        .map((item) {
+                      return DropdownMenuItem(
+                        value: item['id'].toString(),
+                        child: Text(item['nombre_aulas'].toString()),
+                      );
+                    }).toList(),
+                    onChanged: (newVal) {
+                      setState(() {
+                        aulavalue = newVal;
+                        isAulasSelect = true;
+                      });
+                    },
+                    value: aulavalue,
+                  ),
+                ),
             ],
           ),
           Padding(
@@ -221,7 +282,12 @@ class _soporteState extends State<soporte> {
                   solimodel!.usuario_id = usuario_id;
                   solimodel!.estado = estado;
                   solimodel!.bloque_id = bloquevalue;
-                  solimodel!.aula_id = aulavalue;
+                  if (bloquevalue == '1' && laboratoriovalue != null)
+                    solimodel!.aula_id = laboratoriovalue;
+                  if (bloquevalue == '2' && aulavalue2 != null)
+                    solimodel!.aula_id = aulavalue2;
+                  if (bloquevalue == '3' && aulavalue != null)
+                    solimodel!.aula_id = aulavalue;
 
                   print(solimodel!.toJson());
 
@@ -402,7 +468,7 @@ class _soporteState extends State<soporte> {
 
 //==================================================================API
 
-   Future getBloques() async {
+  Future getBloques() async {
     var url = Uri.http(
       Config.apiURL,
       Config.bloqueAPI,
@@ -454,10 +520,6 @@ class _soporteState extends State<soporte> {
     }
   }
 }
-
-// Widget _multiLineTexfield() {
-//   return
-// }
 
 Widget _bottoonBack() {
   return StreamBuilder(builder: (BuildContext context, AsyncSnapshot snapshot) {
