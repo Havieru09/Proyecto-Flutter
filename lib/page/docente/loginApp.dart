@@ -32,9 +32,11 @@ class _loginApp extends State<loginApp> {
   final _psw = TextEditingController();
   String name = "";
   String dato = "";
+  int id = 0;
   String nombre = '';
   List<String> _nombres = [];
   List<String> _contra = [];
+  List<int> _id = [];
 
   @override
   void initState() {
@@ -165,8 +167,10 @@ class _loginApp extends State<loginApp> {
             UserList.forEach((objeto) {
               final nombre = objeto['usuario'];
               final password = objeto['psw'];
+              final idUser = objeto['id'];
               _nombres.add(nombre);
               _contra.add(password);
+              _id.add(idUser);
             });
 
             String dato = _name.text;
@@ -176,6 +180,7 @@ class _loginApp extends State<loginApp> {
               if (dato == _nombres[i] && datopsw == _contra[i]) {
                 existe = true;
                 name = _nombres[i];
+                id = _nombres[i] == dato ? _id[i] : 0;
                 break;
               } else {
                 existe = false;
@@ -185,7 +190,7 @@ class _loginApp extends State<loginApp> {
             if (existe) {
               final SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();
-              sharedPreferences.setString('name', name);
+              sharedPreferences.setInt('name', id);
               Navigator.pushNamed(context, "/splash");
             } else {
               // datos inválidos, mostrar alerta

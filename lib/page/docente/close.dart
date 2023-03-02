@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../config.dart';
 import '../../models/bloques.dart';
 import '../../models/solicitud.dart';
 import '../../widgets/cabeceraBack.dart';
 import '../../widgets/footer.dart';
+
+int finalName = 0;
 
 const List<String> list = <String>['A', 'B', 'C', 'D', 'E'];
 const List<String> list1 = <String>['10', '2', '3', '4', '5', '6'];
@@ -37,13 +40,23 @@ class _closeState extends State<close> {
     getAulas();
     solimodel = SolicitudModel();
 
-    Future.delayed(Duration.zero, () {
+    Future.delayed(Duration.zero, () async{
       if (ModalRoute.of(context)?.settings.arguments != null) {
         final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
         solimodel = arguments['model'];
         //isEditMode = true;
         setState(() {});
       }
+
+    final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var obtName = sharedPreferences.getInt('name');
+      print('$finalName');
+
+      // Si no hay ningún valor guardado, utilizamos una cadena vacía
+      setState(() {
+        finalName = obtName! as int;
+      });
     });
   }
 
@@ -59,6 +72,8 @@ class _closeState extends State<close> {
             //mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               const CabeceraBack(),
+              Text('$finalName'),
+
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(

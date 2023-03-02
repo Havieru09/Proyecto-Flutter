@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../config.dart';
 import '../../models/bloques.dart';
 import '../../models/solicitud.dart';
 import '../../widgets/cabeceraBack.dart';
 import '../../widgets/footer.dart';
+
+  int finalName = 0;
 
 class open extends StatefulWidget {
   const open({super.key});
@@ -18,6 +21,7 @@ class open extends StatefulWidget {
 
 class _openState extends State<open> {
   static var client = http.Client();
+
   SolicitudModel? solimodel;
   BloqueModel? bloquemodel;
   bool isBloquesSelect = false;
@@ -34,13 +38,22 @@ class _openState extends State<open> {
     getAulas();
     solimodel = SolicitudModel();
 
-    Future.delayed(Duration.zero, () {
+    Future.delayed(Duration.zero, () async {
       if (ModalRoute.of(context)?.settings.arguments != null) {
         final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
         solimodel = arguments['model'];
         //isEditMode = true;
         setState(() {});
       }
+   final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var obtName = sharedPreferences.getInt('name');
+      print('$finalName');
+
+      // Si no hay ningún valor guardado, utilizamos una cadena vacía
+      setState(() {
+        finalName = obtName! as int;
+      });
     });
   }
 
@@ -56,6 +69,7 @@ class _openState extends State<open> {
             //mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               const CabeceraBack(),
+              Text('$finalName'),
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(

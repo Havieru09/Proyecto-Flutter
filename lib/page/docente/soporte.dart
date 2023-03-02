@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:proyecto_plataforma/widgets/cabeceraBack.dart';
 import 'package:proyecto_plataforma/widgets/footer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
@@ -12,6 +13,8 @@ import '../../Servicios/api_service.dart';
 import '../../config.dart';
 import '../../models/bloques.dart';
 import '../../models/solicitud.dart';
+
+int finalName = 0;
 
 class soporte extends StatefulWidget {
   const soporte({super.key});
@@ -40,7 +43,7 @@ class _soporteState extends State<soporte> {
   var aulavalue2;
   var laboratoriovalue;
   String? estado = 'pendiente';
-  String? usuario_id = '1';
+  //String? usuario_id = '';
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +79,23 @@ class _soporteState extends State<soporte> {
     getAulas();
     solimodel = SolicitudModel();
 
-    Future.delayed(Duration.zero, () {
+    Future.delayed(Duration.zero, () async {
       if (ModalRoute.of(context)?.settings.arguments != null) {
         final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
         solimodel = arguments['model'];
         isEditMode = true;
         setState(() {});
       }
+
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var obtName = sharedPreferences.getInt('name');
+      print('$finalName');
+
+      // Si no hay ningún valor guardado, utilizamos una cadena vacía
+      setState(() {
+        finalName = obtName! as int;
+      });
     });
   }
 
@@ -90,6 +103,7 @@ class _soporteState extends State<soporte> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
+          //Text('$finalName'),
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
@@ -279,7 +293,7 @@ class _soporteState extends State<soporte> {
               "Save",
               () {
                 if (validateAndSave()) {
-                  solimodel!.usuario_id = usuario_id;
+                  solimodel!.usuario_id = '$finalName';
                   solimodel!.estado = estado;
                   solimodel!.bloque_id = bloquevalue;
                   if (bloquevalue == '1' && laboratoriovalue != null)

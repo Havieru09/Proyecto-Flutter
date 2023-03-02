@@ -13,8 +13,23 @@ class home extends StatefulWidget {
   State<home> createState() => _homeState();
 }
 
-
 class _homeState extends State<home> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var obtName = sharedPreferences.getInt('name');
+      print('$finalName');
+
+      // Si no hay ningún valor guardado, utilizamos una cadena vacía
+      setState(() {
+        finalName = obtName! as int;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +51,8 @@ class _homeState extends State<home> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('$finalName'),
-                          
+                          //Text('$finalName'),
+
                           const Padding(
                             padding: EdgeInsets.all(10.0),
                             // ignore: unnecessary_const
@@ -109,12 +124,7 @@ class _homeState extends State<home> {
   Widget _botonOpen() {
     // ignore: prefer_const_constructors
     return InkWell(
-      onTap: () async {
-        final SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
-        sharedPreferences.setString('name', '_nameText');
-        Navigator.pushNamed(context, "/open");
-      },
+      onTap: () => Navigator.pushNamed(context, "/open"),
       child: CircleAvatar(
         radius: 50.0,
         backgroundColor: Colors.grey,
@@ -231,8 +241,9 @@ class _homeState extends State<home> {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return ElevatedButton(
-        onPressed: () async{
-          final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        onPressed: () async {
+          final SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
           sharedPreferences.remove('name');
           Navigator.pushNamed(context, "/");
         },
