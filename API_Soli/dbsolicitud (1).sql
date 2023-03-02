@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 02-03-2023 a las 01:19:12
+-- Tiempo de generación: 02-03-2023 a las 02:14:13
 -- Versión del servidor: 5.7.40
 -- Versión de PHP: 8.0.26
 
@@ -91,12 +91,12 @@ CREATE TABLE IF NOT EXISTS `solicitud` (
 --
 
 INSERT INTO `solicitud` (`id`, `usuario_id`, `bloque_id`, `aula_id`, `tipo`, `detalle`, `estado`) VALUES
-(1, 1, 1, 1, 'Abrir Aula', 'Ejemplo', 'Espera'),
+(1, 1, 1, 1, 'Abrir Aula', 'Ejemplo', 'pendiente'),
 (3, 4, 1, 2, 'abrir puerta', '', 'terminado'),
-(4, 4, 3, 3, 'soporte', 'Encender proyector', 'espera'),
-(5, 1, 1, 3, 'aire acondicionado', 'encender aire', 'Pendiente'),
-(6, 1, 1, 1, 'prueba', 'probando antes de pegar', 'Pendiente'),
-(7, 1, 1, 2, 'hola', 'como estas', 'Pendiente');
+(4, 4, 3, 3, 'soporte', 'Encender proyector', 'en_camino'),
+(5, 1, 1, 3, 'aire acondicionado', 'encender aire', 'pendiente'),
+(6, 1, 1, 1, 'prueba', 'probando antes de pegar', 'pendiente'),
+(7, 1, 1, 2, 'hola', 'como estas', 'pendiente');
 
 -- --------------------------------------------------------
 
@@ -119,8 +119,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 
 INSERT INTO `usuario` (`id`, `usuario`, `psw`, `rol`) VALUES
 (1, 'Pepe', '123', 'admin'),
-(4, 'Joe Llerena', '1234', 'Docente'),
-(5, 'Yajaira Bermeo', '1234', 'Administrativo'),
+(4, 'Joe Llerena', '1234', 'docente'),
+(5, 'Yajaira Bermeo', '1234', 'docente'),
 (6, 'Gabriel', 'admin123', 'admin');
 
 --

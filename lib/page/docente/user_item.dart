@@ -123,25 +123,27 @@ class UserItem extends StatelessWidget {
     );
   }
 
-   Widget cartItem1(context) {
+  Widget cartItem1(context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
-          title: Text(
-            "Bloque: "+model!.bloque_id! + " - "+model!.aula_id! 
-            
-          ),
+          title: Text("Bloque: " + model!.bloque_id! + " - " + model!.aula_id!),
           trailing: Column(
             children: [
               Icon(
                 model!.estado! == "terminado" || model!.estado! == "TERMINADO"
                     ? Icons.check_circle
-                    : Icons.check_circle_outline,
-                color: model!.estado! == "terminado" || model!.estado! == "TERMINADO"
+                    : model!.estado! == "en_camino"
+                        ? Icons.run_circle
+                        : Icons.check_circle_outline,
+                color: model!.estado! == "terminado" ||
+                        model!.estado! == "TERMINADO"
                     ? Colors.green
-                    : Colors.grey,
+                    : model!.estado! == "en_camino"
+                        ? Colors.amber
+                        : Colors.grey,
               ),
             ],
           ),
@@ -153,9 +155,14 @@ class UserItem extends StatelessWidget {
           //   fit: BoxFit.scaleDown,
           // ),
           // ignore: prefer_interpolation_to_compose_strings
-          subtitle: Text("Solicitado por: " + model!.usuario_id! +" - "
-          + " Tipo de soporte: "+model!.tipo! +" - "
-          + " Detalle: "+model!.detalle!),
+          subtitle: Text("Solicitado por: " +
+              model!.usuario_id! +
+              " - " +
+              " Tipo de soporte: " +
+              model!.tipo! +
+              " - " +
+              " Detalle: " +
+              model!.detalle!),
           isThreeLine: true,
         ),
       ],

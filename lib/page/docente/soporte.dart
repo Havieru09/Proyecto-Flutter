@@ -39,7 +39,7 @@ class _soporteState extends State<soporte> {
   var aulavalue;
   var aulavalue2;
   var laboratoriovalue;
-  String? estado = 'Pendiente';
+  String? estado = 'pendiente';
   String? usuario_id = '1';
 
   @override
