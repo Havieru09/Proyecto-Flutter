@@ -8,6 +8,7 @@ import 'package:proyecto_plataforma/page/docente/soporte.dart';
 import 'package:proyecto_plataforma/page/docente/splashScreen.dart';
 import 'package:proyecto_plataforma/page/soporte/login_page.dart';
 import 'package:proyecto_plataforma/page/soporte/second_page.dart';
+import 'package:proyecto_plataforma/page/soporte/splashScreen.dart';
 import 'package:proyecto_plataforma/page/soporte/third_page.dart';
 
 class MyApp extends StatelessWidget {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         "/s":(context) => LoginPage(),
         "/second":(context) => const SecondPage(),
         "/third":(context) => ThirdPage(),
+        '/splashSoporte': (context) => SplashScreenSoporte(),
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
