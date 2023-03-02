@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_plataforma/page/docente/close.dart';
 import 'package:proyecto_plataforma/page/docente/home.dart';
 import 'package:proyecto_plataforma/page/docente/listar.dart';
-import 'package:proyecto_plataforma/page/docente/login.dart';
+import 'package:proyecto_plataforma/page/docente/loginApp.dart';
 import 'package:proyecto_plataforma/page/docente/open.dart';
 import 'package:proyecto_plataforma/page/docente/soporte.dart';
 import 'package:proyecto_plataforma/page/docente/splashScreen.dart';
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
         '/splash': (context) => SplashScreen(),
-        "/": (context) => fromLogin(),
+        "/": (context) => loginApp(),
         "/home": (context) => const home(),
         "/open": (context) => open(),
         "/close": (context) => close(),
