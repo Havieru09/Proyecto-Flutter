@@ -35,7 +35,11 @@ controller.list = (req, res) => {
 //Select by id
 controller.listOne = (req, res) => {
     const { id } = req.params;
-    const query = `SELECT * FROM solicitud WHERE id = ${id}`;
+    const query = `SELECT s.id, b.nombre_bloque as 'nombre_bloque', a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', 
+    tipo, detalle, estado FROM solicitud as s 
+    INNER JOIN bloques as b on s.bloque_id = b.id
+    INNER JOIN aulas as a on s.aula_id = a.id
+    INNER JOIN usuario as u on s.usuario_id = u.id WHERE s.id = ${id}`;
     mysqlConnection.query(query, (err, solicitud) => {
         if (err) {
             return res.json({
@@ -51,7 +55,6 @@ controller.listOne = (req, res) => {
         });
     });
 };
-
 //Update
 controller.update = (req, res) => {
     const { estado } = req.body;
