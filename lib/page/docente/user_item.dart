@@ -58,12 +58,13 @@ class _UserItemState extends State<UserItem> {
   }
 
   Widget cartItem1(context) {
-    
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-      
+        // if(widget.model!.usuario_id == '$finalName'){
+
+        // },
         ListTile(
           title: Text("Bloque: " +
               widget.model!.bloque_id! +

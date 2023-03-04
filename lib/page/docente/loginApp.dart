@@ -32,10 +32,12 @@ class _loginApp extends State<loginApp> {
   final _psw = TextEditingController();
   String name = "";
   String dato = "";
+  String rol = "";
   int id = 0;
   String nombre = '';
   List<String> _nombres = [];
   List<String> _contra = [];
+  List<String> _rol = [];
   List<int> _id = [];
 
   @override
@@ -167,20 +169,25 @@ class _loginApp extends State<loginApp> {
             UserList.forEach((objeto) {
               final nombre = objeto['usuario'];
               final password = objeto['psw'];
+              final rol= objeto['rol'];
               final idUser = objeto['id'];
               _nombres.add(nombre);
               _contra.add(password);
+              _rol.add(rol);
               _id.add(idUser);
             });
 
             String dato = _name.text;
             String datopsw = _psw.text;
+            
 
             for (int i = 0; i < _nombres.length; i++) {
               if (dato == _nombres[i] && datopsw == _contra[i]) {
                 existe = true;
                 name = _nombres[i];
                 id = _nombres[i] == dato ? _id[i] : 0;
+                rol = (_nombres[i] == dato ? _rol[i] : null)!;
+                print(rol);
                 break;
               } else {
                 existe = false;
@@ -188,10 +195,37 @@ class _loginApp extends State<loginApp> {
             }
 
             if (existe) {
-              final SharedPreferences sharedPreferences =
+              if (rol == 'docente') {
+                final SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();
               sharedPreferences.setInt('name', id);
               Navigator.pushNamed(context, "/splash");
+              }else if(rol == 'soporte'){
+                final SharedPreferences sharedPreferences =
+                  await SharedPreferences.getInstance();
+              sharedPreferences.setInt('name', id);
+              Navigator.pushNamed(context, "/splashSoporte");
+              }else{
+                showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Datos inválidos'),
+                    content: const Text(
+                        'El usuario y/o la contraseña que ha ingresado son incorrectos.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Cerrar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+              }
+              
             } else {
               // datos inválidos, mostrar alerta
               showDialog(
