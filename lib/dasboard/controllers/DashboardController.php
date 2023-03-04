@@ -1,124 +1,93 @@
 <?php
 
 namespace Controllers;
-
-use Model\Solicitud;
+use Model\Proyecto;
 use MVC\Router;
 
-class DashboardController
-{
-    public static function index(Router $router)
-    {
+class DashboardController {
+    public static function index(Router $router){
+
         session_start();
         isAuth();
-        $solicitudes = [];
-        $url = 'http://localhost:3000/solicitudes';
-        $data = file_get_contents($url);
-        $obj = json_decode($data);
-        $solicitudes = $obj->solicitud;
 
+        $id = $_SESSION['id'];
 
+        $proyectos = Proyecto::WhereAll('propietarioId', $id);
+         
+        // debuguear($proyectos);
+    
+        session_start();
         $router->render('dashboard/index', [
-            'titulo' => 'Solicitudes',
-            'solicitudes' => $solicitudes
+            'titulo' => 'Proyectos',
+            'proyectos' => $proyectos
         ]);
     }
-    public static function getRequest(Router $router)
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $id = $_POST['id'];
-            // debuguear($id);
-            $url = "http://localhost:3000/solicitudes/{$id}";
-            $data = file_get_contents($url);
-            
-            $obj = json_decode($data);
-            $resultado = $obj->data;
-            $solicitud = array_shift($resultado);
-            // debuguear($solicitud);
+    public static function crear_proyecto(Router $router){
+
+        session_start();
+        isAuth();
         
-            // debuguear($solicitudId);
-            $respuesta = [
-                'usuario' => $solicitud->usuario,
-                'bloque' => $solicitud->nombre_bloque,
-                'aula' => $solicitud->nombre_aulas,
-                'tipo' => $solicitud->tipo,
-                'detalle' => $solicitud->detalle,
-                'estado' => $solicitud->estado
-            ];
-            // debuguear($respuesta);
-            echo json_encode($respuesta);
+        $alertas = [];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $proyecto = new Proyecto($_POST);
+            $alertas = $proyecto->validarProyecto(); 
+
+            if (empty($alertas)) {
+                //Generar una URL unica
+                $proyecto->url = md5(uniqid());
+
+                //Almacenar el creador del proyecto
+                $proyecto->propietarioId = $_SESSION['id'];
+
+                //Guardar el proyecto
+                $resultado = $proyecto->guardar();
+
+                if ($resultado) {
+                    header('Location: /proyecto?id='.$proyecto->url);
+                }
+                 
+            }
 
         }
+        session_start();
+        $router->render('dashboard/crear-proyecto', [
+            'titulo' => 'Crear Proyecto',
+            'alertas' => $alertas
+        ]);
     }
-    public static function usuario(Router $router)
-    {
 
-        // session_start();
-        // isAuth();
+    public static function proyecto(Router $router){
 
         session_start();
-        $router->render('dashboard/usuario/usuario', [
-            'titulo' => 'Gestionar Docentes'
+        isAuth();
+
+        $token = $_GET['id'];
+        // http://localhost:3000/proyecto?id=8fb306d7544293b70391ae6521491cdc
+        if (!$token) header('Location: /dashboard') ;
+
+        $proyecto = Proyecto::where('url', $token);
+        
+        if ($proyecto->propietarioId !== $_SESSION['id']) {
+            header('Location: /dashboard');
+        }
+
+        // Revisar que la persona que visita el proyecto, es quien lo creo
+        $router->render('dashboard/proyecto', [
+            'titulo' => $proyecto->proyecto,
+            
         ]);
     }
-    public static function crear_usuario(Router $router)
-    {
 
-        // session_start();
-        // isAuth();
+    public static function perfil(Router $router){
 
         session_start();
-        $router->render('dashboard/usuario/crear-usuario', [
-            'titulo' => 'Crea un nuevo usuario'
-        ]);
-    }
-
-    public static function usuario_actualizar(Router $router)
-    {
-
-        // session_start();
-        // isAuth();
+        isAuth();
 
         session_start();
-        $router->render('dashboard/usuario/usuario-actualizar', [
-            'titulo' => 'Editar usuario'
+        $router->render('dashboard/perfil', [
+            'titulo' => 'Perfil'
         ]);
     }
 
-    public static function salon(Router $router)
-    {
-        $router->render('dashboard/salon/salon', [
-            'titulo' => 'Gestionar Salones'
-        ]);
-    }
-    public static function crear_salon(Router $router)
-    {
 
-        // session_start();
-        // isAuth();
-
-        $router->render('dashboard/salon/crear-salon', [
-            'titulo' => 'Agrega un nuevo Salon'
-        ]);
-    }
-    public static function bloque(Router $router)
-    {
-
-        // session_start();
-        // isAuth();
-
-        $router->render('dashboard/bloque/bloque', [
-            'titulo' => 'Gestionar Bloques'
-        ]);
-    }
-    public static function crear_bloque(Router $router)
-    {
-
-        // session_start();
-        // isAuth();
-
-        $router->render('dashboard/bloque/crear-bloque', [
-            'titulo' => 'Agrega un nuevo Bloque'
-        ]);
-    }
 }

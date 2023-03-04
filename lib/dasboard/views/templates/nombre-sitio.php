@@ -1,2 +1,2 @@
-<h1 class="uptask">UPRequest</h1>
-<p class="tagline">Administra tus solicitudes</p>
+<h1 class="uptask">UpTask</h1>
+<p class="tagline">Crea y administra tus proyectos</p>

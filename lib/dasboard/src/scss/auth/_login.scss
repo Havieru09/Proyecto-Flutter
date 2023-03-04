@@ -6,14 +6,13 @@
     .uptask{
         @include m.textoTitulo(v.$cyan);
     }
-    
+    input[type="submit"]{
+        @include m.boton(v.$cyan, v.$blanco);
+    }
 
     .acciones{
         a{
             color: v.$cyan;
         }
-    }
-    input[type="submit"]{
-        @include m.boton(v.$cyan, v.$blanco);
     }
 }
