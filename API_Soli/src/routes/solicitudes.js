@@ -18,7 +18,7 @@ router.post('/solicitudes',solicitudesController.create);
 //usuarios
 router.get('/usuarios',usuariosController.list);
 router.get('/usuarios/:id',usuariosController.listOne);
-router.post('/usuarios',usuariosController.create);
+router.post('/usuarios',usuariosController.save);
 router.put('/usuarios/:id',usuariosController.update);
 
 module.exports = router;
