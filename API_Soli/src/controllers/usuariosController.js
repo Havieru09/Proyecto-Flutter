@@ -27,6 +27,26 @@ controller.list = (req, res) => {
     });
   };
 
+//Select by id
+controller.listOne = (req, res) => {
+    const { id } = req.params;
+    const query = `SELECT * FROM usuario WHERE id = ?`;
+    mysqlConnection.query(query, (err, rows) => {
+      if (err) {
+        return res.json({
+          code: 500,
+          error: true,
+          message: err,
+        });
+      }
+      res.json({
+        status_code: 202,
+        message: "Listado",
+        usuario: rows,
+      });
+    });
+  };
+
   //Insert
   controller.save = (req, res) => {
       const { usuario, psw, rol } = req.body;
@@ -47,5 +67,27 @@ controller.list = (req, res) => {
         }
       });
     };
+
+//update
+controller.update = (req, res) => {
+    const { psw, rol } = req.body;
+    const { id } = req.params;
+    const query = `UPDATE usuario SET psw = ?, rol = ? WHERE id = ?`;
+    mysqlConnection.query(query, [psw, rol, id], (err) => {
+      if (!err) {
+        res.json({
+          error: false,
+          message: "Updated",
+        });
+      } else {
+        res.json({
+          error: true,
+          message: err,
+        });
+        console.log(err);
+      }
+    });
+  };
+
 
 module.exports = controller;
