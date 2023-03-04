@@ -4,7 +4,7 @@ const controller = {};
 //Select
 controller.list = (req, res) => {
     const { usuario, psw, rol } = req.body;
-    const query = `SELECT * FROM usuario`;
+    const query = `SELECT * FROM usuario where rol <> "admin"`;
     mysqlConnection.query(query, [usuario, psw, rol], (
       err,
       rows
