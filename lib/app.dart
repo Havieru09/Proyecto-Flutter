@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         "/list": (context) => UserList(),
         "/s":(context) => LoginPage(),
         "/second":(context) => const SecondPage(),
-        "/third":(context) => ThirdPage(),
+        //"/third":(context) => ThirdPage(),
         '/splashSoporte': (context) => SplashScreenSoporte(),
       },
       debugShowCheckedModeBanner: false,

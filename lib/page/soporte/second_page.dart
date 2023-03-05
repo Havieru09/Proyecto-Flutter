@@ -1,98 +1,104 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:proyecto_plataforma/widgets/cabeceraBack.dart';
+import 'package:proyecto_plataforma/widgets/footer.dart';
+import 'package:snippet_coder_utils/ProgressHUD.dart';
 
-class SecondPage extends StatefulWidget  {
+import '../../Servicios/api_service.dart';
+import '../../models/solicitud.dart';
+import 'listar.dart';
+
+class SecondPage extends StatefulWidget {
   const SecondPage({Key? key}) : super(key: key);
 
   @override
-  _MyApiState createState() => _MyApiState();
+  _SecondPageState createState() => _SecondPageState();
 }
 
-class _MyApiState extends State<SecondPage> {
+class _SecondPageState extends State<SecondPage> {
+  bool isApiCallProcess = false;
   @override
   void initState() {
-//response = fetchUsers();
     super.initState();
   }
 
-  Future<List<dynamic>> fetchUsers() async {
-    var result =
-        await http.get(Uri.parse("https://gorest.co.in/public/v2/users?page=1"));
-    return jsonDecode(result.body);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      body: ProgressHUD(
+        // ignore: sort_child_properties_last
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const CabeceraBack(),
+              loadUsers(),
+            ],
+          ),
+        ),
+
+        inAsyncCall: isApiCallProcess,
+        opacity: 0.3,
+        key: UniqueKey(),
+      ),
+    );
   }
 
-  myApiWidget() {
+  Widget loadUsers() {
     return FutureBuilder(
-      future: fetchUsers(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                
-                child: Column(
-                  children: [
-                    
-                    ListTile(
-                      onTap:  () {
-                      Navigator.pushNamed(context, "/third");
-                   },
-                      
-                      title: Text(
-                          snapshot.data[index]['name']
-                           ),
-                           
-                      trailing:Column(
-                        children: [
-                          SizedBox(height: 7),
-                           Icon(snapshot.data[index]['status'] == "active"
-                                  ?Icons.verified_user : Icons.verified_user, 
-                                  color: snapshot.data[index]['status'] == 
-                                  "active" ? Colors.green : Colors.red),
-                                   Text(snapshot.data[index]['id'].toString()),
-                           
-                        ],
-                      ),
-                      leading: Builder(
-                        builder:(BuildContext context){
-                          return Icon((snapshot.data[index]['gender'] == "male"
-                            ?Icons.man_rounded: Icons.woman_rounded),
-                          );
-                        },
-                        ),
-                      
-                      subtitle: Text(snapshot.data[index]['email'] 
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+      future: ApiService.getSolicitudes(),
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<List<SolicitudModel>?> model,
+      ) {
+        print(model.data);
+        if (model.hasData) {
+          return SecondPage(model.data);
         }
+
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }
 
+  Widget SecondPage(users) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  return listar(
+                    model: users[index],
+                    onDelete: (SolicitudModel model) {
+                      setState(() {
+                        isApiCallProcess = true;
+                      });
 
-@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Solicitudes",
-        style: TextStyle(
-              color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),),
-        automaticallyImplyLeading: false,
+                      ApiService.deleteUser(model.aula_id).then(
+                        (response) {
+                          setState(() {
+                            isApiCallProcess = false;
+                          });
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          )
+        ],
       ),
-      body: myApiWidget(),
     );
   }
 }
