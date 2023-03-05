@@ -35,26 +35,34 @@ class _UserListState extends State<UserList> {
     });
   }
 
+  Future<void> _refresh() async {
+    // Aquí podrías hacer una llamada a una API o actualizar datos desde una base de datos
+    await Future.delayed(Duration(seconds: 1));
+    setState(() {});
+  }
   
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      body: ProgressHUD(
-        // ignore: sort_child_properties_last
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const CabeceraBack(),
-              loadUsers(),
-            ],
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: ProgressHUD(
+          // ignore: sort_child_properties_last
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const CabeceraBack(),
+                loadUsers(),
+              ],
+            ),
           ),
+      
+          inAsyncCall: isApiCallProcess,
+          opacity: 0.3,
+          key: UniqueKey(),
         ),
-
-        inAsyncCall: isApiCallProcess,
-        opacity: 0.3,
-        key: UniqueKey(),
       ),
     );
   }

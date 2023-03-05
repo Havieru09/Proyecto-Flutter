@@ -112,14 +112,12 @@ class _UserItemState extends State<UserItem> {
 // fit: BoxFit.scaleDown,
 // ),
 // ignore: prefer_interpolation_to_compose_strings
-          subtitle: Text("Solicitado por: " +
-              widget.model!.usuario_id! +
-              " - " +
-              " Tipo de soporte: " +
+          subtitle: Text(
+              "Tipo de soporte: " +
               widget.model!.tipo! +
-              " - " +
-              " Detalle: " +
-              widget.model!.detalle!),
+              "                " +
+              " Estado: " +
+              widget.model!.estado!),
           isThreeLine: true,
         ),
       ],

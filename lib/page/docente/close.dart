@@ -85,9 +85,7 @@ class _closeState extends State<close> {
                 key: globalFormKey,
                 child: userForm(),
               ),
-              const Padding(
-                padding: EdgeInsets.all(3.5),
-              ),
+              
               const footer(),
             ],
           ),
