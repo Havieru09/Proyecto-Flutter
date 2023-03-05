@@ -48,4 +48,26 @@ controller.save = (req, res) => {
     });
   };
 
+  //Update
+  controller.update = (req, res) => {
+    const { nombre_aulas } = req.body;
+    const { id_aulas } = req.params;
+    const query = `UPDATE aulas SET nombre_aulas = '${nombre_aulas}' WHERE id_aulas = '${id_aulas}'`;
+    mysqlConnection.query(query, [nombre_aulas, id_aulas], (err) => {
+      if (!err) {
+        res.json({
+          error: false,
+          message: "Updated",
+        });
+      } else {
+        res.json({
+          error: true,
+          message: err,
+        });
+        console.log(err);
+      }
+    });
+  };
+
+
 module.exports = controller;

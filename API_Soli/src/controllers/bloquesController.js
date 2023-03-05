@@ -48,4 +48,26 @@ controller.save = (req, res) => {
     });
   };
 
+  //Update
+  controller.update = (req, res) => {
+    const { nombre_bloques } = req.body;
+    const { id_bloques } = req.params;
+    const query = `UPDATE bloques SET nombre_bloques = '${nombre_bloques}' WHERE id_bloques = '${id_bloques}'`;
+    mysqlConnection.query(query, [nombre_bloques, id_bloques], (err) => {
+      if (!err) {
+        res.json({
+          error: false,
+          message: "Updated",
+        });
+      } else {
+        res.json({
+          error: true,
+          message: err,
+        });
+        console.log(err);
+      }
+    });
+  };
+
+
 module.exports = controller;

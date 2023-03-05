@@ -49,10 +49,10 @@ controller.listOne = (req, res) => {
 
 //Insert
 controller.save = (req, res) => {
-  const { usuario, psw, rol } = req.body;
-  const query = `INSERT INTO usuario(usuario, psw, rol)
-    VALUES(?,?,?)`;
-  mysqlConnection.query(query, [usuario, psw, rol], (err) => {
+  const { usuario, correo, psw, rol } = req.body;
+  const query = `INSERT INTO usuario(usuario, correo, psw, rol)
+    VALUES(?,?,?,?)`;
+  mysqlConnection.query(query, [usuario, correo, psw, rol], (err) => {
     if (!err) {
       res.json({
         error: false,
@@ -70,11 +70,10 @@ controller.save = (req, res) => {
 
 //update
 controller.update = (req, res) => {
-  const { rol } = req.body;
+  const { usuario, psw, rol } = req.body;
   const { id } = req.params;
-  const query = `UPDATE usuario SET rol = '${rol}' WHERE id = '${id}'`;
-  console.log(query);
-  mysqlConnection.query(query, [rol, id], (err) => {
+  const query = `UPDATE usuario SET usuario = '${usuario}', psw = '${psw}', rol = '${rol}' WHERE id = '${id}'`;
+  mysqlConnection.query(query, [usuario, psw, rol, id], (err) => {
     if (!err) {
       res.json({
         error: false,
@@ -89,6 +88,7 @@ controller.update = (req, res) => {
     }
   });
 };
+
 
 
 module.exports = controller;
