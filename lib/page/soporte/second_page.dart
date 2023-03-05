@@ -50,7 +50,7 @@ class _SecondPageState extends State<SecondPage> {
         BuildContext context,
         AsyncSnapshot<List<SolicitudModel>?> model,
       ) {
-        print(model.data);
+        //print(model.data);
         if (model.hasData) {
           return SecondPage(model.data);
         }
