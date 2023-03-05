@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_plataforma/models/solicitudes2.dart';
 import 'package:proyecto_plataforma/widgets/cabeceraBack.dart';
 import 'package:proyecto_plataforma/widgets/footer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 
 import '../../Servicios/api_service.dart';
@@ -19,7 +21,21 @@ class _UserListState extends State<UserList> {
   @override
   void initState() {
     super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var obtName = sharedPreferences.getInt('name');
+      print('$finalName');
+
+      // Si no hay ningún valor guardado, utilizamos una cadena vacía
+      setState(() {
+        finalName = obtName! as int;
+      });
+    });
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +61,12 @@ class _UserListState extends State<UserList> {
 
   Widget loadUsers() {
     return FutureBuilder(
-      future: ApiService.getSolicitudes(),
+      future: ApiService.getSolicitudes2(SolicitudModel2(user: finalName)),
       builder: (
         BuildContext context,
-        AsyncSnapshot<List<SolicitudModel>?> model,
+        AsyncSnapshot<List<SolicitudModel2>?> model,
       ) {
-        print(model.data);
+        //print(model.data);
         if (model.hasData) {
           return userList(model.data);
         }
@@ -79,7 +95,7 @@ class _UserListState extends State<UserList> {
                 itemBuilder: (context, index) {
                   return UserItem(
                     model: users[index],
-                    onDelete: (SolicitudModel model) {
+                    onDelete: (SolicitudModel2 model) {
                       setState(() {
                         isApiCallProcess = true;
                       });

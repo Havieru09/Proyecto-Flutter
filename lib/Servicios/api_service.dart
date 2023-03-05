@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:proyecto_plataforma/models/solicitudes2.dart';
 
 import '../config.dart';
 import '../models/aulas.dart';
@@ -152,6 +153,36 @@ class ApiService {
       return false;
     }
   }
+
+  static Future<List<SolicitudModel2>?> getSolicitudes2(SolicitudModel2 model,) async {
+    
+    var url = Uri.http(
+      Config.apiURL,
+      Config.soliAPI2+ "/" + model.user.toString(),
+    );
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      var response = await client.get(
+        url,
+        headers: requestHeaders,
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        return solicitudesFromJson2(data["data"]);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
 
   static Future<bool> deleteUser(userId) async {
     Map<String, String> requestHeaders = {

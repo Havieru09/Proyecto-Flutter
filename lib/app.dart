@@ -11,6 +11,8 @@ import 'package:proyecto_plataforma/page/soporte/second_page.dart';
 import 'package:proyecto_plataforma/page/soporte/splashScreen.dart';
 import 'package:proyecto_plataforma/page/soporte/third_page.dart';
 
+String id= '';
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 

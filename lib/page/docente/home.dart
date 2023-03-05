@@ -6,6 +6,8 @@ import '../../widgets/cabecera.dart';
 import '../../widgets/footer.dart';
 import 'listar.dart';
 
+
+
 class home extends StatefulWidget {
   const home({super.key});
 
@@ -133,7 +135,7 @@ class _homeState extends State<home> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.asset(
-                '../img/open.png',
+                'img/open.png',
                 height: 50,
               ),
             ),
@@ -162,7 +164,7 @@ class _homeState extends State<home> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.asset(
-                '../img/close.png',
+                'img/close.png',
                 height: 50,
               ),
             ),
@@ -191,7 +193,7 @@ class _homeState extends State<home> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.asset(
-                '../img/support1.png',
+                'img/support1.png',
                 height: 50,
               ),
             ),
@@ -211,7 +213,10 @@ class _homeState extends State<home> {
   Widget _botonList() {
     // ignore: prefer_const_constructors
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, "/list"),
+      onTap: () {
+        //int id = '$finalName' as int;
+        Navigator.pushNamed(context, "/list");
+      },
       child: CircleAvatar(
         radius: 50.0,
         backgroundColor: Color.fromARGB(200, 161, 183, 243),
@@ -220,7 +225,7 @@ class _homeState extends State<home> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.asset(
-                '../img/list.png',
+                'img/list.png',
                 height: 50,
               ),
             ),
