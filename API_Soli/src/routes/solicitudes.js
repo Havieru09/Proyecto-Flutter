@@ -14,6 +14,8 @@ router.get('/solicitudes',solicitudesController.list);
 
 router.get('/solicitudes/:id',solicitudesController.listOne);
 
+router.get('/solicitudes2/:id',solicitudesController.listTwo);
+
 router.post('/solicitudes',solicitudesController.create);
 //usuarios
 router.get('/usuarios',usuariosController.list);

@@ -18,7 +18,7 @@ class CabeceraBack extends StatelessWidget {
                 top: 0,
                 right: 0,
                 child: Image.asset(
-                  '../img/menu.png',
+                  'img/menu.png',
                   //width: constrains.maxWidth,
                   height: constrains.maxHeight * 1.0,
                 ),
@@ -28,7 +28,7 @@ class CabeceraBack extends StatelessWidget {
                 right: 10,
                 //right: 0,
                 child: Image.asset(
-                  '../img/ups.png',
+                  'img/ups.png',
                   height: constrains.maxHeight * 0.6,
                 ),
               ),
@@ -45,7 +45,7 @@ class CabeceraBack extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Image.asset(
-                            '../img/back.png',
+                            'img/back.png',
                             height: 50,
                           ),
                         ),
