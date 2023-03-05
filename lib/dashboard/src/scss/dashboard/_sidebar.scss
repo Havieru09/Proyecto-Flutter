@@ -1,0 +1,50 @@
+@use 'base/mixins' as m;
+@use 'base/variables' as v;
+
+.sidebar{
+    background-color: darken($color: v.$celesteOscuro, $amount: 20%);
+    padding: 2rem;
+    h2{
+        color: v.$blanco;
+        margin: 0;
+        text-align: center;
+        font-size: 3rem;
+    }
+    .contenedor-imagen{
+        margin-top: 1rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .imagen{
+            display: flex;
+            margin-right: .5rem;
+            justify-content: center;
+            height: 5rem;
+            width: 5rem;
+            background-image: url(../img/ups.png);
+            background-size: cover;
+            background-position: center center;
+            
+        }
+    }
+    
+    .sidebar-nav{
+        margin-top: 3rem;
+        a{
+            color: v.$blanco; 
+            display: block;
+            margin-bottom: 1.5rem;
+            padding: .7rem;
+            transition-property: background-color;
+            transition-duration: 300ms;
+
+            &:hover, 
+            &.activo{
+                background-color: darken($color: v.$blanco, $amount: 10%);
+                color: v.$negro;
+                border-radius: .5rem;
+            }
+        }
+    }
+}

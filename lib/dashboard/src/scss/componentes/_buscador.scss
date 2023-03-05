@@ -1,0 +1,55 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.contenedor-opciones{
+    display: flex;
+    // justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    @include m.tablet{
+        justify-content: space-between;
+        flex-direction: row;
+    }
+
+    .nuevoUser{
+        margin-bottom: 2rem;
+        @include m.boton(v.$primary-color, v.$blanco);
+        @include m.tablet{
+            margin-bottom: 0rem;
+        }
+    }
+
+    .buscador{
+        display: flex;
+        justify-content: end;
+        justify-items: center;
+        height: 4rem;
+        width: 100%;
+        @include m.tablet{
+            width: 35rem;
+        }
+        select{
+            flex: 1;
+            text-align: center;
+            margin-right: 1rem;
+            border-radius: 1rem;
+            @include m.tablet{
+                flex: 1;
+            }
+        }
+        
+    
+        input[type="submit"]{
+            // @include m.boton(v.$primary-color, v.$blanco);
+            background-color: v.$primary-color;
+            border: none;
+            color: v.$blanco;
+            padding: 2rem;
+            height: 4rem;
+            text-align: center;
+            line-height: 0px;
+            
+        }
+    }
+}
+

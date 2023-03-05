@@ -1,0 +1,66 @@
+@use "base/mixins" as m;
+@use "base/variables" as v;
+
+.index {
+    margin-top: 5rem;
+}
+
+.boton-dash {
+    @include m.boton(v.$indigo, v.$blanco);
+    display: inline-block;
+}
+
+.tabla {
+    margin-top: 4rem;
+    width: 100%;
+    border-spacing: 0;
+
+    thead {
+        background-color: v.$cyan;
+
+        th {
+            color: v.$blanco;
+            padding: 2rem;
+        }
+    }
+
+    tbody {
+        tr {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 400;
+            height: 5rem;
+        }
+        .acciones {
+            margin: 1rem;
+            
+            display: grid;
+            place-content: center;
+            a {
+                @include m.boton(v.$azul, v.$blanco);
+                width: auto;
+            }
+
+            .boton-rojo-block {
+                background-color: v.$rojo;
+                color: v.$blanco;
+                font-weight: 700;
+                text-decoration: none;
+                padding: 1rem 3rem;
+                text-align: center;
+                margin-top: 1rem;
+                display: block;
+                border: none;
+                height: 4.5rem;
+                &:hover {
+                    background-color: darken(v.$rojo, 5);
+                    cursor: pointer;
+                }
+                width: 100%;
+            }
+        }
+    }
+    input[type="submit"] {
+        @include m.boton(v.$rojo, v.$blanco);
+    }
+}

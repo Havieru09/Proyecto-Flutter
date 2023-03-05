@@ -1,0 +1,97 @@
+@use "base/mixins" as m;
+@use "base/variables" as v;
+
+.listado-solicitudes {
+    list-style: none;
+    padding: 0;
+    margin-top: 3rem;
+
+    @include m.grid(1, 2rem);
+    @include m.tablet {
+        @include m.grid(2, 2rem);
+    }
+    @include m.desktop {
+        @include m.grid(3, 2rem);
+    }
+    
+    .card {
+        background-color: lighten($color: v.$blanco, $amount: 0%);
+        min-height: 15rem;
+        box-shadow: 1px 12px 9px -13px rgba($color: v.$negro, $alpha: 0.4);
+        line-height: 2rem;
+        border-radius: 0.5rem;
+        transition: all 0.5s;
+        &:hover {
+            transform: scale(1.07);
+            cursor: pointer;
+        }
+
+        li {
+            width: 100%;
+            text-align: center;
+            color: v.$blanco;
+            position: relative;
+            .titulo {
+                width: 100%;
+                display: block;
+                text-align: center;
+                text-transform: uppercase;
+                color: v.$primary-color;
+                position: absolute;
+                top: 0;
+                font-size: 1.5rem;
+                font-weight: 700;
+
+                padding: 1rem 2rem 1.5rem;
+                border-radius: 0.5rem 0.5rem 0 0;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            .imagen-base {
+                background-size: cover;
+                background-position: center center;
+                position: absolute;
+                top: 190%;
+                left: 43%;
+                @include m.tablet{
+                    left: 39%;
+                }
+                // right: 50%;
+                // bottom: 50%;
+                width: 8rem;
+                height: 8rem;
+                &.camino {
+                    background-image: url(../img/en_camino.png);
+                }
+                &.completa {
+                    background-image: url(../img/complete.png);
+                }
+                &.pendiente {
+                    background-image: url(../img/incomplete.png);
+                }
+                &.docente {
+                    background-image: url(../img/teacher.png);
+                }
+                &.soporte {
+                    background-image: url(../img/support.png);
+                }
+
+            }
+            label {
+                text-transform: uppercase;
+                width: 100%;
+                text-align: center;
+                color: v.$negro;
+                position: absolute;
+                font-size: 1.5rem;
+                font-weight: 700;
+                right: 0;
+                bottom: -12rem;
+            }
+            .id {
+                opacity: 0;
+            }
+        }
+    }
+}

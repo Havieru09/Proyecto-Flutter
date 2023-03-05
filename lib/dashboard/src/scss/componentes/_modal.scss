@@ -1,0 +1,130 @@
+@use "base/variables" as v;
+@use "base/mixins" as m;
+
+.modal {
+    display: fixed;
+    position: absolute;
+    background-color: rgb(0 0 0 /0.8);
+    
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    .formulario {
+        background-color: v.$grisOscuro;
+        max-width: 50rem;
+        background-color: v.$blanco;
+        padding: 0 0 2rem;
+        margin: 0 auto;
+        transform: translateY(-30rem);
+        transition-property: all;
+        transition-duration: 800ms;
+        transition-timing-function: ease-in-out;
+        opacity: 0;
+        border-radius: 1rem;
+
+        .campo {
+            text-transform: uppercase;
+            display: flex;
+            text-align: center;
+            font-size: 1.5rem;
+            // font-weight: 700;
+            padding: 1rem 3rem 0rem 1rem;
+            label {
+                font-size: 1.5rem;
+                text-align: start;
+                flex: 0 0 30rem;
+                padding: .5rem;
+            }
+            .subtitulo {
+                font-weight: 700;
+                text-align: start;
+                margin-left: 3rem;
+                flex: 0 0 12rem;
+            }
+        }
+
+        select{
+            flex: 1;
+            text-align: center;
+            margin-right: 1rem;
+            border-radius: 1rem;
+            color: v.$grisOscuro;
+            font-size: 1.5rem;
+            height: 3.5rem;
+            border: none;
+            text-transform: uppercase;
+        }
+        .contenedor-titulo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .imagen-estado {
+            background-size: cover;
+            background-position: center center;
+            width: 4rem;
+            height: 4rem;
+            &.camino {
+                background-image: url(../img/en_camino.gif);
+            }
+            &.completa {
+                background-image: url(../img/complete.gif);
+            }
+            &.pendiente {
+                background-image: url(../img/incomplete.gif);
+            }
+        }
+
+        legend {
+            font-size: 2.5rem;
+            text-align: center;
+            font-weight: bolder;
+            margin-bottom: 2rem;
+            color: v.$primary-color;
+            display: block;
+
+            padding: 2rem 1rem 0 0;
+            border-radius: 1rem 1rem 0 0;
+            
+            
+        }
+
+        .opciones {
+            margin: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            @include m.tablet{
+                flex-direction: row;
+            }
+        }
+
+        .submit-nuevo-usuario,
+        .submit-actualizar-usuario{
+            @include m.boton(v.$primary-color, v.$blanco);
+        }
+        .opciones-unica{
+            display: flex;
+            margin: 2rem;
+            justify-content: center
+        }
+        .cerrar-modal {
+            @include m.boton(v.$naranja, v.$blanco);
+        }
+        
+
+        &.animar {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 1;
+        }
+        &.cerrar {
+            transform: translateY(-200%);
+            opacity: 0;
+        }
+    }
+}

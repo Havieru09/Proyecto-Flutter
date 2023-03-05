@@ -1,6 +1,7 @@
+const cors = require('cors');
 const express = require('express');
 const router = express.Router();
-
+router.use(cors());
 const aulasController = require('../controllers/aulasController');
 const usuariosController = require('../controllers/usuariosController');
 const bloquesController = require('../controllers/bloquesController');
@@ -18,7 +19,7 @@ router.post('/solicitudes',solicitudesController.create);
 //usuarios
 router.get('/usuarios',usuariosController.list);
 router.get('/usuarios/:id',usuariosController.listOne);
-router.post('/usuarios',usuariosController.create);
+router.post('/usuarios',usuariosController.save);
 router.put('/usuarios/:id',usuariosController.update);
 
 module.exports = router;
