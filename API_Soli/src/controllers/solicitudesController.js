@@ -62,7 +62,7 @@ controller.listTwo = (req, res) => {
   tipo, detalle, estado FROM solicitud as s 
   INNER JOIN bloques as b on s.bloque_id = b.id
   INNER JOIN aulas as a on s.aula_id = a.id
-  INNER JOIN usuario as u on s.usuario_id = u.id WHERE u.id = ${id} ORDER BY s.id ASC;`;
+  INNER JOIN usuario as u on s.usuario_id = u.id WHERE u.id = ${id}`;
   mysqlConnection.query(query, (err, solicitud) => {
       if (err) {
           return res.json({
