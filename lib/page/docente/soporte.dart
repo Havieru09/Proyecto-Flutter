@@ -113,40 +113,35 @@ class _soporteState extends State<soporte> {
     return Column(
       children: <Widget>[
         //Text('$finalName'),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            'Solicitar soporte',
-            style: TextStyle(
-              fontSize: 35.0,
-              color: Color.fromARGB(255, 13, 77, 130),
-            ),
+        const Text(
+          'Solicitar soporte',
+          style: TextStyle(
+            fontSize: 35.0,
+            color: Color.fromARGB(255, 13, 77, 130),
           ),
         ),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (bloquesList.isEmpty)
               const Center(child: CircularProgressIndicator())
             else
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: DropdownButton<String>(
-                  value: bloquevalue,
-                  hint: Text('Elige un edificio'),
-                  items: bloquesList.map((item) {
-                    return DropdownMenuItem(
-                      value: item['id'].toString(),
-                      child: Text(item['nombre_bloque'].toString()),
-                    );
-                  }).toList(),
-                  onChanged: (newVal) {
-                    setState(() {
-                      bloquevalue = newVal;
-                      isBloquesSelect = true;
-                    });
-                  },
-                ),
+              DropdownButton<String>(
+                value: bloquevalue,
+                hint: Text('Elige un edificio'),
+                items: bloquesList.map((item) {
+                  return DropdownMenuItem(
+                    value: item['id'].toString(),
+                    child: Text(item['nombre_bloque'].toString()),
+                  );
+                }).toList(),
+                onChanged: (newVal) {
+                  setState(() {
+                    bloquevalue = newVal;
+                    isBloquesSelect = true;
+                  });
+                },
               ),
             if (bloquevalue == '1')
               Padding(
@@ -155,7 +150,7 @@ class _soporteState extends State<soporte> {
                   top: 10,
                 ),
                 child: DropdownButton(
-                  hint: Text('Elija un laboratorio'),
+                  hint: const Text('Elija un laboratorio'),
                   items: aulasList
                       .where((item) =>
                           item['nombre_aulas'].startsWith('Laboratorio E'))
@@ -181,7 +176,7 @@ class _soporteState extends State<soporte> {
                   top: 10,
                 ),
                 child: DropdownButton(
-                  hint: Text('Elija un aula'),
+                  hint: const Text('Elija un aula'),
                   items: aulasList
                       .where(
                           (item) => item['nombre_aulas'].startsWith('Aula D'))
@@ -207,7 +202,7 @@ class _soporteState extends State<soporte> {
                   top: 10,
                 ),
                 child: DropdownButton(
-                  hint: Text('Elija un aula'),
+                  hint: const Text('Elija un aula'),
                   items: aulasList
                       .where(
                           (item) => item['nombre_aulas'].startsWith('Aula B'))
@@ -236,7 +231,7 @@ class _soporteState extends State<soporte> {
             top: 10,
           ),
           child: DropdownButton(
-            hint: Text('Elija un tipo de soporte'),
+            hint: const Text('Elija un tipo de soporte'),
             items: tiposList
                 .where((item) =>
                     item['nombre_tipo'].startsWith('mantenimiento') ||
@@ -289,9 +284,6 @@ class _soporteState extends State<soporte> {
             showPrefixIcon: false,
             suffixIcon: const Icon(Icons.monetization_on),
           ),
-        ),
-        const SizedBox(
-          height: 20,
         ),
         Center(
           child: FormHelper.submitButton(
