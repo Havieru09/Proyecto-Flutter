@@ -108,7 +108,7 @@ DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `usuario` varchar(25) NOT NULL,
-  'correo' varchar(25) NOT NULL,
+  `correo` varchar(25) NOT NULL,
   `psw` varchar(25) NOT NULL,
   `rol` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
