@@ -47,6 +47,26 @@ controller.listOne = (req, res) => {
   });
 };
 
+//Select user by correo
+controller.listOneCorreo = (req, res) => {
+  const { correo } = req.params;
+  const query = `SELECT usuario FROM usuario WHERE correo = '${correo}'`;
+  mysqlConnection.query(query, (err, rows) => {
+    if (err) {
+      return res.json({
+        code: 500,
+        error: true,
+        message: err,
+      });
+    }
+    res.json({
+      status_code: 202,
+      message: "Listado",
+      usuario: rows,
+    });
+  });
+};
+
 //Insert
 controller.save = (req, res) => {
   const { usuario, correo, psw, rol } = req.body;
