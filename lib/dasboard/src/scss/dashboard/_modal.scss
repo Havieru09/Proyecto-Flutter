@@ -9,10 +9,9 @@
     right: 0;
     bottom: 0;
     .formulario {
-        background-color: v.$grisOscuro;
         max-width: 60rem;
         background-color: v.$blanco;
-        padding: 0 0 2rem;
+        padding: 2rem;
         margin: 0 auto;
         transform: translateY(-30rem);
         transition-property: all;
@@ -20,39 +19,22 @@
         transition-timing-function: ease-in-out;
         opacity: 0;
         border-radius: 1rem;
-        label{
-            font-size: 2rem;
-        }
-        .campo{
-            display: flex;
-            justify-content: space-evenly;
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
         legend{
-            font-size: 2.5rem;
-            
+            font-size: 2rem;
             text-align: center;
             font-weight: bold;
             margin-bottom: 2rem;
             display: block;
-            padding: 1rem;
-            border-radius: 1rem 1rem 0 0;
-            &.completa {
-                background-color: lighten($color: v.$verde, $amount: 60%);
-                // color: v.$blanco;                   
-            }
-            &.espera {
-                background-color: lighten($color: v.$indigo, $amount: 10%);
-                color: v.$blanco;                   
-            }
+        }
+
+        input[type="text"]{
+            border: 1px solid v.$gris;
+            border-radius: .5rem;
         }
 
         .opciones{
             display: flex;
-            justify-content: center;
-            align-items: center
+            justify-content: space-between;
         }
 
         .submit-nueva-tarea{
