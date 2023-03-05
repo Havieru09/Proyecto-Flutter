@@ -2,72 +2,101 @@
 import 'dart:core';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:proyecto_plataforma/models/solicitud.dart';
 
-class ThirdPage extends StatelessWidget {
-  final String contacts;
+class ThirdPage extends StatefulWidget {
+  final String? contacts;
   //List contacts=[];
   //Map valueMap = json.decode(contacts);
   //Map<String, dynamic> contacts ;
-   ThirdPage({Key? key, required this.contacts}) : super(key: key);
+  ThirdPage({
+    Key? key,
+    this.contacts,
+  }) : super(key: key);
 
-//Map valueMap = jsonDecode(contacts);
+  @override
+  _ThirdPageState createState() => _ThirdPageState();
+}
+
+class _ThirdPageState extends State<ThirdPage> {
+  @override
+  void initState() {
+    super.initState();
+    final jsonResponse = json.decode(widget.contacts!) as Map<String, dynamic>;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Detalle de la Solicitud",
-          style: TextStyle(
-              color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
+    return Card(
+      elevation: 0,
+      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      child: Container(
+        width: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(50),
         ),
-        automaticallyImplyLeading: false,
+        child: cartItem1(context),
       ),
-      body: Padding(padding: const EdgeInsets.all(16.0),
-        child: Text(contacts),) ,
-       
-      /*_dsoli(context),
-    */);
+    );
+  }
+
+//Traer la variable desde la second page
+  Widget cartItem1(context) {
+    final dynamic jsonResponse =
+        json.decode(widget.contacts!) as Map<String, dynamic>;
+
+    print(jsonResponse);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          title: Text(
+            "Bloque: " + jsonResponse['tipo'].toString(),
+          ),
+        ),
+      ],
+    );
   }
 }
-/*_dsoli(BuildContext context) {
+
+//----------------------Second Page--------------------------------
+_dsoli(BuildContext context) {
   Size size = MediaQuery.of(context).size;
-  
+
   return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
-          
-            width: size.height,
-            child: Column(
-              //Column
-              mainAxisAlignment: MainAxisAlignment.start,
-            
-              children: <Widget>[
-                
-                const SizedBox(height: 20.0),
-                SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: _datos()),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                SingleChildScrollView(child: _detalle()),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                const SizedBox(height: 40.0),
-                _botones(),
-              ],
-            )),
-      ));
+    child: Container(
+        width: size.height,
+        child: Column(
+          //Column
+          mainAxisAlignment: MainAxisAlignment.start,
+
+          children: <Widget>[
+            const SizedBox(height: 20.0),
+            SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: _datos(context)),
+            const SizedBox(
+              height: 20.0,
+            ),
+            SingleChildScrollView(child: _detalle()),
+            const SizedBox(
+              height: 20.0,
+            ),
+            const SizedBox(height: 40.0),
+            _botones(),
+          ],
+        )),
+  ));
 }
 
-Widget _datos() {
+Widget _datos(context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
-      
       //const SizedBox(height: 10, width: 10),
       //padding: const EdgeInsets.only(left: 80),
       Container(
@@ -96,7 +125,7 @@ Widget _datos() {
             ),
             SizedBox(width: 10),
             Text(
-              "E",
+              "",
               style: TextStyle(
                 color: Color.fromRGBO(0, 55, 114, 100),
                 fontSize: 30.0,
@@ -260,4 +289,3 @@ Widget _botones() {
     ),
   );
 }
-*/
