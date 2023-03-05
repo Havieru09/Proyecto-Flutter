@@ -107,8 +107,8 @@ INSERT INTO `solicitud` (`id`, `usuario_id`, `bloque_id`, `aula_id`, `tipo`, `de
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
-  'correo' varchar(25) NOT NULL,
   `usuario` varchar(25) NOT NULL,
+  'correo' varchar(25) NOT NULL,
   `psw` varchar(25) NOT NULL,
   `rol` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `usuario`, 'correo', `psw`, `rol`) VALUES
-(1, 'Pepe', '123', '','admin'),
+(1, 'Pepe', '', '123', 'admin'),
 (4, 'Joe Llerena', '', '1234', 'docente'),
 (5, 'Yajaira Bermeo', '', '1234', 'docente'),
 (6, 'Gabriel', '', 'admin123', 'admin');
