@@ -13,24 +13,24 @@ controller.list = (req, res) => {
     mysqlConnection.query(query1, (usuario_id, bloque_id, aula_id, tipo, detalle, estado), (
         err,
         rows
-      ) => {
+    ) => {
         if (!err) {
-          res.json({
-            status_code: 202,
-            message: "Listado",
-            solicitud: rows,
-            //authData
-          });
-          console.log(rows);
+            res.json({
+                status_code: 202,
+                message: "Listado",
+                solicitud: rows,
+                //authData
+            });
+            console.log(rows);
         } else {
-          res.json({
-            code: 500,
-            error: true,
-            message: err,
-          });
+            res.json({
+                code: 500,
+                error: true,
+                message: err,
+            });
         }
-      });
-        }
+    });
+}
 
 //Select by id
 controller.listOne = (req, res) => {
@@ -57,11 +57,12 @@ controller.listOne = (req, res) => {
 };
 
 controller.listTwo = (req, res) => {
-  const { id } = req.params;
-  const query = `SELECT s.id, b.nombre_bloque as 'nombre_bloque', a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', usuario_id,
+    const { id } = req.params;
+    const query = `SELECT s.id, b.nombre_bloque as 'nombre_bloque', a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', usuario_id,
   tipo, detalle, estado FROM solicitud as s 
   INNER JOIN bloques as b on s.bloque_id = b.id
   INNER JOIN aulas as a on s.aula_id = a.id
+<<<<<<< HEAD
   INNER JOIN usuario as u on s.usuario_id = u.id WHERE u.id = ${id}`;
   mysqlConnection.query(query, (err, solicitud) => {
       if (err) {
@@ -77,6 +78,27 @@ controller.listTwo = (req, res) => {
           data: solicitud,
       });
   });
+=======
+  INNER JOIN usuario as u on s.usuario_id = u.id WHERE u.id = ${id} ORDER BY CASE estado
+  WHEN 'pendiente' THEN 0
+  WHEN 'en_camino' THEN 1
+  ELSE 2
+END asc`;
+    mysqlConnection.query(query, (err, solicitud) => {
+        if (err) {
+            return res.json({
+                code: 500,
+                error: true,
+                message: err,
+            });
+        }
+        res.json({
+            status_code: 202,
+            message: "Listado",
+            data: solicitud,
+        });
+    });
+>>>>>>> a35de823b1ea2be28d10352184abde00a7d52a65
 };
 
 
@@ -99,7 +121,7 @@ controller.update = (req, res) => {
             message: "Solicitud actualizada",
             data: solicitud,
         });
-    }); 
+    });
 };
 
 

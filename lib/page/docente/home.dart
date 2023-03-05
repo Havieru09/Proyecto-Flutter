@@ -6,8 +6,6 @@ import '../../widgets/cabecera.dart';
 import '../../widgets/footer.dart';
 import 'listar.dart';
 
-
-
 class home extends StatefulWidget {
   const home({super.key});
 
@@ -32,6 +30,7 @@ class _homeState extends State<home> {
       });
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -41,84 +40,75 @@ class _homeState extends State<home> {
           width: double.infinity,
           height: double.infinity,
           // ignore: prefer_const_literals_to_create_immutables
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                const Cabecera(),
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Column(
+
+          child: Column(
+            children: <Widget>[
+              const Cabecera(),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        // ignore: unnecessary_const
+                        child: const Text(
+                          'Menu principal',
+                          style: TextStyle(
+                            fontSize: 35.0,
+                            color: Color.fromARGB(255, 13, 77, 130),
+                          ),
+                        ),
+                      ),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          //Text('$finalName'),
-
-                          const Padding(
-                            padding: EdgeInsets.all(10.0),
-                            // ignore: unnecessary_const
-                            child: const Text(
-                              'Menu principal',
-                              style: TextStyle(
-                                fontSize: 35.0,
-                                color: Color.fromARGB(255, 13, 77, 130),
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    _botonOpen(),
-                                  ],
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  _botonClose(),
-                                ],
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    _botonSupport(),
-                                  ],
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  _botonList(),
-                                ],
-                              )
-                            ],
-                          ),
                           Padding(
-                            padding: const EdgeInsets.all(3.5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
                               children: [
-                                _bottoonSalir(),
+                                _botonOpen(),
                               ],
                             ),
                           ),
+                          Column(
+                            children: [
+                              _botonClose(),
+                            ],
+                          )
                         ],
                       ),
-                    ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                _botonSupport(),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              _botonList(),
+                            ],
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _bottoonSalir(),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                const footer(),
-              ],
-            ),
+              ),
+              const footer(),
+            ],
           ),
         ));
   }

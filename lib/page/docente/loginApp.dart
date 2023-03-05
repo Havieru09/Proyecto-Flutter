@@ -28,14 +28,14 @@ class _loginApp extends State<loginApp> {
   static final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   bool isEditMode = false;
   List<dynamic> UserList = [];
-  final _name = TextEditingController();
+  final _email = TextEditingController();
   final _psw = TextEditingController();
   String name = "";
   String dato = "";
   String rol = "";
   int id = 0;
-  String nombre = '';
-  List<String> _nombres = [];
+  String correo = '';
+  List<String> _correo = [];
   List<String> _contra = [];
   List<String> _rol = [];
   List<int> _id = [];
@@ -61,103 +61,107 @@ class _loginApp extends State<loginApp> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Form(
-
-          // ignore: prefer_const_literals_to_create_immutables
-          child: SingleChildScrollView(
+        // ignore: prefer_const_literals_to_create_immutables
         child: Column(
           children: <Widget>[
             const Cabecera(),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // ignore: prefer_const_constructors
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: const Text(
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0, vertical: 30.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // ignore: prefer_const_constructors
+                    const Text(
                       'App de soporte',
                       style: TextStyle(
                         fontSize: 35.0,
                         color: Color.fromARGB(255, 13, 77, 130),
                       ),
                     ),
-                  ),
 
-                  _wname(),
-                  _wpsw(),
+                    _wemail(),
+                    _wpsw(),
 
-                  Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _bottoonLogin(),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _bottoonLogin(),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 46.0),
+            
             const footer(),
           ],
         ),
-      )),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   } // build
 
-  _wname() => TextFormField(
-        keyboardType: TextInputType.text,
+  
+      _wemail() => TextFormField(
+        keyboardType: TextInputType.emailAddress,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.allow(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9@]+"))
+        ],
         decoration: const InputDecoration(
-          labelText: "Nombre",
-          icon: Icon(Icons.person),
-          hintText: "ingrese nombre",
-        ),
-
-        controller: _name,
-        maxLength: 30,
-        //onSaved: (val) => _contact.name = val!,
-        //onSaved: (val) => setState(() => _contact.name = val!),
-        validator: (val) => (val!.isEmpty ? 'Por favor ingresa nombre' : null),
-        /*validator: (value) {
+            labelText: "Ingrese correo electrónico",
+            icon: Icon(Icons.email),
+            //border: InputBorder.none,
+            hintText: "Email"),
+        controller: _email,
+        validator: (value) {
           if (value!.isEmpty) {
-            return "Por favor ingresa nombre";
+            return "Por favor ingresa el correo electrónico";
+          } else if (!RegExp(
+                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+              .hasMatch(value)) {
+            return "correo electrónico NO VALIDO";
           } else {
             return null;
           }
-        },*/
+        },
       );
+
+
 
   _wpsw() => Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: TextFormField(
-          keyboardType: TextInputType.name,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.allow(
-                RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9@$%&-_]+"))
-          ],
-          decoration: const InputDecoration(
-              labelText: "Contraseña",
-              icon: Icon(Icons.password),
-              //border: InputBorder.none,
-              hintText: "Ingrese su contraseña"),
-          controller: _psw,
-          maxLength: 16,
-          //maxLength: 2,
+  padding: const EdgeInsets.all(4.0),
+  child: TextFormField(
+    obscureText: true, // <-- Agrega esta propiedad
+    keyboardType: TextInputType.name,
+    inputFormatters: <TextInputFormatter>[
+      FilteringTextInputFormatter.allow(
+          RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9@$%&-_]+"))
+    ],
+    decoration: const InputDecoration(
+        labelText: "Contraseña",
+        icon: Icon(Icons.password),
+        //border: InputBorder.none,
+        hintText: "Ingrese su contraseña"),
+    controller: _psw,
+    maxLength: 16,
+    //maxLength: 2,
 
-          validator: (value) {
-            if (value!.isEmpty) {
-              return "Por favor ingrese su contraseña";
-            } else {
-              return null;
-            }
-          },
-          //onSaved: (val) => _contact.psw = String.parse(val!.trim()),
-        ),
-      );
+    validator: (value) {
+      if (value!.isEmpty) {
+        return "Por favor ingrese su contraseña";
+      } else {
+        return null;
+      }
+    },
+    //onSaved: (val) => _contact.psw = String.parse(val!.trim()),
+  ),
+);
+
 
   Widget _bottoonLogin() {
     return StreamBuilder(
@@ -167,26 +171,25 @@ class _loginApp extends State<loginApp> {
         child: ElevatedButton(
           onPressed: () async {
             UserList.forEach((objeto) {
-              final nombre = objeto['usuario'];
+              final correo = objeto['correo'];
               final password = objeto['psw'];
-              final rol= objeto['rol'];
+              final rol = objeto['rol'];
               final idUser = objeto['id'];
-              _nombres.add(nombre);
+              _correo.add(correo);
               _contra.add(password);
               _rol.add(rol);
               _id.add(idUser);
             });
 
-            String dato = _name.text;
+            String dato = _email.text;
             String datopsw = _psw.text;
-            
 
-            for (int i = 0; i < _nombres.length; i++) {
-              if (dato == _nombres[i] && datopsw == _contra[i]) {
+            for (int i = 0; i < _correo.length; i++) {
+              if (dato == _correo[i] && datopsw == _contra[i]) {
                 existe = true;
-                name = _nombres[i];
-                id = _nombres[i] == dato ? _id[i] : 0;
-                rol = (_nombres[i] == dato ? _rol[i] : null)!;
+                name = _correo[i];
+                id = _correo[i] == dato ? _id[i] : 0;
+                rol = (_correo[i] == dato ? _rol[i] : null)!;
                 print(rol);
                 break;
               } else {
@@ -197,35 +200,34 @@ class _loginApp extends State<loginApp> {
             if (existe) {
               if (rol == 'docente') {
                 final SharedPreferences sharedPreferences =
-                  await SharedPreferences.getInstance();
-              sharedPreferences.setInt('name', id);
-              Navigator.pushNamed(context, "/splash");
-              }else if(rol == 'soporte'){
+                    await SharedPreferences.getInstance();
+                sharedPreferences.setInt('name', id);
+                Navigator.pushNamed(context, "/splash");
+              } else if (rol == 'soporte') {
                 final SharedPreferences sharedPreferences =
-                  await SharedPreferences.getInstance();
-              sharedPreferences.setInt('name', id);
-              Navigator.pushNamed(context, "/splashSoporte");
-              }else{
+                    await SharedPreferences.getInstance();
+                sharedPreferences.setInt('name', id);
+                Navigator.pushNamed(context, "/splashSoporte");
+              } else {
                 showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Datos inválidos'),
-                    content: const Text(
-                        'El usuario y/o la contraseña que ha ingresado son incorrectos.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('Cerrar'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Datos inválidos'),
+                      content: const Text(
+                          'El usuario y/o la contraseña que ha ingresado son incorrectos.'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Cerrar'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
               }
-              
             } else {
               // datos inválidos, mostrar alerta
               showDialog(
