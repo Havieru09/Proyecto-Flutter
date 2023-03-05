@@ -41,7 +41,7 @@ class _closeState extends State<close> {
   var aulavalue;
   var aulavalue2;
   var laboratoriovalue;
-  String? tipo = 'Cerrar puerta';
+  String? tipo = '4';
   String? estado = 'pendiente';
   String? detalle = 'Cerrar puerta';
 
@@ -234,7 +234,7 @@ class _closeState extends State<close> {
             () {
               if (validateAndSave()) {
                 solimodel!.usuario_id = '$finalName';
-                solimodel!.tipo = tipo;
+                solimodel!.tipo_id = tipo;
                 solimodel!.detalle = detalle;
                 solimodel!.estado = estado;
                 solimodel!.bloque_id = bloquevalue;
@@ -298,7 +298,6 @@ class _closeState extends State<close> {
     }
     return false;
   }
-
 
 //==================================================================API
 

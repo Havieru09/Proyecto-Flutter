@@ -42,7 +42,7 @@ class _openState extends State<open> {
   var aulavalue;
   var aulavalue2;
   var laboratoriovalue;
-  String? tipo = 'Abrir puerta';
+  String? tipo = '3';
   String? estado = 'pendiente';
   String? detalle = 'Abrir puerta ';
 
@@ -233,7 +233,7 @@ class _openState extends State<open> {
             () {
               if (validateAndSave()) {
                 solimodel!.usuario_id = '$finalName';
-                solimodel!.tipo = tipo;
+                solimodel!.tipo_id = tipo;
                 solimodel!.detalle = detalle;
                 solimodel!.estado = estado;
                 solimodel!.bloque_id = bloquevalue;

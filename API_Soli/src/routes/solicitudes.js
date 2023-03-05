@@ -6,10 +6,13 @@ const aulasController = require('../controllers/aulasController');
 const usuariosController = require('../controllers/usuariosController');
 const bloquesController = require('../controllers/bloquesController');
 const solicitudesController = require('../controllers/solicitudesController');
+const tiposController = require('../controllers/tiposController');
 //aulas
 router.get('/aulas',aulasController.list);
 //bloques
 router.get('/bloques',bloquesController.list);
+//tipos
+router.get('/tipos', tiposController.list);
 //solicitudes
 router.get('/solicitudes',solicitudesController.list);
 

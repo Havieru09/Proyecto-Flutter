@@ -5,7 +5,7 @@ class SolicitudModel {
   late String? usuario_id;
   late String? bloque_id;
   late String? aula_id;
-  late String? tipo;
+  late String? tipo_id;
   late String? detalle;
   late String? estado;
 
@@ -13,7 +13,7 @@ class SolicitudModel {
     this.usuario_id,
     this.bloque_id,
     this.aula_id,
-    this.tipo,
+    this.tipo_id,
     this.detalle,
     this.estado,
   });
@@ -22,7 +22,7 @@ class SolicitudModel {
     usuario_id = json['usuario'];
     bloque_id = json['nombre_bloque'];
     aula_id = json['nombre_aulas'];
-    tipo = json['tipo'];
+    tipo_id = json['tipo'];
     detalle = json['detalle'];
     estado = json['estado'];
   }
@@ -32,7 +32,7 @@ class SolicitudModel {
     _data['usuario_id'] = usuario_id;
     _data['bloque_id'] = bloque_id;
     _data['aula_id'] = aula_id;
-    _data['tipo'] = tipo;
+    _data['tipo_id'] = tipo_id;
     _data['detalle'] = detalle;
     _data['estado'] = estado;
     return _data;

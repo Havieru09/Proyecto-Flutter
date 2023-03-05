@@ -8,4 +8,5 @@ class Config {
   static const soliAPI = "/solicitudes";
   static const userAPI = "/usuarios";
   static const soliAPI2 = "/solicitudes2";
+  static const tipoAPI = "/tipos";
 }

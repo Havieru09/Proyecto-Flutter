@@ -5,40 +5,42 @@ const controller = {};
 controller.list = (req, res) => {
     const { usuario_id, bloque_id, aula_id, tipo, detalle, estado } = req.body;
     const query1 = `SELECT s.id, b.nombre_bloque as 'nombre_bloque', a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', 
-    tipo, detalle, estado FROM solicitud as s 
+    t.nombre_tipo as 'tipo', detalle, estado FROM solicitud as s 
     INNER JOIN bloques as b on s.bloque_id = b.id
     INNER JOIN aulas as a on s.aula_id = a.id
+    INNER JOIN tipo as t on s.tipo_id = t.id
     INNER JOIN usuario as u on s.usuario_id = u.id`;
 
     mysqlConnection.query(query1, (usuario_id, bloque_id, aula_id, tipo, detalle, estado), (
         err,
         rows
-    ) => {
+      ) => {
         if (!err) {
-            res.json({
-                status_code: 202,
-                message: "Listado",
-                solicitud: rows,
-                //authData
-            });
-            console.log(rows);
+          res.json({
+            status_code: 202,
+            message: "Listado",
+            solicitud: rows,
+            //authData
+          });
+          console.log(rows);
         } else {
-            res.json({
-                code: 500,
-                error: true,
-                message: err,
-            });
+          res.json({
+            code: 500,
+            error: true,
+            message: err,
+          });
         }
-    });
-}
+      });
+        }
 
 //Select by id
 controller.listOne = (req, res) => {
     const { id } = req.params;
     const query = `SELECT s.id, b.nombre_bloque as 'nombre_bloque', a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', 
-    tipo, detalle, estado FROM solicitud as s 
+    t.nombre_tipo as 'tipo', detalle, estado FROM solicitud as s 
     INNER JOIN bloques as b on s.bloque_id = b.id
     INNER JOIN aulas as a on s.aula_id = a.id
+    INNER JOIN tipo as t on s.tipo_id = t.id
     INNER JOIN usuario as u on s.usuario_id = u.id WHERE s.id = ${id}`;
     mysqlConnection.query(query, (err, solicitud) => {
         if (err) {
@@ -58,11 +60,12 @@ controller.listOne = (req, res) => {
 
 controller.listTwo = (req, res) => {
     const { id } = req.params;
-    const query = `SELECT s.id, b.nombre_bloque as 'nombre_bloque', a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', usuario_id,
-  tipo, detalle, estado FROM solicitud as s 
-  INNER JOIN bloques as b on s.bloque_id = b.id
-  INNER JOIN aulas as a on s.aula_id = a.id
-  INNER JOIN usuario as u on s.usuario_id = u.id WHERE u.id = ${id} ORDER BY CASE estado
+    const query = `SELECT s.id, b.nombre_bloque as 'nombre_bloque', a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', 
+    t.nombre_tipo as 'tipo', detalle, estado FROM solicitud as s 
+    INNER JOIN bloques as b on s.bloque_id = b.id
+    INNER JOIN aulas as a on s.aula_id = a.id
+    INNER JOIN tipo as t on s.tipo_id = t.id
+    INNER JOIN usuario as u on s.usuario_id = u.id WHERE u.id = ${id} ORDER BY CASE estado
   WHEN 'pendiente' THEN 0
   WHEN 'en_camino' THEN 1
   ELSE 2
@@ -103,14 +106,14 @@ controller.update = (req, res) => {
             message: "Solicitud actualizada",
             data: solicitud,
         });
-    });
+    }); 
 };
 
 
 //Insert
 controller.create = (req, res) => {
-    const { usuario_id, bloque_id, aula_id, tipo, detalle, estado } = req.body;
-    const query = `INSERT INTO solicitud (usuario_id, bloque_id, aula_id, tipo, detalle, estado) VALUES ('${usuario_id}', '${bloque_id}', '${aula_id}', '${tipo}', '${detalle}', '${estado}')`;
+    const { usuario_id, bloque_id, aula_id, tipo_id, detalle, estado } = req.body;
+    const query = `INSERT INTO solicitud (usuario_id, bloque_id, aula_id, tipo_id, detalle, estado) VALUES ('${usuario_id}', '${bloque_id}', '${aula_id}', '${tipo_id}', '${detalle}', '${estado}')`;
     mysqlConnection.query(query, (err, solicitud) => {
         if (err) {
             return res.json({

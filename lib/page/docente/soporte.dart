@@ -34,11 +34,13 @@ class _soporteState extends State<soporte> {
   bool isAulasSelect = false;
   List bloquesList = [];
   List aulasList = [];
+  List tiposList = [];
   bool isApiCallProcess = false;
   List<Object> images = [];
   bool isEditMode = false;
   bool isImageSelected = false;
   var bloquevalue;
+  var tipovalue;
   var aulavalue;
   var aulavalue2;
   var laboratoriovalue;
@@ -82,6 +84,7 @@ class _soporteState extends State<soporte> {
     super.initState();
     getBloques();
     getAulas();
+    getTipos();
     solimodel = SolicitudModel();
 
     Future.delayed(Duration.zero, () async {
@@ -106,254 +109,250 @@ class _soporteState extends State<soporte> {
 
   Widget userForm() {
     return Column(
-        children: <Widget>[
-          //Text('$finalName'),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Solicitar soporte',
-              style: TextStyle(
-                fontSize: 35.0,
-                color: Color.fromARGB(255, 13, 77, 130),
+      children: <Widget>[
+        //Text('$finalName'),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Solicitar soporte',
+            style: TextStyle(
+              fontSize: 35.0,
+              color: Color.fromARGB(255, 13, 77, 130),
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (bloquesList.isEmpty)
+              const Center(child: CircularProgressIndicator())
+            else
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: DropdownButton<String>(
+                  value: bloquevalue,
+                  hint: Text('Elige un edificio'),
+                  items: bloquesList.map((item) {
+                    return DropdownMenuItem(
+                      value: item['id'].toString(),
+                      child: Text(item['nombre_bloque'].toString()),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    setState(() {
+                      bloquevalue = newVal;
+                      isBloquesSelect = true;
+                    });
+                  },
+                ),
               ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (bloquesList.isEmpty)
-                const Center(child: CircularProgressIndicator())
-              else
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: DropdownButton<String>(
-                    value: bloquevalue,
-                    hint: Text('Elige un edificio'),
-                    items: bloquesList.map((item) {
-                      return DropdownMenuItem(
-                        value: item['id'].toString(),
-                        child: Text(item['nombre_bloque'].toString()),
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
-                      setState(() {
-                        bloquevalue = newVal;
-                        isBloquesSelect = true;
-                      });
-                    },
-                  ),
+            if (bloquevalue == '1')
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 10,
+                  top: 10,
                 ),
-              if (bloquevalue == '1')
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 10,
-                    top: 10,
-                  ),
-                  child: DropdownButton(
-                    hint: Text('Elija un laboratorio'),
-                    items: aulasList
-                        .where((item) =>
-                            item['nombre_aulas'].startsWith('Laboratorio E'))
-                        .map((item) {
-                      return DropdownMenuItem(
-                        value: item['id'].toString(),
-                        child: Text(item['nombre_aulas'].toString()),
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
-                      setState(() {
-                        laboratoriovalue = newVal;
-                        isAulasSelect = true;
-                      });
-                    },
-                    value: laboratoriovalue,
-                  ),
+                child: DropdownButton(
+                  hint: Text('Elija un laboratorio'),
+                  items: aulasList
+                      .where((item) =>
+                          item['nombre_aulas'].startsWith('Laboratorio E'))
+                      .map((item) {
+                    return DropdownMenuItem(
+                      value: item['id'].toString(),
+                      child: Text(item['nombre_aulas'].toString()),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    setState(() {
+                      laboratoriovalue = newVal;
+                      isAulasSelect = true;
+                    });
+                  },
+                  value: laboratoriovalue,
                 ),
-              if (bloquevalue == '2')
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 10,
-                    top: 10,
-                  ),
-                  child: DropdownButton(
-                    hint: Text('Elija un aula'),
-                    items: aulasList
-                        .where(
-                            (item) => item['nombre_aulas'].startsWith('Aula D'))
-                        .map((item) {
-                      return DropdownMenuItem(
-                        value: item['id'].toString(),
-                        child: Text(item['nombre_aulas'].toString()),
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
-                      setState(() {
-                        aulavalue2 = newVal;
-                        isAulasSelect = true;
-                      });
-                    },
-                    value: aulavalue2,
-                  ),
+              ),
+            if (bloquevalue == '2')
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 10,
+                  top: 10,
                 ),
-              if (bloquevalue == '3')
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 10,
-                    top: 10,
-                  ),
-                  child: DropdownButton(
-                    hint: Text('Elija un aula'),
-                    items: aulasList
-                        .where(
-                            (item) => item['nombre_aulas'].startsWith('Aula B'))
-                        .map((item) {
-                      return DropdownMenuItem(
-                        value: item['id'].toString(),
-                        child: Text(item['nombre_aulas'].toString()),
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
-                      setState(() {
-                        aulavalue = newVal;
-                        isAulasSelect = true;
-                      });
-                    },
-                    value: aulavalue,
-                  ),
+                child: DropdownButton(
+                  hint: Text('Elija un aula'),
+                  items: aulasList
+                      .where(
+                          (item) => item['nombre_aulas'].startsWith('Aula D'))
+                      .map((item) {
+                    return DropdownMenuItem(
+                      value: item['id'].toString(),
+                      child: Text(item['nombre_aulas'].toString()),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    setState(() {
+                      aulavalue2 = newVal;
+                      isAulasSelect = true;
+                    });
+                  },
+                  value: aulavalue2,
                 ),
-            ],
+              ),
+            if (bloquevalue == '3')
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 10,
+                  top: 10,
+                ),
+                child: DropdownButton(
+                  hint: Text('Elija un aula'),
+                  items: aulasList
+                      .where(
+                          (item) => item['nombre_aulas'].startsWith('Aula B'))
+                      .map((item) {
+                    return DropdownMenuItem(
+                      value: item['id'].toString(),
+                      child: Text(item['nombre_aulas'].toString()),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    setState(() {
+                      aulavalue = newVal;
+                      isAulasSelect = true;
+                    });
+                  },
+                  value: aulavalue,
+                ),
+              ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            right: 20,
+            left: 20,
+            bottom: 10,
+            top: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              right: 20,
-              left: 20,
-              bottom: 10,
-              top: 10,
-            ),
-            child: FormHelper.inputFieldWidget(
-              context,
-              //const Icon(Icons.person),
-              "Tipo",
-              "Tipo de solicitud",
-              (onValidateVal) {
-                if (onValidateVal.isEmpty) {
-                  return 'Tipo de solicitud.';
-                }
-
-                return null;
-              },
-              (onSavedVal) => {
-                solimodel!.tipo = onSavedVal,
-              },
-              obscureText: false,
-              borderFocusColor: Colors.black,
-              borderColor: Colors.black,
-              textColor: Colors.black,
-              hintColor: Colors.black.withOpacity(0.7),
-              borderRadius: 10,
-              showPrefixIcon: false,
-              suffixIcon: const Icon(Icons.mail),
-            ),
+          child: DropdownButton(
+            hint: Text('Elija un tipo de soporte'),
+            items: tiposList
+                .where((item) =>
+                    item['nombre_tipo'].startsWith('mantenimiento') ||
+                    item['nombre_tipo'].startsWith('laboratorista'))
+                .map((item) {
+              return DropdownMenuItem(
+                value: item['id'].toString(),
+                child: Text(item['nombre_tipo'].toString()),
+              );
+            }).toList(),
+            onChanged: (newVal) {
+              setState(() {
+                tipovalue = newVal;
+                isAulasSelect = true;
+              });
+            },
+            value: tipovalue,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              right: 20,
-              left: 20,
-              bottom: 10,
-              top: 10,
-            ),
-            child: FormHelper.inputFieldWidget(
-              context,
-              //const Icon(Icons.person),
-              "Detalle",
-              "Detalle del usuario",
-              (onValidateVal) {
-                if (onValidateVal.isEmpty) {
-                  return 'Detalle del usuario.';
-                }
-
-                return null;
-              },
-              (onSavedVal) => {
-                solimodel!.detalle = onSavedVal,
-              },
-              //initialValue:
-              //  userModel!.edad != 0 ? "" : userModel!.edad.toString(),
-              obscureText: false,
-              borderFocusColor: Colors.black,
-              borderColor: Colors.black,
-              textColor: Colors.black,
-              hintColor: Colors.black.withOpacity(0.7),
-              borderRadius: 10,
-              showPrefixIcon: false,
-              suffixIcon: const Icon(Icons.monetization_on),
-            ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            right: 20,
+            left: 20,
+            bottom: 10,
+            top: 10,
           ),
-          const SizedBox(
-            height: 20,
+          child: FormHelper.inputFieldWidget(
+            context,
+            //const Icon(Icons.person),
+            "Detalle",
+            "Detalle del usuario",
+            (onValidateVal) {
+              if (onValidateVal.isEmpty) {
+                return 'Detalle del usuario.';
+              }
+
+              return null;
+            },
+            (onSavedVal) => {
+              solimodel!.detalle = onSavedVal,
+            },
+            //initialValue:
+            //  userModel!.edad != 0 ? "" : userModel!.edad.toString(),
+            obscureText: false,
+            borderFocusColor: Colors.black,
+            borderColor: Colors.black,
+            textColor: Colors.black,
+            hintColor: Colors.black.withOpacity(0.7),
+            borderRadius: 10,
+            showPrefixIcon: false,
+            suffixIcon: const Icon(Icons.monetization_on),
           ),
-          Center(
-            child: FormHelper.submitButton(
-              "Save",
-              () {
-                if (validateAndSave()) {
-                  solimodel!.usuario_id = '$finalName';
-                  solimodel!.estado = estado;
-                  solimodel!.bloque_id = bloquevalue;
-                  if (bloquevalue == '1' && laboratoriovalue != null)
-                    solimodel!.aula_id = laboratoriovalue;
-                  if (bloquevalue == '2' && aulavalue2 != null)
-                    solimodel!.aula_id = aulavalue2;
-                  if (bloquevalue == '3' && aulavalue != null)
-                    solimodel!.aula_id = aulavalue;
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Center(
+          child: FormHelper.submitButton(
+            "Save",
+            () {
+              if (validateAndSave()) {
+                solimodel!.usuario_id = '$finalName';
+                solimodel!.estado = estado;
+                solimodel!.bloque_id = bloquevalue;
+                solimodel!.tipo_id = tipovalue;
+                if (bloquevalue == '1' && laboratoriovalue != null)
+                  solimodel!.aula_id = laboratoriovalue;
+                if (bloquevalue == '2' && aulavalue2 != null)
+                  solimodel!.aula_id = aulavalue2;
+                if (bloquevalue == '3' && aulavalue != null)
+                  solimodel!.aula_id = aulavalue;
 
-                  print(solimodel!.toJson());
+                print(solimodel!.toJson());
 
-                  setState(() {
-                    isApiCallProcess = true;
-                  });
+                setState(() {
+                  isApiCallProcess = true;
+                });
 
-                  ApiService.saveSolicitudes(
-                    solimodel!,
-                  ).then(
-                    (response) {
-                      setState(() {
-                        isApiCallProcess = false;
-                      });
+                ApiService.saveSolicitudes(
+                  solimodel!,
+                ).then(
+                  (response) {
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
 
-                      if (response) {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/home',
-                          (route) => false,
-                        );
-                      } else {
-                        FormHelper.showSimpleAlertDialog(
-                          context,
-                          Config.appName,
-                          "Error occur",
-                          "OK",
-                          () {
-                            Navigator.of(context).pop();
-                          },
-                        );
-                      }
-                    },
-                  );
-                }
-              },
-              btnColor: HexColor("283B71"),
-              borderColor: Colors.white,
-              txtColor: Colors.white,
-              borderRadius: 10,
-            ),
+                    if (response) {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/home',
+                        (route) => false,
+                      );
+                    } else {
+                      FormHelper.showSimpleAlertDialog(
+                        context,
+                        Config.appName,
+                        "Error occur",
+                        "OK",
+                        () {
+                          Navigator.of(context).pop();
+                        },
+                      );
+                    }
+                  },
+                );
+              }
+            },
+            btnColor: HexColor("283B71"),
+            borderColor: Colors.white,
+            txtColor: Colors.white,
+            borderRadius: 10,
           ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
-      );
-    
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+      ],
+    );
   }
 
   bool validateAndSave() {
@@ -364,125 +363,6 @@ class _soporteState extends State<soporte> {
     }
     return false;
   }
-  // Widget _dropdownBloque() {
-  //   return DropdownButton<String>(
-  //     value: bloquevalue,
-  //     hint: Text('Elige un edificio'),
-  //     items: bloquesList.map((item) {
-  //       return DropdownMenuItem(
-  //         value: item['id'].toString(),
-  //         child: Text(item['nombre_bloque'].toString()),
-  //       );
-  //     }).toList(),
-  //     onChanged: (newVal) {
-  //       setState(() {
-  //         bloquevalue = newVal;
-  //       });
-  //       (onSavedVal) => {
-  //             solimodel!.bloque_id = bloquevalue,
-  //           };
-  //       isBloquesSelect = true;
-  //     },
-  //   );
-  // }
-
-  // Widget _dropdownAula() {
-  //   return DropdownButton(
-  //     hint: Text('Elige una aula'),
-  //     items: aulasList.map((item) {
-  //       return DropdownMenuItem(
-  //         value: item['id'].toString(),
-  //         child: Text(item['nombre_aulas'].toString()),
-  //       );
-  //     }).toList(),
-  //     onChanged: (newVal) {
-  //       setState(() {
-  //         aulavalue = newVal;
-  //         isAulasSelect = true;
-  //       });
-  //       (onSavedVal) => {
-  //             solimodel!.aula_id = aulavalue,
-  //           };
-  //     },
-  //     value: aulavalue,
-  //   );
-  // }
-
-  // _bottoonSolicitud() {
-  //   return FormHelper.submitButton(
-  //     "Save",
-  //     () {
-  //       if (validateAndSave()) {
-  //         print(solimodel!.toJson());
-
-  //         setState(() {
-  //           isApiCallProcess = true;
-  //         });
-
-  //         ApiService.saveSolicitudes(
-  //           solimodel!,
-  //         ).then(
-  //           (response) {
-  //             setState(() {
-  //               isApiCallProcess = false;
-  //             });
-
-  //             if (response) {
-  //               Navigator.pushNamedAndRemoveUntil(
-  //                 context,
-  //                 '/home',
-  //                 (route) => false,
-  //               );
-  //             } else {
-  //               FormHelper.showSimpleAlertDialog(
-  //                 context,
-  //                 Config.appName,
-  //                 "Error occur",
-  //                 "OK",
-  //                 () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //               );
-  //             }
-  //           },
-  //         );
-  //       }
-  //     },
-  //     btnColor: HexColor("283B71"),
-  //     borderColor: Colors.white,
-  //     txtColor: Colors.white,
-  //     borderRadius: 10,
-  //   );
-  // return StreamBuilder(
-  //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(6.5),
-  //     child: ElevatedButton(
-  //       onPressed: () {
-  //         Navigator.pushNamed(context, "/home");
-  //       },
-  //       style: ButtonStyle(
-  //         backgroundColor: MaterialStateProperty.all<Color>(
-  //           const Color.fromARGB(200, 161, 183, 243),
-  //         ),
-  //       ),
-  //       child: Container(
-  //           padding:
-  //               const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-  //           child: const Text(
-  //             "Solicitar",
-  //             style: TextStyle(
-  //               color: Colors.white,
-  //             ),
-  //           )),
-  //     ),
-  //   );
-  // });
-  //}
-
-  // Widget _dropdownTipo() {
-  //   return
-  // }
 
 //==================================================================API
 
@@ -531,6 +411,34 @@ class _soporteState extends State<soporte> {
 
         setState(() {
           aulasList = data["aulas"];
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future getTipos() async {
+    var url = Uri.http(
+      Config.apiURL,
+      Config.tipoAPI,
+    );
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      var response = await client.get(
+        url,
+        headers: requestHeaders,
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        setState(() {
+          tiposList = data["tipos"];
         });
       }
     } catch (e) {

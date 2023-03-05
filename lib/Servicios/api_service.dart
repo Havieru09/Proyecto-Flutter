@@ -154,11 +154,12 @@ class ApiService {
     }
   }
 
-  static Future<List<SolicitudModel2>?> getSolicitudes2(SolicitudModel2 model,) async {
-    
+  static Future<List<SolicitudModel2>?> getSolicitudes2(
+    SolicitudModel2 model,
+  ) async {
     var url = Uri.http(
       Config.apiURL,
-      Config.soliAPI2+ "/" + model.user.toString(),
+      Config.soliAPI2 + "/" + model.user.toString(),
     );
 
     Map<String, String> requestHeaders = {
@@ -182,7 +183,6 @@ class ApiService {
       return null;
     }
   }
-
 
   static Future<bool> deleteUser(userId) async {
     Map<String, String> requestHeaders = {
