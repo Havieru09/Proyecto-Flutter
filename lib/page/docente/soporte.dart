@@ -50,21 +50,26 @@ class _soporteState extends State<soporte> {
     return Scaffold(
       body: ProgressHUD(
         // ignore: sort_child_properties_last
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const CabeceraBack(),
-              Form(
-                key: globalFormKey,
-                child: userForm(),
+        child: Column(
+          children: [
+            Form(
+              key: globalFormKey,
+              child: Expanded(
+                child: Column(
+                  children: <Widget>[
+                    const CabeceraBack(),
+                    userForm(),
+                  ],
+                ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(3.5),
-              ),
-              const footer(),
-            ],
-          ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(3.5),
+            ),
+            const footer(),
+          ],
         ),
+
         inAsyncCall: isApiCallProcess,
         opacity: 0.3,
         key: UniqueKey(),
@@ -100,8 +105,7 @@ class _soporteState extends State<soporte> {
   }
 
   Widget userForm() {
-    return SingleChildScrollView(
-      child: Column(
+    return Column(
         children: <Widget>[
           //Text('$finalName'),
           const Padding(
@@ -348,8 +352,8 @@ class _soporteState extends State<soporte> {
             height: 20,
           ),
         ],
-      ),
-    );
+      );
+    
   }
 
   bool validateAndSave() {

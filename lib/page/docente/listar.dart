@@ -37,7 +37,7 @@ class _UserListState extends State<UserList> {
 
   Future<void> _refresh() async {
     // Aquí podrías hacer una llamada a una API o actualizar datos desde una base de datos
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     setState(() {});
   }
   

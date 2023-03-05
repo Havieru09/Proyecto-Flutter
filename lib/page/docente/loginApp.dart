@@ -28,7 +28,7 @@ class _loginApp extends State<loginApp> {
   static final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   bool isEditMode = false;
   List<dynamic> UserList = [];
-  final _name = TextEditingController();
+  final _email = TextEditingController();
   final _psw = TextEditingController();
   String name = "";
   String dato = "";
@@ -81,7 +81,7 @@ class _loginApp extends State<loginApp> {
                       ),
                     ),
 
-                    _wname(),
+                    _wemail(),
                     _wpsw(),
 
                     Padding(
@@ -106,55 +106,62 @@ class _loginApp extends State<loginApp> {
     );
   } // build
 
-  _wname() => TextFormField(
-        keyboardType: TextInputType.text,
+  
+      _wemail() => TextFormField(
+        keyboardType: TextInputType.emailAddress,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.allow(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9@]+"))
+        ],
         decoration: const InputDecoration(
-          labelText: "Nombre",
-          icon: Icon(Icons.person),
-          hintText: "ingrese nombre",
-        ),
-
-        controller: _name,
-        maxLength: 30,
-        //onSaved: (val) => _contact.name = val!,
-        //onSaved: (val) => setState(() => _contact.name = val!),
-        validator: (val) => (val!.isEmpty ? 'Por favor ingresa nombre' : null),
-        /*validator: (value) {
+            labelText: "Ingrese correo electrónico",
+            icon: Icon(Icons.email),
+            //border: InputBorder.none,
+            hintText: "Email"),
+        controller: _email,
+        validator: (value) {
           if (value!.isEmpty) {
-            return "Por favor ingresa nombre";
+            return "Por favor ingresa el correo electrónico";
+          } else if (!RegExp(
+                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+              .hasMatch(value)) {
+            return "correo electrónico NO VALIDO";
           } else {
             return null;
           }
-        },*/
+        },
       );
+
+
 
   _wpsw() => Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: TextFormField(
-          keyboardType: TextInputType.name,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.allow(
-                RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9@$%&-_]+"))
-          ],
-          decoration: const InputDecoration(
-              labelText: "Contraseña",
-              icon: Icon(Icons.password),
-              //border: InputBorder.none,
-              hintText: "Ingrese su contraseña"),
-          controller: _psw,
-          maxLength: 16,
-          //maxLength: 2,
+  padding: const EdgeInsets.all(4.0),
+  child: TextFormField(
+    obscureText: true, // <-- Agrega esta propiedad
+    keyboardType: TextInputType.name,
+    inputFormatters: <TextInputFormatter>[
+      FilteringTextInputFormatter.allow(
+          RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9@$%&-_]+"))
+    ],
+    decoration: const InputDecoration(
+        labelText: "Contraseña",
+        icon: Icon(Icons.password),
+        //border: InputBorder.none,
+        hintText: "Ingrese su contraseña"),
+    controller: _psw,
+    maxLength: 16,
+    //maxLength: 2,
 
-          validator: (value) {
-            if (value!.isEmpty) {
-              return "Por favor ingrese su contraseña";
-            } else {
-              return null;
-            }
-          },
-          //onSaved: (val) => _contact.psw = String.parse(val!.trim()),
-        ),
-      );
+    validator: (value) {
+      if (value!.isEmpty) {
+        return "Por favor ingrese su contraseña";
+      } else {
+        return null;
+      }
+    },
+    //onSaved: (val) => _contact.psw = String.parse(val!.trim()),
+  ),
+);
+
 
   Widget _bottoonLogin() {
     return StreamBuilder(
@@ -174,7 +181,7 @@ class _loginApp extends State<loginApp> {
               _id.add(idUser);
             });
 
-            String dato = _name.text;
+            String dato = _email.text;
             String datopsw = _psw.text;
 
             for (int i = 0; i < _correo.length; i++) {

@@ -8,12 +8,11 @@ import 'package:snippet_coder_utils/FormHelper.dart';
 import '../../config.dart';
 import '../../models/solicitud.dart';
 
-  int finalName = 0;
+int finalName = 0;
 
 class UserItem extends StatefulWidget {
   final SolicitudModel2? model;
   final Function? onDelete;
-    
 
   UserItem({
     Key? key,
@@ -30,12 +29,11 @@ class _UserItemState extends State<UserItem> {
   void initState() {
     super.initState();
 
-
     Future.delayed(Duration.zero, () async {
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       var obtName = sharedPreferences.getInt('name');
-      
+
       // print('$finalName');
       // print(widget.model!.user);
 
@@ -48,14 +46,9 @@ class _UserItemState extends State<UserItem> {
 
   static var client = http.Client();
   List<dynamic> UserList = [];
-  
+
   //String get id => '$finalName';
   String id = '$finalName' as String;
-
-
-  
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +72,7 @@ class _UserItemState extends State<UserItem> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // if(widget.model!.usuario_id == '$finalName'){
-          
+
         // },
         ListTile(
           title: Text("Bloque: " +
@@ -113,11 +106,12 @@ class _UserItemState extends State<UserItem> {
 // ),
 // ignore: prefer_interpolation_to_compose_strings
           subtitle: Text(
-              "Tipo de soporte: " +
-              widget.model!.tipo! +
-              "                " +
-              " Estado: " +
-              widget.model!.estado!),
+            "Tipo de soporte: " +
+                widget.model!.tipo! +
+                "\nEstado: " +
+                widget.model!.estado!,
+          ),
+
           isThreeLine: true,
         ),
       ],
@@ -125,10 +119,6 @@ class _UserItemState extends State<UserItem> {
   }
 
 //--------------------------------------------------------------------------------------------------------------
-
-
-
-
 }
 
 

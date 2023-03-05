@@ -42,7 +42,7 @@ class _closeState extends State<close> {
   var aulavalue2;
   var laboratoriovalue;
   String? tipo = 'Cerrar puerta';
-  String? estado = 'Pendiente';
+  String? estado = 'pendiente';
   String? detalle = 'Cerrar puerta';
 
   @override
@@ -77,19 +77,23 @@ class _closeState extends State<close> {
     return Scaffold(
       body: ProgressHUD(
         // ignore: sort_child_properties_last
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const CabeceraBack(),
-              Form(
-                key: globalFormKey,
-                child: userForm(),
+        child: Column(
+          children: [
+            Form(
+              key: globalFormKey,
+              child: Expanded(
+                child: Column(
+                  children: <Widget>[
+                    const CabeceraBack(),
+                    userForm(),
+                  ],
+                ),
               ),
-              
-              const footer(),
-            ],
-          ),
+            ),
+            const footer(),
+          ],
         ),
+
         inAsyncCall: isApiCallProcess,
         opacity: 0.3,
         key: UniqueKey(),
@@ -98,21 +102,24 @@ class _closeState extends State<close> {
   }
 
   Widget userForm() {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          //Text('$finalName'),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Cerrar puerta',
-              style: TextStyle(
-                fontSize: 35.0,
-                color: Color.fromARGB(255, 13, 77, 130),
-              ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        //Text('$finalName'),
+        // ignore: prefer_const_constructors
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          child: const Text(
+            'Cerrar puerta',
+            style: TextStyle(
+              fontSize: 35.0,
+              color: Color.fromARGB(255, 13, 77, 130),
             ),
           ),
-          Row(
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (bloquesList.isEmpty)
@@ -217,72 +224,69 @@ class _closeState extends State<close> {
                 ),
             ],
           ),
-          const SizedBox(
-            height: 20,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Center(
+          child: FormHelper.submitButton(
+            "Save",
+            () {
+              if (validateAndSave()) {
+                solimodel!.usuario_id = '$finalName';
+                solimodel!.tipo = tipo;
+                solimodel!.detalle = detalle;
+                solimodel!.estado = estado;
+                solimodel!.bloque_id = bloquevalue;
+                if (bloquevalue == '1' && laboratoriovalue != null)
+                  solimodel!.aula_id = laboratoriovalue;
+                if (bloquevalue == '2' && aulavalue2 != null)
+                  solimodel!.aula_id = aulavalue2;
+                if (bloquevalue == '3' && aulavalue != null)
+                  solimodel!.aula_id = aulavalue;
+
+                print(solimodel!.toJson());
+
+                setState(() {
+                  isApiCallProcess = true;
+                });
+
+                ApiService.saveSolicitudes(
+                  solimodel!,
+                ).then(
+                  (response) {
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
+
+                    if (response) {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/home',
+                        (route) => false,
+                      );
+                    } else {
+                      FormHelper.showSimpleAlertDialog(
+                        context,
+                        Config.appName,
+                        "Error occur",
+                        "OK",
+                        () {
+                          Navigator.of(context).pop();
+                        },
+                      );
+                    }
+                  },
+                );
+              }
+            },
+            btnColor: HexColor("283B71"),
+            borderColor: Colors.white,
+            txtColor: Colors.white,
+            borderRadius: 10,
           ),
-          Center(
-            child: FormHelper.submitButton(
-              "Save",
-              () {
-                if (validateAndSave()) {
-                  solimodel!.usuario_id = '$finalName';
-                  solimodel!.tipo = tipo;
-                  solimodel!.detalle = detalle;
-                  solimodel!.estado = estado;
-                  solimodel!.bloque_id = bloquevalue;
-                  if (bloquevalue == '1' && laboratoriovalue != null)
-                    solimodel!.aula_id = laboratoriovalue;
-                  if (bloquevalue == '2' && aulavalue2 != null)
-                    solimodel!.aula_id = aulavalue2;
-                  if (bloquevalue == '3' && aulavalue != null)
-                    solimodel!.aula_id = aulavalue;
-
-                  print(solimodel!.toJson());
-
-                  setState(() {
-                    isApiCallProcess = true;
-                  });
-
-                  ApiService.saveSolicitudes(
-                    solimodel!,
-                  ).then(
-                    (response) {
-                      setState(() {
-                        isApiCallProcess = false;
-                      });
-
-                      if (response) {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/home',
-                          (route) => false,
-                        );
-                      } else {
-                        FormHelper.showSimpleAlertDialog(
-                          context,
-                          Config.appName,
-                          "Error occur",
-                          "OK",
-                          () {
-                            Navigator.of(context).pop();
-                          },
-                        );
-                      }
-                    },
-                  );
-                }
-              },
-              btnColor: HexColor("283B71"),
-              borderColor: Colors.white,
-              txtColor: Colors.white,
-              borderRadius: 10,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -294,6 +298,7 @@ class _closeState extends State<close> {
     }
     return false;
   }
+
 
 //==================================================================API
 
