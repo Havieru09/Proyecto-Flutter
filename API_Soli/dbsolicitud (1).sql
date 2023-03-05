@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `usuario`, 'correo', `psw`, `rol`) VALUES
+INSERT INTO `usuario` (`id`, `usuario`, `correo`, `psw`, `rol`) VALUES
 (1, 'Pepe', '', '123', 'admin'),
 (4, 'Joe Llerena', '', '1234', 'docente'),
 (5, 'Yajaira Bermeo', '', '1234', 'docente'),
