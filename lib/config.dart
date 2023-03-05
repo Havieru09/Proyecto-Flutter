@@ -7,4 +7,5 @@ class Config {
   static const aulaAPI3 = "/aulas3";
   static const soliAPI = "/solicitudes";
   static const userAPI = "/usuarios";
+  static const soliAPI2 = "/solicitudes2";
 }

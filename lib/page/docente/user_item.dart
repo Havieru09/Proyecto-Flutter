@@ -1,13 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:proyecto_plataforma/models/solicitudes2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
+import '../../config.dart';
 import '../../models/solicitud.dart';
 
   int finalName = 0;
 
 class UserItem extends StatefulWidget {
-  final SolicitudModel? model;
+  final SolicitudModel2? model;
   final Function? onDelete;
+    
 
   UserItem({
     Key? key,
@@ -20,17 +26,18 @@ class UserItem extends StatefulWidget {
 }
 
 class _UserItemState extends State<UserItem> {
-
-
   @override
   void initState() {
     super.initState();
+
 
     Future.delayed(Duration.zero, () async {
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       var obtName = sharedPreferences.getInt('name');
-      print('$finalName');
+      
+      // print('$finalName');
+      // print(widget.model!.user);
 
       // Si no hay ningún valor guardado, utilizamos una cadena vacía
       setState(() {
@@ -38,6 +45,15 @@ class _UserItemState extends State<UserItem> {
       });
     });
   }
+
+  static var client = http.Client();
+  List<dynamic> UserList = [];
+  
+  //String get id => '$finalName';
+  String id = '$finalName' as String;
+
+
+  
 
 
 
@@ -63,7 +79,7 @@ class _UserItemState extends State<UserItem> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // if(widget.model!.usuario_id == '$finalName'){
-
+          
         // },
         ListTile(
           title: Text("Bloque: " +
@@ -109,7 +125,14 @@ class _UserItemState extends State<UserItem> {
       ],
     );
   }
+
+//--------------------------------------------------------------------------------------------------------------
+
+
+
+
 }
+
 
 
 // Widget cartItem(context) {

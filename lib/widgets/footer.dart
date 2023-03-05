@@ -19,7 +19,7 @@ class footer extends StatelessWidget {
                   top: 0,
                   left: 0,
                   child: Image.asset(
-                  '../img/footer.png',
+                  'img/footer.png',
                   height: constrains.maxHeight * 1.0,
                 ),),
               // Positioned(

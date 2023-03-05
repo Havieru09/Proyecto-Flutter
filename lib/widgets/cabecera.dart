@@ -19,7 +19,7 @@ class Cabecera extends StatelessWidget {
                   top: 0,
                   right: 0,
                   child: Image.asset(
-                  '../img/menu.png',
+                  'img/menu.png',
                   //width: constrains.maxWidth,
                   height: constrains.maxHeight * 1.0,
                 ),),
@@ -28,7 +28,7 @@ class Cabecera extends StatelessWidget {
                 right: 10,
                 //right: 0,
                 child: Image.asset(
-                  '../img/ups.png',
+                  'img/ups.png',
                   height: constrains.maxHeight * 0.6,
                 ),
               ),
