@@ -65,14 +65,21 @@ class ActiveRecord {
     public static function where($columna, $valor) {
         $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}'";
         $resultado = self::consultarSQL($query);
+        
         return array_shift( $resultado ) ;
+    }
+    public static function WhereAll($columna, $valor) {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}'";
+        // debuguear($query);
+        $resultado = self::consultarSQL($query);
+        return  $resultado ;
     }
 
     // SQL para Consultas Avanzadas.
     public static function SQL($consulta) {
         $query = $consulta;
         $resultado = self::consultarSQL($query);
-        return array_shift($resultado);
+        return $resultado;
     }
 
     // crea un nuevo registro
@@ -86,7 +93,8 @@ class ActiveRecord {
         $query .= " ) VALUES (' "; 
         $query .= join("', '", array_values($atributos));
         $query .= " ') ";
-
+        // echo json_encode(['sql'=>$query]);
+        // return;
         // Resultado de la consulta
         $resultado = self::$db->query($query);
 
@@ -127,13 +135,13 @@ class ActiveRecord {
     public static function consultarSQL($query) {
         // Consultar la base de datos
         $resultado = self::$db->query($query);
-
+        // debuguear($query);
         // Iterar los resultados
         $array = [];
         while($registro = $resultado->fetch_assoc()) {
             $array[] = static::crearObjeto($registro);
         }
-
+        
         // liberar la memoria
         $resultado->free();
 
