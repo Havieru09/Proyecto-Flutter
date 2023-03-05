@@ -45,7 +45,9 @@ class _soporteState extends State<soporte> {
   var aulavalue2;
   var laboratoriovalue;
   String? estado = 'pendiente';
-  //String? usuario_id = '';
+  String? fecha_inicial = DateTime.now().toString();
+  String? fecha_final = '';
+//Obtener fecha actual
 
   @override
   Widget build(BuildContext context) {
@@ -300,6 +302,8 @@ class _soporteState extends State<soporte> {
                 solimodel!.estado = estado;
                 solimodel!.bloque_id = bloquevalue;
                 solimodel!.tipo_id = tipovalue;
+                solimodel!.fecha_inicial = fecha_inicial;
+                solimodel!.fecha_final = fecha_final;
                 if (bloquevalue == '1' && laboratoriovalue != null)
                   solimodel!.aula_id = laboratoriovalue;
                 if (bloquevalue == '2' && aulavalue2 != null)

@@ -111,8 +111,9 @@ controller.update = (req, res) => {
 
 //Insert
 controller.create = (req, res) => {
-    const { usuario_id, bloque_id, aula_id, tipo_id, detalle, estado } = req.body;
-    const query = `INSERT INTO solicitud (usuario_id, bloque_id, aula_id, tipo_id, detalle, estado) VALUES ('${usuario_id}', '${bloque_id}', '${aula_id}', '${tipo_id}', '${detalle}', '${estado}')`;
+    const { usuario_id, bloque_id, aula_id, tipo_id, detalle, estado, fecha_inicial, fecha_final } = req.body;
+    const query = `INSERT INTO solicitud (usuario_id, bloque_id, aula_id, tipo_id, detalle, estado, fecha_inicial, fecha_final)
+    VALUES ('${usuario_id}', '${bloque_id}', '${aula_id}', '${tipo_id}', '${detalle}', '${estado}', '${fecha_inicial}', '${fecha_final}')`;
     mysqlConnection.query(query, (err, solicitud) => {
         if (err) {
             return res.json({

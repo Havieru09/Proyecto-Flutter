@@ -45,6 +45,8 @@ class _openState extends State<open> {
   String? tipo = '3';
   String? estado = 'pendiente';
   String? detalle = 'Abrir puerta ';
+  String? fecha_inicial = DateTime.now().toString();
+  String? fecha_final = DateTime.now().toString();
 
   @override
   void initState() {
@@ -236,6 +238,8 @@ class _openState extends State<open> {
                 solimodel!.tipo_id = tipo;
                 solimodel!.detalle = detalle;
                 solimodel!.estado = estado;
+                solimodel!.fecha_inicial = fecha_inicial;
+                solimodel!.fecha_final = fecha_final;
                 solimodel!.bloque_id = bloquevalue;
                 if (bloquevalue == '1' && laboratoriovalue != null)
                   solimodel!.aula_id = laboratoriovalue;

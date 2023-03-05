@@ -44,6 +44,8 @@ class _closeState extends State<close> {
   String? tipo = '4';
   String? estado = 'pendiente';
   String? detalle = 'Cerrar puerta';
+  String? fecha_inicial = DateTime.now().toString();
+  String? fecha_final = DateTime.now().toString();
 
   @override
   void initState() {
@@ -238,6 +240,8 @@ class _closeState extends State<close> {
                 solimodel!.detalle = detalle;
                 solimodel!.estado = estado;
                 solimodel!.bloque_id = bloquevalue;
+                solimodel!.fecha_inicial = fecha_inicial;
+                solimodel!.fecha_final = fecha_final;
                 if (bloquevalue == '1' && laboratoriovalue != null)
                   solimodel!.aula_id = laboratoriovalue;
                 if (bloquevalue == '2' && aulavalue2 != null)

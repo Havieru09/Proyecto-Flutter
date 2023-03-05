@@ -8,6 +8,8 @@ class SolicitudModel {
   late String? tipo_id;
   late String? detalle;
   late String? estado;
+  late String? fecha_inicial;
+  late String? fecha_final;
 
   SolicitudModel({
     this.usuario_id,
@@ -16,6 +18,8 @@ class SolicitudModel {
     this.tipo_id,
     this.detalle,
     this.estado,
+    this.fecha_inicial,
+    this.fecha_final,
   });
 
   SolicitudModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +29,8 @@ class SolicitudModel {
     tipo_id = json['tipo'];
     detalle = json['detalle'];
     estado = json['estado'];
+    fecha_inicial = json['fecha_inicial'];
+    fecha_final = json['fecha_final'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +41,8 @@ class SolicitudModel {
     _data['tipo_id'] = tipo_id;
     _data['detalle'] = detalle;
     _data['estado'] = estado;
+    _data['fecha_inicial'] = fecha_inicial;
+    _data['fecha_final'] = fecha_final;
     return _data;
   }
 }
