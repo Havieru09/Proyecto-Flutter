@@ -68,7 +68,8 @@ controller.listTwo = (req, res) => {
   WHEN 'pendiente' THEN 0
   WHEN 'en_camino' THEN 1
   ELSE 2
-END asc`;
+END asc, 
+id desc`;
     mysqlConnection.query(query, (err, solicitud) => {
         if (err) {
             return res.json({

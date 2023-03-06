@@ -46,7 +46,7 @@ class _soporteState extends State<soporte> {
   var laboratoriovalue;
   String? estado = 'pendiente';
   String? fecha_inicial = DateTime.now().toString();
-  String? fecha_final = '';
+  String? fecha_final = DateTime.now().toString();
 //Obtener fecha actual
 
   @override
@@ -268,6 +268,13 @@ class _soporteState extends State<soporte> {
                 return 'Detalle del usuario.';
               }
 
+              // Check if the input value contains special characters
+              RegExp regExp =
+                  new RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%$#@!.,/{}-]');
+              if (regExp.hasMatch(onValidateVal)) {
+                return 'No se permiten caracteres especiales.';
+              }
+
               return null;
             },
             (onSavedVal) => {
@@ -279,17 +286,32 @@ class _soporteState extends State<soporte> {
             borderFocusColor: Colors.black,
             borderColor: Colors.black,
             textColor: Colors.black,
-            hintColor: Colors.black.withOpacity(0.7),
+            hintColor: Colors.black.withOpacity(0.6),
             borderRadius: 10,
             showPrefixIcon: false,
-            suffixIcon: const Icon(Icons.monetization_on),
+            suffixIcon: const Icon(Icons.text_fields),
           ),
         ),
         Center(
           child: FormHelper.submitButton(
             "Save",
             () {
-              if (validateAndSave()) {
+              if (bloquevalue == null ||
+                  tipovalue == null ||
+                  (bloquevalue == '1' && laboratoriovalue == null) ||
+                  (bloquevalue == '2' && aulavalue2 == null) ||
+                  (bloquevalue == '3' && aulavalue == null)) {
+                FormHelper.showSimpleAlertDialog(
+                  context,
+                  "Error detectado",
+                  "Hay campos vacios, favor de seleccionar la opcion faltante",
+                  "OK",
+                  () {
+                    Navigator.of(context).pop();
+                  },
+                );
+                return;
+              } else if (validateAndSave()) {
                 solimodel!.usuario_id = '$finalName';
                 solimodel!.estado = estado;
                 solimodel!.bloque_id = bloquevalue;
@@ -318,10 +340,27 @@ class _soporteState extends State<soporte> {
                     });
 
                     if (response) {
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/home',
-                        (route) => false,
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Solicitud ingresada'),
+                            content: const Text(
+                                'Su solicitud ha sido ingresada correctamente, puede revisar el estado de la misma en su historial.'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Cerrar'),
+                                onPressed: () {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/home',
+                                    (route) => false,
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
                       );
                     } else {
                       FormHelper.showSimpleAlertDialog(
@@ -329,8 +368,24 @@ class _soporteState extends State<soporte> {
                         Config.appName,
                         "Error occur",
                         "OK",
-                        () {
-                          Navigator.of(context).pop();
+                        () {},
+                      );
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Solicitud Fallida'),
+                            content: const Text(
+                                'Su solicitud no ha sido ingresada correctamente'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Cerrar'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
                         },
                       );
                     }

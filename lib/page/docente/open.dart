@@ -233,7 +233,19 @@ class _openState extends State<open> {
           child: FormHelper.submitButton(
             "Save",
             () {
-              if (validateAndSave()) {
+              if (bloquevalue == null ||
+                  (bloquevalue == '1' && laboratoriovalue == null) ||
+                  (bloquevalue == '2' && aulavalue2 == null) ||
+                  (bloquevalue == '3' && aulavalue == null)) {
+                FormHelper.showSimpleAlertDialog(
+                  context,
+                  "Error detectado",
+                  "Hay campos vacios, favor de seleccionar la opcion faltante",
+                  "OK",
+                  () {Navigator.of(context).pop();},
+                );
+                return;
+              } else if (validateAndSave()) {
                 solimodel!.usuario_id = '$finalName';
                 solimodel!.tipo_id = tipo;
                 solimodel!.detalle = detalle;
@@ -263,10 +275,27 @@ class _openState extends State<open> {
                     });
 
                     if (response) {
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/home',
-                        (route) => false,
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Solicitud ingresada'),
+                            content: const Text(
+                                'Su solicitud ha sido ingresada correctamente, puede revisar el estado de la misma en su historial.'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Cerrar'),
+                                onPressed: () {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/home',
+                                    (route) => false,
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
                       );
                     } else {
                       FormHelper.showSimpleAlertDialog(
@@ -274,8 +303,24 @@ class _openState extends State<open> {
                         Config.appName,
                         "Error occur",
                         "OK",
-                        () {
-                          Navigator.of(context).pop();
+                        () {},
+                      );
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Solicitud Fallida'),
+                            content: const Text(
+                                'Su solicitud no ha sido ingresada correctamente'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Cerrar'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
                         },
                       );
                     }
