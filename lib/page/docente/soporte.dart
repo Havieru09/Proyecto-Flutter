@@ -268,13 +268,10 @@ class _soporteState extends State<soporte> {
                 return 'Detalle del usuario.';
               }
 
-              // Check if the input value contains special characters
-              RegExp regExp =
-                  new RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%$#@!.,/{}-]');
-              if (regExp.hasMatch(onValidateVal)) {
-                return 'No se permiten caracteres especiales.';
+              final RegExp regex = RegExp(r'^[a-zA-Z\s]+$');
+              if (!regex.hasMatch(onValidateVal)) {
+                return 'Solo se permiten letras y espacios en blanco.';
               }
-
               return null;
             },
             (onSavedVal) => {
