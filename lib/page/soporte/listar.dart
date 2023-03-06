@@ -29,18 +29,6 @@ class _MyApiState extends State<listar> {
   void initState() {
 //response = fetchUsers();
     super.initState();
-
-    // Future.delayed(Duration.zero, () async {
-    //   final SharedPreferences sharedPreferences =
-    //       await SharedPreferences.getInstance();
-    //   var obtName = sharedPreferences.getInt('name');
-    //   print('$finalName');
-
-    //   // Si no hay ningún valor guardado, utilizamos una cadena vacía
-    //   setState(() {
-    //     finalName = obtName! as int;
-    //   });
-    // });
   }
 
   /*Future<List<dynamic>> fetchUsers() async {
@@ -49,7 +37,7 @@ class _MyApiState extends State<listar> {
     return jsonDecode(result.body);
   }
 */
-  Widget myApiWidget(context) {
+ Widget  myApiWidget(context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +46,10 @@ class _MyApiState extends State<listar> {
 
         // },
         ListTile(
-          title: Text("Solicitud: " + widget.model!.tipo_id!),
+          
+          title: Text("Solicitud: " +
+              widget.model!.tipo_id! 
+              ),
           trailing: Column(
             children: [
               Icon(
@@ -88,20 +79,19 @@ class _MyApiState extends State<listar> {
           subtitle:
               Text("Solicitado por: " + widget.model!.usuario_id! + " - "),
           isThreeLine: true,
-          onTap: () async {
-            if (widget.model!.tipo_id! == "soporte") {
+          onTap: () async{
+            if (widget.model!.tipo_id! == "soporte"){
               // Navigator.pushNamed(context, "/third");
 
               /*Navigator.of(context).push(PageRouteBuilder(pageBuilder: (BuildContext context,_, __)=> ThirdPage(
                     number: widget.model!.usuario_id!)));
                    */
-              var testi = "texto de prueba";
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ThirdPage(contacts: jsonEncode(widget.model!))));
-              //
+var testi= "texto de prueba";
+Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ThirdPage(contacts: jsonEncode(widget.model!))));
+            //
             } else {
               Navigator.push(
                   context,
