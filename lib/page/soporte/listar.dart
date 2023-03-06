@@ -37,7 +37,7 @@ class _MyApiState extends State<listar> {
     return jsonDecode(result.body);
   }
 */
- Widget  myApiWidget(context) {
+  Widget myApiWidget(context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,10 +46,7 @@ class _MyApiState extends State<listar> {
 
         // },
         ListTile(
-          
-          title: Text("Solicitud: " +
-              widget.model!.tipo_id! 
-              ),
+          title: Text("Solicitud: ${widget.model!.tipo_id!}"),
           trailing: Column(
             children: [
               Icon(
@@ -76,29 +73,17 @@ class _MyApiState extends State<listar> {
 // fit: BoxFit.scaleDown,
 // ),
 // ignore: prefer_interpolation_to_compose_strings
-          subtitle:
-              Text("Solicitado por: " + widget.model!.usuario_id! + " - "),
+          subtitle: Text("Solicitado por: ${widget.model!.usuario_id!}"),
           isThreeLine: true,
-          onTap: () async{
-            if (widget.model!.tipo_id! == "soporte"){
-              // Navigator.pushNamed(context, "/third");
-
-              /*Navigator.of(context).push(PageRouteBuilder(pageBuilder: (BuildContext context,_, __)=> ThirdPage(
-                    number: widget.model!.usuario_id!)));
-                   */
-var testi= "texto de prueba";
-Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ThirdPage(contacts: jsonEncode(widget.model!))));
-            //
-            } else {
+          onTap: () async {
+            if (widget.model!.estado! != "terminado") {
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
                           ThirdPage(contacts: jsonEncode(widget.model!))));
-            }
+              //
+            } else {}
           },
         ),
       ],

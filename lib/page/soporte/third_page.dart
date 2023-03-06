@@ -1,5 +1,6 @@
 //import 'package:flutter/cupertino.dart';
 import 'dart:core';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:proyecto_plataforma/widgets/cabeceraBack.dart';
@@ -7,6 +8,7 @@ import 'package:proyecto_plataforma/widgets/footer.dart';
 
 class ThirdPage extends StatefulWidget {
   final String? contacts;
+
   //List contacts=[];
   //Map valueMap = json.decode(contacts);
   //Map<String, dynamic> contacts ;
@@ -27,12 +29,6 @@ class _ThirdPageState extends State<ThirdPage> {
     final jsonResponse = json.decode(widget.contacts!) as Map<String, dynamic>;
   }
 
-  Future<void> _refresh() async {
-    // Aquí podrías hacer una llamada a una API o actualizar datos desde una base de datos
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,10 +38,7 @@ class _ThirdPageState extends State<ThirdPage> {
             children: [
               Form(
                 child: Column(
-                  children: <Widget>[
-                    const CabeceraBack()
-                    , _dsoli(context)
-                    ],
+                  children: <Widget>[const CabeceraBack(), _dsoli(context)],
                 ),
               ),
               const footer(),
@@ -60,7 +53,7 @@ class _ThirdPageState extends State<ThirdPage> {
     final dynamic jsonResponse =
         json.decode(widget.contacts!) as Map<String, dynamic>;
 
-     print(jsonResponse);
+    print(jsonResponse);
     // size = MediaQuery.of(context).size;
 
     return Column(
@@ -71,124 +64,143 @@ class _ThirdPageState extends State<ThirdPage> {
         const Text(
           "Detalle de la Solicitud",
           style: TextStyle(
-            color: Colors.black,
+            color: Color.fromRGBO(0, 2, 114, 0.612),
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 10),
+
         Container(
-          alignment: Alignment.centerLeft,
           decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 247, 252, 255), //EDE8E1
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(30),
-                  topLeft: Radius.circular(30)),
-              boxShadow: [
-                BoxShadow(
-                    color: Color.fromARGB(66, 0, 0, 0),
-                    blurRadius: 6,
-                    offset: Offset(0, 2))
-              ]),
-          constraints: const BoxConstraints(maxHeight: 60, maxWidth: 200),
-          padding: const EdgeInsets.only(left: 20),
-          child: Row(
+            color: Color.fromARGB(255, 238, 239, 240),
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(15),
+              topLeft: Radius.circular(15),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 12, 12, 12),
+                blurRadius: 6,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          constraints: const BoxConstraints(
+            maxHeight: 200,
+            maxWidth: 350,
+          ),
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Text(
+                    "Bloque:",
+                    style: TextStyle(
+                      color: Color.fromRGBO(0, 2, 114, 0.612),
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    " ${jsonResponse['bloque_id']}",
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 30.0,
+                      // fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  const Text(
+                    "Aula:",
+                    style: TextStyle(
+                      color: Color.fromRGBO(0, 2, 114, 0.612),
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    " ${jsonResponse['aula_id']}",
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 30.0,
+                      //fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  const Text(
+                    "Tipo:",
+                    style: TextStyle(
+                      color: Color.fromRGBO(0, 2, 114, 0.612),
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    " ${jsonResponse['tipo_id']}",
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 30.0,
+                      //fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        
+        const SizedBox(height: 20),
+        Visibility(
+          visible: jsonResponse['detalle'] != "Abrir puerta" &&
+              jsonResponse['detalle'] != "Cerrar puerta",
+          child: Column(
             children: [
               const Text(
-                "Bloque:",
+                "Detalle:",
                 style: TextStyle(
                   color: Color.fromRGBO(0, 2, 114, 0.612),
                   fontSize: 30.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(width: 10),
-              Text(
-                "${jsonResponse['bloque_id']}",
-                style: const TextStyle(
-                  color: Color.fromRGBO(0, 55, 114, 100),
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 6,
+                          offset: Offset(0, 2))
+                    ]),
+                padding: const EdgeInsets.all(10),
+                constraints:
+                    const BoxConstraints(maxHeight: 500, maxWidth: 350),
+                child: Text(
+                  "${jsonResponse['detalle']}",
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                    //fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 10),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: const [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          padding: const EdgeInsets.all(10),
-          constraints: const BoxConstraints(maxHeight: 500, maxWidth: 350),
-          child: Text(
-            "${jsonResponse['aula_id']}",
-            style: const TextStyle(
-              color: Color.fromRGBO(0, 55, 114, 100),
-              fontSize: 30.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        const SizedBox(height: 20),
-        const Text(
-          "Tipo:",
-          style: TextStyle(
-            color: Color.fromRGBO(0, 2, 114, 0.612),
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: const [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          padding: const EdgeInsets.all(10),
-          constraints: const BoxConstraints(maxHeight: 500, maxWidth: 350),
-          child: Text(
-            "${jsonResponse['tipo_id']}",
-            style: const TextStyle(
-              color: Color.fromRGBO(0, 55, 114, 100),
-              fontSize: 30.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        const Text(
-          "Detalle:",
-          style: TextStyle(
-            color: Color.fromRGBO(0, 2, 114, 0.612),
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: const [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          padding: const EdgeInsets.all(10),
-          constraints: const BoxConstraints(maxHeight: 500, maxWidth: 350),
-          child: Text(
-            "${jsonResponse['detalle']}",
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+
         const SizedBox(height: 40.0),
         _botones(),
       ],
@@ -196,6 +208,13 @@ class _ThirdPageState extends State<ThirdPage> {
   }
 
   Widget _botones() {
+    final dynamic jsonResponse =
+        json.decode(widget.contacts!) as Map<String, dynamic>;
+
+    String id = "${jsonResponse['id']}";
+
+    String apiUrl = "http://127.0.0.1:3000/solicitudes/$id";
+    print(apiUrl);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0),
       child: Wrap(
@@ -203,9 +222,65 @@ class _ThirdPageState extends State<ThirdPage> {
         children: [
           FilledButton.icon(
               onPressed: () async {
-
-
-                
+                var response = await http.put(
+                  Uri.parse(apiUrl),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: json.encode({
+                    "estado": "en_camino",
+                    //
+                  }),
+                );
+                if (response.statusCode == 200) {
+                  // ignore: use_build_context_synchronously
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Solicitud Actualizada'),
+                        content: const Text(
+                            'La Solicitud ha sido actualizada con exito'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Cerrar'),
+                            onPressed: () {
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/second',
+                                (route) => false,
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  // ignore: use_build_context_synchronously
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Error'),
+                        content: const Text(
+                            'Lo sentimos, hubo un problema al actualizar la solicitud intente nuevamente'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Cerrar'),
+                            onPressed: () {
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/second',
+                                (route) => false,
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
               },
               icon: const Icon(
                 Icons.directions_walk_outlined,
@@ -223,7 +298,67 @@ class _ThirdPageState extends State<ThirdPage> {
                 padding: MaterialStatePropertyAll(EdgeInsets.all(15)),
               )),
           FilledButton.icon(
-              onPressed: () {},
+              onPressed: () async {
+                var response = await http.put(
+                  Uri.parse(apiUrl),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: json.encode({
+                    "estado": "terminado",
+                    //
+                  }),
+                );
+                if (response.statusCode == 200) {
+                  // ignore: use_build_context_synchronously
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Solicitud Actualizada'),
+                        content: const Text(
+                            'La Solicitud ha sido actualizada con exito'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Cerrar'),
+                            onPressed: () {
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/second',
+                                (route) => false,
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  // ignore: use_build_context_synchronously
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Error'),
+                        content: const Text(
+                            'Lo sentimos, hubo un problema al actualizar la solicitud intente nuevamente'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Cerrar'),
+                            onPressed: () {
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/second',
+                                (route) => false,
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
               icon: const Icon(
                 Icons.check_box_rounded,
                 size: 30,

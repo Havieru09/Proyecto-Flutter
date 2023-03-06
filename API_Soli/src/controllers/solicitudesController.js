@@ -8,7 +8,12 @@ controller.list = (req, res) => {
     INNER JOIN bloques as b on s.bloque_id = b.id
     INNER JOIN aulas as a on s.aula_id = a.id
     INNER JOIN tipo as t on s.tipo_id = t.id
-    INNER JOIN usuario as u on s.usuario_id = u.id`;
+    INNER JOIN usuario as u on s.usuario_id = u.id ORDER BY CASE estado
+    WHEN 'pendiente' THEN 0
+    WHEN 'en_camino' THEN 1
+    ELSE 2
+  END asc, 
+  id asc`;
 
     mysqlConnection.query(query1, (usuario_id, bloque_id, aula_id, tipo, detalle, estado), (
         err,

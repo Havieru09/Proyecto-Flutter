@@ -2,6 +2,7 @@ List<SolicitudModel> solicitudesFromJson(dynamic str) =>
     List<SolicitudModel>.from((str).map((x) => SolicitudModel.fromJson(x)));
 
 class SolicitudModel {
+  late int? id;
   late String? usuario_id;
   late String? bloque_id;
   late String? aula_id;
@@ -12,6 +13,7 @@ class SolicitudModel {
   late String? fecha_final;
 
   SolicitudModel({
+    this.id,
     this.usuario_id,
     this.bloque_id,
     this.aula_id,
@@ -23,6 +25,7 @@ class SolicitudModel {
   });
 
   SolicitudModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     usuario_id = json['usuario'];
     bloque_id = json['nombre_bloque'];
     aula_id = json['nombre_aulas'];
@@ -35,6 +38,7 @@ class SolicitudModel {
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
+    _data['id'] = id;
     _data['usuario_id'] = usuario_id;
     _data['bloque_id'] = bloque_id;
     _data['aula_id'] = aula_id;
