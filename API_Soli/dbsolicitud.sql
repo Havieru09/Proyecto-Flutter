@@ -148,7 +148,7 @@ INSERT INTO `usuario` (`id`, `usuario`, `correo`, `psw`, `rol`) VALUES
 (1, 'Pepe', 'pepe@ups.ec', '1234', 'admin'),
 (4, 'Joe Llerena', 'joe@ups.ec', '123', 'docente'),
 (5, 'Yajaira Bermeo', 'yaja@ups.ec', '123', 'soporte'),
-(6, 'Gabriel', ' jmontesdeocas@ups.ec', '123', 'docente'),
+(6, 'Gabriel', 'jmontesdeocas@ups.ec', '123', 'docente'),
 (7, 'Javier', 'jmurillor2@ups.ec', '123', 'docente');
 
 --
