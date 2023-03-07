@@ -13,7 +13,6 @@ router.post('/aulas',aulasController.save);
 router.put('/aulas/:id',aulasController.update);
 router.get('/aulas/:id',aulasController.listOne);
 router.get('/aulas_nombre/:nombre_aulas',aulasController.listOneSalon);
-
 //bloques
 router.get('/bloques',bloquesController.list);
 //tipos
@@ -22,6 +21,7 @@ router.get('/tipos', tiposController.list);
 router.get('/solicitudes',solicitudesController.list);
 router.get('/solicitudes/:id',solicitudesController.listOne);
 router.get('/solicitudes2/:id',solicitudesController.listTwo);
+router.get('/solicitudes3',solicitudesController.listThree);
 router.post('/solicitudes',solicitudesController.create);
 router.put('/solicitudes/:id',solicitudesController.update);
 //usuarios

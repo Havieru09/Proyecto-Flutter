@@ -96,6 +96,28 @@ id desc`;
     });
 };
 
+//Select by id
+controller.listThree = (req, res) => {
+    const { fecha_inicial, fecha_final } = req.body;
+    const query = `SELECT b.nombre_tipo,count(a.id) num FROM solicitud a,tipo b where fecha_inicial 
+    BETWEEN '${fecha_inicial}' and '${fecha_final}' and b.id=a.tipo_id GROUP by b.nombre_tipo`;
+    mysqlConnection.query(query, (err, solicitud) => {
+        if (err) {
+            return res.json({
+                code: 500,
+                error: true,
+                message: err,
+            });
+        }
+        res.json({
+            status_code: 202,
+            message: "Listado",
+            data: solicitud,
+        });
+    });
+};
+
+
 
 //Update
 controller.update = (req, res) => {
