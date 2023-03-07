@@ -20,6 +20,7 @@ $router->post('/usuario',[DashboardController::class, 'getUser']);
 
 $router->get('/perfil',[DashboardController::class, 'perfil']);
 $router->get('/salon',[DashboardController::class, 'salon']);
+$router->post('/salon',[DashboardController::class, 'getSalon']);
 $router->get('/crear-salon',[DashboardController::class, 'crear_salon']);
 
 $router->get('/bloque',[DashboardController::class, 'bloque']);

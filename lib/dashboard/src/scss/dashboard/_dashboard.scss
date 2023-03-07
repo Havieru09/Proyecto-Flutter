@@ -6,7 +6,8 @@
 
     @include m.tablet{
         display: flex;
-        height: 100vh;
+        min-height: 100vh;
+        max-height: 3000vh;
     }
 
     .principal{

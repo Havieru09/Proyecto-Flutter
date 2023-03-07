@@ -1,5 +1,5 @@
 @use 'variables' as v;
-
+@use 'base/mixins' as m;
 *, *:before, *:after {
     box-sizing: inherit;
 }
@@ -27,4 +27,11 @@ a {
 }
 img {
     max-width: 100%;
+}
+.boton{
+    margin-bottom: 2rem;
+    @include m.boton(v.$primary-color, v.$blanco);
+    @include m.tablet{
+        margin-bottom: 0rem;
+    }
 }

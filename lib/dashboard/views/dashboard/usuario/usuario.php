@@ -5,7 +5,7 @@
     <p class="no-solicitudes">No hay usuarios aun</p>
 <?php } else { ?>
     <div class="contenedor-opciones">
-        <button class="nuevoUser" id="agregar-Usuario">Agregar Usuario</button>
+        <button class="boton nuevoUser" id="agregar-Usuario" onclick="envioUsuario()">Agregar Usuario</button>
         <form action="/usuarios" class="buscador" method="post">
             <select name="roles">
                 <option class="opciones" value="todos">TODOS</option>
@@ -20,7 +20,7 @@
     </div>
     <ul class="listado-solicitudes">
         <?php foreach ($usuarios as $usuario) { ?>
-            <div class="card usuarios">
+            <div class="card usuarios" >
                 <li>
                     <span class="titulo">
                         Usuario:

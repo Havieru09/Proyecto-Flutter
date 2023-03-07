@@ -9,6 +9,11 @@ const solicitudesController = require('../controllers/solicitudesController');
 const tiposController = require('../controllers/tiposController');
 //aulas
 router.get('/aulas',aulasController.list);
+router.post('/aulas',aulasController.save);
+router.put('/aulas/:id',aulasController.update);
+router.get('/aulas/:id',aulasController.listOne);
+router.get('/aulas_nombre/:nombre_aulas',aulasController.listOneSalon);
+
 //bloques
 router.get('/bloques',bloquesController.list);
 //tipos

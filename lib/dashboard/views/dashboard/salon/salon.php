@@ -1,53 +1,34 @@
 <?php include_once __DIR__ . '/../header-dashboard.php' ?>
 
-<a href="/crear-salon" class="boton-dash">Agregar Salon</a>
-<table class="tabla">
+<?php if (count($aulas) === 0) { ?>
+    <p class="no-solicitudes">No hay usuarios aun</p>
+<?php } else { ?>
 
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Acciones</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        
-        <tr>
-            <td>
-                1
-            </td>
-            <td>
-                Laboratori E4
-            </td>
-            
-            <td class="acciones">
-                <a href="/actualizar" class="boton-amarillo-block">Actualizar</a>
-                <form method="POST" class="w-100" >
-                    <input type="hidden" name="id" value="">
-                    
-                    <input type="submit" class="boton-rojo-block" value="Eliminar">
-                </form>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                2
-            </td>
-            <td>
-                Laboratori E3
-            </td>
-            
-            <td class="acciones">
-                <a href="/actualizar" class="boton-amarillo-block">Actualizar</a>
-                <form method="POST" class="w-100" >
-                    <input type="hidden" name="id" value="">
-                    
-                    <input type="submit" class="boton-rojo-block" value="Eliminar">
-                </form>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <button class="nuevoSalon boton" id="agregar-salon" onclick="envioSalon()">Agregar Salon</button>
+
+    <ul class="listado-solicitudes">
+        <?php foreach ($aulas as $aula) { ?>
+            <div class="card salones">
+                <li>
+                    <span class="titulo">
+                        Aula:
+                        <?php echo $aula->nombre_aulas ?>
+                    </span>
+                    <div class="imagen-base aula">
+                    </div>
+                    <label>
+                        <?php echo $aula->nombre_aulas ?>
+                    </label>
+                    <div class="id">
+                        <?php echo $aula->id ?>
+                    </div>
+                </li>
+            </div>
+        <?php } ?>
+    </ul>
+<?php } ?>
 
 <?php include_once __DIR__ . '/../footer-dashboard.php' ?>
+<?php
+$script = '<script src="build/js/modales.js"></script>';
+?>

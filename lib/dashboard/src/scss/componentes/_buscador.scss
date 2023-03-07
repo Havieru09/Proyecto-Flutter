@@ -11,13 +11,7 @@
         flex-direction: row;
     }
 
-    .nuevoUser{
-        margin-bottom: 2rem;
-        @include m.boton(v.$primary-color, v.$blanco);
-        @include m.tablet{
-            margin-bottom: 0rem;
-        }
-    }
+    
 
     .buscador{
         display: flex;

@@ -7,14 +7,16 @@ use MVC\Router;
 
 class DashboardController
 {
-    public static function index(Router $router){
+    //Solicitudes
+    public static function index(Router $router)
+    {
         session_start();
         isAuth();
         $solicitudes = [];
         $url = 'http://localhost:3000/solicitudes';
         $data = file_get_contents($url);
         $obj = json_decode($data);
-        $solicitudes = $obj->solicitud;        
+        $solicitudes = $obj->solicitud;
         // debuguear($solicitudes);
         $router->render('dashboard/index', [
             'titulo' => 'Solicitudes',
@@ -31,8 +33,8 @@ class DashboardController
             $resultado = $obj->data;
             $solicitud = array_shift($resultado);
             // debuguear($solicitud);
-        
-            // debuguear($solicitudId);
+
+            // debuguear($solicitud);
             $respuesta = [
                 'usuario' => $solicitud->usuario,
                 'bloque' => $solicitud->nombre_bloque,
@@ -46,27 +48,28 @@ class DashboardController
 
         }
     }
+    //Usuarios
     public static function usuario(Router $router){
 
         session_start();
         isAuth();
-        $usuarios =[];
+        $usuarios = [];
         $url = 'http://localhost:3000/usuarios';
         $data = file_get_contents($url);
         $obj = json_decode($data);
         $usuarios = $obj->usuario;
         $seleccionado = "";
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($_POST['roles']=='docente') {
-                $usuarios = array_filter($obj->usuario, function($usuario) {
+            if ($_POST['roles'] == 'docente') {
+                $usuarios = array_filter($obj->usuario, function ($usuario) {
                     return $usuario->rol == 'docente';
                 });
-                $seleccionado=$_POST['roles'];
-            }elseif ($_POST['roles']=='soporte') {
-                $usuarios = array_filter($obj->usuario, function($usuario) {
+                $seleccionado = $_POST['roles'];
+            } elseif ($_POST['roles'] == 'soporte') {
+                $usuarios = array_filter($obj->usuario, function ($usuario) {
                     return $usuario->rol == 'soporte';
                 });
-                $seleccionado=$_POST['roles'];
+                $seleccionado = $_POST['roles'];
             }
         }
         session_start();
@@ -79,16 +82,18 @@ class DashboardController
     }
     public static function getUser(Router $router){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $id = $_POST['id'];        
+            $id = $_POST['id'];
             $url = "http://localhost:3000/usuarios/{$id}";
             $data = file_get_contents($url);
-            
+
             $obj = json_decode($data);
             $resultado = $obj->usuario;
             $usuario = array_shift($resultado);
             // debuguear($usuario);
             $respuesta = [
-                'id' => $usuario->id, 
+                'id' => $usuario->id,
+                'correo' => $usuario->correo,
+                'psw' => $usuario->psw,
                 'usuario' => $usuario->usuario,
                 'rol' => $usuario->rol,
                 'remitente' => 'docente'
@@ -97,23 +102,45 @@ class DashboardController
 
         }
     }
-    
-    public static function salon(Router $router)
-    {
+
+    //Salones
+    public static function salon(Router $router){
+        session_start();
+        isAuth();
+        $aulas = [];
+        $url = 'http://localhost:3000/aulas';
+        $data = file_get_contents($url);
+        $obj = json_decode($data);
+        // debuguear($obj);
+        $aulas = $obj->aulas;
+        $seleccionado = "";
         $router->render('dashboard/salon/salon', [
-            'titulo' => 'Gestionar Salones'
+            'titulo' => 'Gestionar Salones',
+            'aulas' => $aulas
         ]);
     }
-    public static function crear_salon(Router $router)
+    public static function getSalon(Router $router)
     {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id = $_POST['id'];
+            $url = "http://localhost:3000/aulas/{$id}";
+            $data = file_get_contents($url);
 
-        // session_start();
-        // isAuth();
+            $obj = json_decode($data);
+            $resultado = $obj->aulas;
+            $salon = array_shift($resultado);            
+            $respuesta = [
+                'id' => $salon->id,
+                'salon' => $salon->nombre_aulas,
+                'remitente' => 'salon'
+            ];
+            echo json_encode($respuesta);
 
-        $router->render('dashboard/salon/crear-salon', [
-            'titulo' => 'Agrega un nuevo Salon'
-        ]);
+        }
+
     }
+
+    //bloque
     public static function bloque(Router $router)
     {
 

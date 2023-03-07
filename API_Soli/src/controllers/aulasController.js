@@ -51,9 +51,9 @@ controller.save = (req, res) => {
   //Update
   controller.update = (req, res) => {
     const { nombre_aulas } = req.body;
-    const { id_aulas } = req.params;
-    const query = `UPDATE aulas SET nombre_aulas = '${nombre_aulas}' WHERE id_aulas = '${id_aulas}'`;
-    mysqlConnection.query(query, [nombre_aulas, id_aulas], (err) => {
+    const { id } = req.params;
+    const query = `UPDATE aulas SET nombre_aulas = '${nombre_aulas}' WHERE id = '${id}'`;
+    mysqlConnection.query(query, [nombre_aulas, id], (err) => {
       if (!err) {
         res.json({
           error: false,
@@ -69,5 +69,41 @@ controller.save = (req, res) => {
     });
   };
 
+  controller.listOne = (req, res) => {
+    const { id } = req.params;
+    const query = `SELECT * FROM aulas WHERE id = ${id}`;
+    mysqlConnection.query(query, (err, rows) => {
+      if (err) {
+        return res.json({
+          code: 500,
+          error: true,
+          message: err,
+        });
+      }
+      res.json({
+        status_code: 202,
+        message: "Listado",
+        aulas: rows,
+      });
+    });
+  };
+  controller.listOneSalon = (req, res) => {
+    const { nombre_aulas } = req.params;
+    const query = `SELECT * FROM aulas WHERE nombre_aulas = ${nombre_aulas}`;
+    mysqlConnection.query(query, (err, rows) => {
+      if (err) {
+        return res.json({
+          code: 500,
+          error: true,
+          message: err,
+        });
+      }
+      res.json({
+        status_code: 202,
+        message: "Listado",
+        aulas: rows,
+      });
+    });
+  };
 
 module.exports = controller;

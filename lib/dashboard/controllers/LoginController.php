@@ -14,8 +14,8 @@ class LoginController
             $alertas = $auth->validarLogin();
 
             if (empty($alertas)) {
-                $usuario = Usuario::where('usuario', $auth->usuario);
-                // debuguear($usuario);
+                $usuario = Usuario::where('correo', $auth->correo);
+
                 if (!$usuario || $usuario->rol !== 'admin') {
                     Usuario::setAlerta('error', 'El usuario no existe o no tiene acceso');
                 } else {
@@ -25,8 +25,7 @@ class LoginController
                         $_SESSION['id'] = $usuario->id;
                         $_SESSION['usuario'] = $usuario->usuario;
                         $_SESSION['contraseña'] = $usuario->contraseña;
-                        $_SESSION['rol'] = $usuario->rol;
-                        
+                        $_SESSION['rol'] = $usuario->rol;                        
 
                         //Redireccionar
                         header('Location: /dashboard');

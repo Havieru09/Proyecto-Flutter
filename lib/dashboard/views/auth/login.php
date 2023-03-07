@@ -5,8 +5,8 @@
         <?php include_once __DIR__ . '/../templates/alertas.php'; ?>
         <form action="/" class="formulario" method="POST">
             <div class="campo">
-                <label for="usuario">Usuario</label>
-                <input type="text" id="usuario" placeholder="Tu Usuario" name="usuario">
+                <label for="usuario">Correo</label>
+                <input type="email" id="usuario" placeholder="Tu Correo" name="correo">
             </div>
 
             <div class="campo">

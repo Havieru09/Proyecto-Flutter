@@ -5,7 +5,8 @@
     <p class="no-solicitudes">No hay proyectos aun</p>
 <?php } else { ?>
     <ul class="listado-solicitudes">
-        <?php foreach ($solicitudes as $solicitud) { ?>           
+        <?php foreach ($solicitudes as $solicitud) { ?>
+            <?php //debuguear($solicitudes)?>           
             <div class="card solicitudes">
                 <li>
                     <span class="titulo">
@@ -33,7 +34,6 @@
                 </li>
             </div>
         <?php } ?>
-        <?php //debuguear($solicitudes->remitente) ?>
     </ul>
 <?php } ?>
 
