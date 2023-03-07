@@ -16,21 +16,45 @@ class home extends StatefulWidget {
 class _homeState extends State<home> {
   @override
   void initState() {
-    super.initState();
-
     Future.delayed(Duration.zero, () async {
-      final SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      var obtName = sharedPreferences.getInt('name');
-      print('$finalName');
-
-      // Si no hay ningún valor guardado, utilizamos una cadena vacía
-      setState(() {
-        finalName = obtName! as int;
-      });
+      try {
+        final SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        var obtName = sharedPreferences.getInt('name');
+        if (obtName == null || obtName == 0) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Error en inicio de sesión'),
+                content: const Text(
+                    'Primer debe iniciar sesión para poder acceder a esta sección'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/',
+                        (route) => false,
+                      );
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        // Si no hay ningún valor guardado, utilizamos una cadena vacía
+        setState(() {
+          finalName = obtName! as int;
+        });
+      } on Exception catch (e) {
+        print(e);
+      }
     });
+    super.initState();
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +74,7 @@ class _homeState extends State<home> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      //Text('$finalName'),
                       const Padding(
                         padding: EdgeInsets.all(10.0),
                         // ignore: unnecessary_const

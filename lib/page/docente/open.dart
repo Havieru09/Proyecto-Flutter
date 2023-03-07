@@ -44,12 +44,49 @@ class _openState extends State<open> {
   var laboratoriovalue;
   String? tipo = '3';
   String? estado = 'pendiente';
-  String? detalle = 'Abrir puerta ';
+  String? detalle = 'Abrir puerta';
   String? fecha_inicial = DateTime.now().toString();
   String? fecha_final = DateTime.now().toString();
 
   @override
   void initState() {
+    Future.delayed(Duration.zero, () async {
+      try {
+        final SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        var obtName = sharedPreferences.getInt('name');
+        if (obtName == null || obtName == 0) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Error en inicio de sesión'),
+                content: const Text(
+                    'Primer debe iniciar sesión para poder acceder a esta sección'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/',
+                        (route) => false,
+                      );
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        // Si no hay ningún valor guardado, utilizamos una cadena vacía
+        setState(() {
+          finalName = obtName! as int;
+        });
+      } on Exception catch (e) {
+        print(e);
+      }
+    });
     super.initState();
     getBloques();
     getAulas();
@@ -242,7 +279,9 @@ class _openState extends State<open> {
                   "Error detectado",
                   "Hay campos vacios, favor de seleccionar la opcion faltante",
                   "OK",
-                  () {Navigator.of(context).pop();},
+                  () {
+                    Navigator.of(context).pop();
+                  },
                 );
                 return;
               } else if (validateAndSave()) {

@@ -20,13 +20,50 @@ class _UserListState extends State<UserList> {
   bool isApiCallProcess = false;
   @override
   void initState() {
+    Future.delayed(Duration.zero, () async {
+      try {
+        final SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        var obtName = sharedPreferences.getInt('name');
+        if (obtName == null || obtName == 0) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Error en inicio de sesión'),
+                content: const Text(
+                    'Primer debe iniciar sesión para poder acceder a esta sección'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/',
+                        (route) => false,
+                      );
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        // Si no hay ningún valor guardado, utilizamos una cadena vacía
+        setState(() {
+          finalName = obtName! as int;
+        });
+      } on Exception catch (e) {
+        print(e);
+      }
+    });
     super.initState();
 
     Future.delayed(Duration.zero, () async {
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       var obtName = sharedPreferences.getInt('name');
-      print('$finalName');
+      //print('$finalName');
 
       // Si no hay ningún valor guardado, utilizamos una cadena vacía
       setState(() {
@@ -40,7 +77,6 @@ class _UserListState extends State<UserList> {
     await Future.delayed(const Duration(seconds: 1));
     setState(() {});
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +94,7 @@ class _UserListState extends State<UserList> {
               ],
             ),
           ),
-      
+
           inAsyncCall: isApiCallProcess,
           opacity: 0.3,
           key: UniqueKey(),
