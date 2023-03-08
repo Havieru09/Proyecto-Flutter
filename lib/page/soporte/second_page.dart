@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_plataforma/widgets/cabeceraBack.dart';
 import 'package:proyecto_plataforma/widgets/footer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 
 import '../../Servicios/api_service.dart';
@@ -18,6 +19,43 @@ class _SecondPageState extends State<SecondPage> {
   bool isApiCallProcess = false;
   @override
   void initState() {
+    Future.delayed(Duration.zero, () async {
+      try {
+        final SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        var obtName = sharedPreferences.getInt('name');
+        if (obtName == null || obtName == 0) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Error en inicio de sesión'),
+                content: const Text(
+                    'Primer debe iniciar sesión para poder acceder a esta sección'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/',
+                        (route) => false,
+                      );
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        // Si no hay ningún valor guardado, utilizamos una cadena vacía
+        setState(() {
+          finalName = obtName! as int;
+        });
+      } on Exception catch (e) {
+        print(e);
+      }
+    });
     super.initState();
   }
 

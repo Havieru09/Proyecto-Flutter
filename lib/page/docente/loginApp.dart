@@ -97,7 +97,6 @@ class _loginApp extends State<loginApp> {
                 ),
               ),
             ),
-            
             const footer(),
           ],
         ),
@@ -106,8 +105,7 @@ class _loginApp extends State<loginApp> {
     );
   } // build
 
-  
-      _wemail() => TextFormField(
+  _wemail() => TextFormField(
         keyboardType: TextInputType.emailAddress,
         inputFormatters: <TextInputFormatter>[
           FilteringTextInputFormatter.allow(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9@]+"))
@@ -131,37 +129,34 @@ class _loginApp extends State<loginApp> {
         },
       );
 
-
-
   _wpsw() => Padding(
-  padding: const EdgeInsets.all(4.0),
-  child: TextFormField(
-    obscureText: true, // <-- Agrega esta propiedad
-    keyboardType: TextInputType.name,
-    inputFormatters: <TextInputFormatter>[
-      FilteringTextInputFormatter.allow(
-          RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9@$%&-_]+"))
-    ],
-    decoration: const InputDecoration(
-        labelText: "Contraseña",
-        icon: Icon(Icons.password),
-        //border: InputBorder.none,
-        hintText: "Ingrese su contraseña"),
-    controller: _psw,
-    maxLength: 16,
-    //maxLength: 2,
+        padding: const EdgeInsets.all(4.0),
+        child: TextFormField(
+          obscureText: true, // <-- Agrega esta propiedad
+          keyboardType: TextInputType.name,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.allow(
+                RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9@$%&-_]+"))
+          ],
+          decoration: const InputDecoration(
+              labelText: "Contraseña",
+              icon: Icon(Icons.password),
+              //border: InputBorder.none,
+              hintText: "Ingrese su contraseña"),
+          controller: _psw,
+          maxLength: 16,
+          //maxLength: 2,
 
-    validator: (value) {
-      if (value!.isEmpty) {
-        return "Por favor ingrese su contraseña";
-      } else {
-        return null;
-      }
-    },
-    //onSaved: (val) => _contact.psw = String.parse(val!.trim()),
-  ),
-);
-
+          validator: (value) {
+            if (value!.isEmpty) {
+              return "Por favor ingrese su contraseña";
+            } else {
+              return null;
+            }
+          },
+          //onSaved: (val) => _contact.psw = String.parse(val!.trim()),
+        ),
+      );
 
   Widget _bottoonLogin() {
     return StreamBuilder(
@@ -181,7 +176,7 @@ class _loginApp extends State<loginApp> {
               _id.add(idUser);
             });
 
-            String dato = _email.text;
+            String dato = _email.text.toLowerCase();
             String datopsw = _psw.text;
 
             for (int i = 0; i < _correo.length; i++) {

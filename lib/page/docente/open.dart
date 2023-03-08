@@ -117,12 +117,13 @@ class _openState extends State<open> {
         // ignore: sort_child_properties_last
         child: Column(
           children: [
+            const CabeceraBack(),
             Form(
               key: globalFormKey,
               child: Expanded(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    const CabeceraBack(),
                     userForm(),
                   ],
                 ),
@@ -145,16 +146,15 @@ class _openState extends State<open> {
       children: <Widget>[
         //Text('$finalName'),
         // ignore: prefer_const_constructors
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-          child: const Text(
+        
+          const Text(
             'Abrir puerta',
             style: TextStyle(
               fontSize: 35.0,
               color: Color.fromARGB(255, 13, 77, 130),
             ),
           ),
-        ),
+       
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: Row(

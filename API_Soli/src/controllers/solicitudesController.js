@@ -121,9 +121,10 @@ controller.listThree = (req, res) => {
 
 //Update
 controller.update = (req, res) => {
-    const { estado } = req.body;
+    const { estado, fecha_final } = req.body;
+
     const { id } = req.params;
-    const query = `UPDATE solicitud SET estado = '${estado}' WHERE id = ${id}`;
+    const query = `UPDATE solicitud SET estado = '${estado}', fecha_final = '${fecha_final}'  WHERE id = ${id}`;
 
     mysqlConnection.query(query, (err, solicitud) => {
         if (err) {

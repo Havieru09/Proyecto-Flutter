@@ -56,20 +56,20 @@ class _soporteState extends State<soporte> {
         // ignore: sort_child_properties_last
         child: Column(
           children: [
+            const CabeceraBack(),
             Form(
               key: globalFormKey,
               child: Expanded(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    const CabeceraBack(),
+                    
                     userForm(),
                   ],
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(3.5),
-            ),
+            
             const footer(),
           ],
         ),

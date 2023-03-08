@@ -3,8 +3,11 @@ import 'dart:core';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:proyecto_plataforma/widgets/cabeceraBack.dart';
 import 'package:proyecto_plataforma/widgets/footer.dart';
+
+int finalName = 0;
 
 class ThirdPage extends StatefulWidget {
   final String? contacts;
@@ -25,6 +28,44 @@ class ThirdPage extends StatefulWidget {
 class _ThirdPageState extends State<ThirdPage> {
   @override
   void initState() {
+    Future.delayed(Duration.zero, () async {
+      try {
+        final SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        var obtName = sharedPreferences.getInt('name');
+        if (obtName == null || obtName == 0) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Error en inicio de sesión'),
+                content: const Text(
+                    'Primer debe iniciar sesión para poder acceder a esta sección'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/',
+                        (route) => false,
+                      );
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        // Si no hay ningún valor guardado, utilizamos una cadena vacía
+        setState(() {
+          finalName = obtName! as int;
+        });
+      } on Exception catch (e) {
+        print(e);
+      }
+    });
+
     super.initState();
     final jsonResponse = json.decode(widget.contacts!) as Map<String, dynamic>;
   }
@@ -33,17 +74,19 @@ class _ThirdPageState extends State<ThirdPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Form(
+        child: Column(
+          children: [
+            const CabeceraBack(),
+            Form(
+              child: Expanded(
                 child: Column(
-                  children: <Widget>[const CabeceraBack(), _dsoli(context)],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[_dsoli(context)],
                 ),
               ),
-              const footer(),
-            ],
-          ),
+            ),
+            const footer(),
+          ],
         ),
       ),
     );
@@ -70,7 +113,6 @@ class _ThirdPageState extends State<ThirdPage> {
           ),
         ),
         const SizedBox(height: 10),
-
         Container(
           decoration: const BoxDecoration(
             color: Color.fromARGB(255, 238, 239, 240),
@@ -159,8 +201,6 @@ class _ThirdPageState extends State<ThirdPage> {
             ],
           ),
         ),
-
-        
         const SizedBox(height: 20),
         Visibility(
           visible: jsonResponse['detalle'] != "Abrir puerta" &&
@@ -200,7 +240,6 @@ class _ThirdPageState extends State<ThirdPage> {
             ],
           ),
         ),
-
         const SizedBox(height: 40.0),
         _botones(),
       ],
@@ -229,6 +268,8 @@ class _ThirdPageState extends State<ThirdPage> {
                   },
                   body: json.encode({
                     "estado": "en_camino",
+                    "fecha_final": DateTime.now().toString(),
+                    
                     //
                   }),
                 );
@@ -306,6 +347,8 @@ class _ThirdPageState extends State<ThirdPage> {
                   },
                   body: json.encode({
                     "estado": "terminado",
+                    "fecha_final": DateTime.now().toString(),
+
                     //
                   }),
                 );
