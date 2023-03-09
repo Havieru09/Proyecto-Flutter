@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 09-03-2023 a las 02:25:37
--- Versión del servidor: 8.0.31
+-- Tiempo de generación: 09-03-2023 a las 15:18:49
+-- Versión del servidor: 5.7.40
 -- Versión de PHP: 8.0.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -29,12 +29,23 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `aulas`;
 CREATE TABLE IF NOT EXISTS `aulas` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre_aulas` varchar(15) NOT NULL,
-  `bloque_id` int DEFAULT NULL,
+  `bloque_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_aula_idx` (`bloque_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `aulas`
+--
+
+INSERT INTO `aulas` (`id`, `nombre_aulas`, `bloque_id`) VALUES
+(13, 'Laboratorio E4', 18),
+(14, 'Laboratorio E3', 18),
+(15, 'Aula 309', 15),
+(16, 'Sala I', 14),
+(17, 'Aula 108', 17);
 
 -- --------------------------------------------------------
 
@@ -44,10 +55,21 @@ CREATE TABLE IF NOT EXISTS `aulas` (
 
 DROP TABLE IF EXISTS `bloques`;
 CREATE TABLE IF NOT EXISTS `bloques` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre_bloque` varchar(15) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `bloques`
+--
+
+INSERT INTO `bloques` (`id`, `nombre_bloque`) VALUES
+(14, 'A'),
+(15, 'B'),
+(16, 'C'),
+(17, 'D'),
+(18, 'E');
 
 -- --------------------------------------------------------
 
@@ -57,10 +79,10 @@ CREATE TABLE IF NOT EXISTS `bloques` (
 
 DROP TABLE IF EXISTS `solicitud`;
 CREATE TABLE IF NOT EXISTS `solicitud` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int NOT NULL,
-  `aula_id` int NOT NULL,
-  `tipo_id` int NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(11) NOT NULL,
+  `aula_id` int(11) NOT NULL,
+  `tipo_id` int(11) NOT NULL,
   `detalle` text NOT NULL,
   `estado` varchar(20) NOT NULL,
   `fecha_inicial` date NOT NULL,
@@ -69,7 +91,30 @@ CREATE TABLE IF NOT EXISTS `solicitud` (
   KEY `FK_aula_id` (`aula_id`),
   KEY `FK_usuario_id` (`usuario_id`),
   KEY `FK_tipo_id` (`tipo_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `solicitud`
+--
+
+INSERT INTO `solicitud` (`id`, `usuario_id`, `aula_id`, `tipo_id`, `detalle`, `estado`, `fecha_inicial`, `fecha_final`) VALUES
+(33, 6, 13, 3, 'Abrir puerta', 'terminado', '2023-03-01', '2023-03-09'),
+(34, 6, 13, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09'),
+(35, 6, 14, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09'),
+(36, 6, 15, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09'),
+(37, 6, 13, 3, 'Abrir puerta', 'pendiente', '2023-03-09', '2023-03-09'),
+(38, 6, 15, 3, 'Abrir puerta', 'pendiente', '2023-03-09', '2023-03-09'),
+(39, 6, 15, 3, 'Abrir puerta', 'pendiente', '2023-03-09', '2023-03-09'),
+(40, 6, 15, 4, 'Cerrar puerta', 'pendiente', '2023-03-09', '2023-03-09'),
+(41, 6, 13, 4, 'Cerrar puerta', 'pendiente', '2023-03-09', '2023-03-09'),
+(42, 6, 15, 1, 'no funciona la pc del profe', 'terminado', '2023-03-09', '2023-03-09'),
+(43, 6, 13, 1, 'no funciona la pc del profesor', 'pendiente', '2023-03-09', '2023-03-09'),
+(44, 6, 13, 3, 'Abrir puerta', 'pendiente', '2023-03-09', '2023-03-09'),
+(45, 6, 15, 4, 'Cerrar puerta', 'pendiente', '2023-03-09', '2023-03-09'),
+(46, 6, 15, 1, 'aaaa', 'pendiente', '2023-03-09', '2023-03-09'),
+(47, 6, 16, 3, 'Abrir puerta', 'pendiente', '2023-03-09', '2023-03-09'),
+(48, 6, 17, 4, 'Cerrar puerta', 'pendiente', '2023-03-09', '2023-03-09'),
+(49, 6, 15, 2, 'aaaaa', 'terminado', '2023-03-09', '2023-03-09');
 
 -- --------------------------------------------------------
 
@@ -79,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `solicitud` (
 
 DROP TABLE IF EXISTS `tipo`;
 CREATE TABLE IF NOT EXISTS `tipo` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre_tipo` varchar(25) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
@@ -102,7 +147,7 @@ INSERT INTO `tipo` (`id`, `nombre_tipo`) VALUES
 
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `usuario` varchar(25) NOT NULL,
   `correo` varchar(25) NOT NULL,
   `psw` varchar(25) NOT NULL,
