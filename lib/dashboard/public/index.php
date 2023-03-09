@@ -10,8 +10,9 @@ $router = new Router();
 $router->get('/',[LoginController::class, 'login']);
 $router->post('/',[LoginController::class, 'login']);
 $router->get('/logout',[LoginController::class, 'logout']);
-$router->get('/dashboard',[DashboardController::class, 'index']);
-$router->post('/dashboard',[DashboardController::class, 'getRequest']);
+$router->get('/dashboard',[DashboardController::class, 'dashboard']);
+$router->get('/solicitudes',[DashboardController::class, 'index']);
+$router->post('/solicitudes',[DashboardController::class, 'getRequest']);
 
 
 $router->get('/usuarios',[DashboardController::class, 'usuario']);
@@ -24,9 +25,7 @@ $router->post('/salon',[DashboardController::class, 'getSalon']);
 $router->get('/crear-salon',[DashboardController::class, 'crear_salon']);
 
 $router->get('/bloque',[DashboardController::class, 'bloque']);
-$router->get('/crear-bloque',[DashboardController::class, 'crear_bloque']);
-
-$router->get('/usuario-actualizar',[DashboardController::class, 'usuario_actualizar']);
+$router->post('/bloque',[DashboardController::class, 'getBloque']);
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
 $router->comprobarRutas();

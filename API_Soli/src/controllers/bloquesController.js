@@ -51,9 +51,9 @@ controller.save = (req, res) => {
   //Update
   controller.update = (req, res) => {
     const { nombre_bloques } = req.body;
-    const { id_bloques } = req.params;
-    const query = `UPDATE bloques SET nombre_bloques = '${nombre_bloques}' WHERE id_bloques = '${id_bloques}'`;
-    mysqlConnection.query(query, [nombre_bloques, id_bloques], (err) => {
+    const { id } = req.params;
+    const query = `UPDATE bloques SET nombre_bloque = '${nombre_bloques}' WHERE id = '${id}'`;
+    mysqlConnection.query(query, [nombre_bloques, id], (err) => {
       if (!err) {
         res.json({
           error: false,
@@ -69,5 +69,42 @@ controller.save = (req, res) => {
     });
   };
 
+  controller.listOne = (req, res) => {
+    const { id } = req.params;
+    const query = `SELECT * FROM bloques WHERE id = ${id}`;
+    mysqlConnection.query(query, (err, rows) => {
+      if (err) {
+        return res.json({
+          code: 500,
+          error: true,
+          message: err,
+        });
+      }
+      res.json({
+        status_code: 202,
+        message: "Listado",
+        bloques: rows,
+      });
+    });
+  };
+  controller.listOneBloque = (req, res) => {
+    const { nombre_bloque } = req.params;
+    const query = `SELECT * FROM bloques WHERE nombre_bloque = '${nombre_bloque}'`;
+    console.log(query);
+    mysqlConnection.query(query, (err, rows) => {
+      if (err) {
+        return res.json({
+          code: 500,
+          error: true,
+          message: err,
+        });
+      }
+      res.json({
+        status_code: 202,
+        message: "Listado",
+        bloques: rows,
+      });
+    });
+  };
 
 module.exports = controller;

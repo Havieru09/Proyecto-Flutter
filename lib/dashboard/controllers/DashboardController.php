@@ -8,8 +8,16 @@ use MVC\Router;
 class DashboardController
 {
     //Solicitudes
-    public static function index(Router $router)
-    {
+    public static function dashboard(Router $router){
+        session_start();
+        isAuth();
+        
+        // debuguear($solicitudes);
+        $router->render('dashboard/dashboard', [
+            'titulo' => 'Dashboard'
+        ]);
+    }
+    public static function index(Router $router){
         session_start();
         isAuth();
         $solicitudes = [];
@@ -48,6 +56,7 @@ class DashboardController
 
         }
     }
+
     //Usuarios
     public static function usuario(Router $router){
 
@@ -141,24 +150,40 @@ class DashboardController
     }
 
     //bloque
-    public static function bloque(Router $router)
-    {
-
-        // session_start();
-        // isAuth();
+    public static function bloque(Router $router){
+        session_start();
+        isAuth();
+        $bloques = [];
+        $url = 'http://localhost:3000/bloques';
+        $data = file_get_contents($url);
+        $obj = json_decode($data);
+        $bloques = $obj->bloques;
+        // debuguear($solicitudes);
 
         $router->render('dashboard/bloque/bloque', [
-            'titulo' => 'Gestionar Bloques'
+            'titulo' => 'Gestionar Bloques',
+            'bloques' => $bloques
         ]);
     }
-    public static function crear_bloque(Router $router)
+    public static function getBloque(Router $router)
     {
 
-        // session_start();
-        // isAuth();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id = $_POST['id'];
+            $url = "http://localhost:3000/bloques/{$id}";
+            $data = file_get_contents($url);
+            // debuguear($id);
+            $obj = json_decode($data);
+            $resultado = $obj->bloques;
+            $bloque = array_shift($resultado);     
+            // debuguear($bloque);       
+            $respuesta = [
+                'id' => $bloque->id,
+                'bloque' => $bloque->nombre_bloque,
+                'remitente' => 'bloque'
+            ];
+            echo json_encode($respuesta);
 
-        $router->render('dashboard/bloque/crear-bloque', [
-            'titulo' => 'Agrega un nuevo Bloque'
-        ]);
+        }
     }
 }

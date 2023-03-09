@@ -89,7 +89,7 @@ controller.save = (req, res) => {
   };
   controller.listOneSalon = (req, res) => {
     const { nombre_aulas } = req.params;
-    const query = `SELECT * FROM aulas WHERE nombre_aulas = ${nombre_aulas}`;
+    const query = `SELECT * FROM aulas WHERE nombre_aulas = '${nombre_aulas}'`;
     mysqlConnection.query(query, (err, rows) => {
       if (err) {
         return res.json({

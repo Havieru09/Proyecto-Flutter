@@ -15,13 +15,17 @@ router.get('/aulas/:id',aulasController.listOne);
 router.get('/aulas_nombre/:nombre_aulas',aulasController.listOneSalon);
 //bloques
 router.get('/bloques',bloquesController.list);
+router.post('/bloques',bloquesController.save);
+router.put('/bloques/:id',bloquesController.update);
+router.get('/bloques/:id',bloquesController.listOne);
+router.get('/bloque_nombre/:nombre_bloque',bloquesController.listOneBloque);
 //tipos
 router.get('/tipos', tiposController.list);
 //solicitudes
 router.get('/solicitudes',solicitudesController.list);
 router.get('/solicitudes/:id',solicitudesController.listOne);
 router.get('/solicitudes2/:id',solicitudesController.listTwo);
-router.get('/solicitudes3',solicitudesController.listThree);
+router.get('/solicitudes3',solicitudesController.listByDate);
 router.post('/solicitudes',solicitudesController.create);
 router.put('/solicitudes/:id',solicitudesController.update);
 //usuarios

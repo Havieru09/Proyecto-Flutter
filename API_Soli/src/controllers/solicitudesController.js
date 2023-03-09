@@ -3,9 +3,8 @@ const controller = {};
 
 controller.list = (req, res) => {
     const { usuario_id, bloque_id, aula_id, tipo, detalle, estado } = req.body;
-    const query1 = `SELECT s.id, b.nombre_bloque as 'nombre_bloque', a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', 
+    const query1 = `SELECT s.id, a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', 
     t.nombre_tipo as 'tipo', detalle, estado FROM solicitud as s 
-    INNER JOIN bloques as b on s.bloque_id = b.id
     INNER JOIN aulas as a on s.aula_id = a.id
     INNER JOIN tipo as t on s.tipo_id = t.id
     INNER JOIN usuario as u on s.usuario_id = u.id ORDER BY CASE estado
@@ -97,10 +96,15 @@ id desc`;
 };
 
 //Select by id
-controller.listThree = (req, res) => {
-    const { fecha_inicial, fecha_final } = req.body;
-    const query = `SELECT b.nombre_tipo,count(a.id) num FROM solicitud a,tipo b where fecha_inicial 
-    BETWEEN '${fecha_inicial}' and '${fecha_final}' and b.id=a.tipo_id GROUP by b.nombre_tipo`;
+controller.listByDate = (req, res) => {
+    const { fecha_inicial, fecha_final, tipo="" } = req.body;
+    if (tipo!="") {
+        var query = `SELECT b.nombre_tipo,count(a.id) num, fecha_inicial FROM solicitud a,tipo b where fecha_inicial BETWEEN '${fecha_inicial}' and '${fecha_final}' and b.nombre_tipo='${tipo}' GROUP by b.nombre_tipo, a.fecha_inicial;`;
+    }else{
+        var query = `SELECT b.nombre_tipo,count(a.id) num, fecha_inicial FROM solicitud a,tipo b where fecha_inicial BETWEEN '${fecha_inicial}' and '${fecha_final}' GROUP by b.nombre_tipo, a.fecha_inicial;`;
+    }
+    // const query = `SELECT b.nombre_tipo,count(a.id) num FROM solicitud a,tipo b where fecha_inicial 
+    // BETWEEN '${fecha_inicial}' and '${fecha_final}' and b.id=a.tipo_id GROUP by b.nombre_tipo`;
     mysqlConnection.query(query, (err, solicitud) => {
         if (err) {
             return res.json({
@@ -188,4 +192,5 @@ module.exports = controller;
 
 
 
+	
 	

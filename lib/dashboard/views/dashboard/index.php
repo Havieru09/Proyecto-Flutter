@@ -4,9 +4,14 @@
 <?php if (count($solicitudes) === 0) { ?>
     <p class="no-solicitudes">No hay proyectos aun</p>
 <?php } else { ?>
+    <div class="botones-dash">
+        <a class="boton mostrarDash" id="agregar-Usuario" href="/dashboard">Mostar dashboard</a>
+        <a class="boton mostrarSoli" id="agregar-Usuario" href="/solicitudes">Mostar Solicitudes</a>
+    </div>
     <ul class="listado-solicitudes">
+        
+
         <?php foreach ($solicitudes as $solicitud) { ?>
-            <?php //debuguear($solicitudes)?>           
             <div class="card solicitudes">
                 <li>
                     <span class="titulo">
@@ -26,11 +31,11 @@
                     </div>
                     <label>
                         <?php echo $solicitud->tipo ?>
-                    </label>            
+                    </label>
                     <div class="id">
                         <?php echo $solicitud->id ?>
                     </div>
-                    
+
                 </li>
             </div>
         <?php } ?>

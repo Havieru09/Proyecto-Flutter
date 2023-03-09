@@ -1,6 +1,17 @@
 @use "base/mixins" as m;
 @use "base/variables" as v;
+.botones-dash{
+    display: flex;
+    justify-content: start;
+    .mostrarDash{
+        margin-right: 2rem;
+    }
+}
 
+.chart{
+    width: 80%;
+    height: 60rem;
+}
 .listado-solicitudes {
     list-style: none;
     padding: 0;
@@ -41,7 +52,7 @@
                 top: 0;
                 font-size: 1.5rem;
                 font-weight: 700;
-
+                min-height: 4rem;
                 padding: 1rem 2rem 1.5rem;
                 border-radius: 0.5rem 0.5rem 0 0;
                 &:hover {
@@ -78,6 +89,12 @@
                 }
                 &.aula {
                     background-image: url(../img/classroom.png);
+                }
+                &.bloques {
+                    background-image: url(../img/building.png);
+                }
+                &.laboratorio {
+                    background-image: url(../img/laboratories.png);
                 }
 
             }
