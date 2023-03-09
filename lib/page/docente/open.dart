@@ -34,11 +34,14 @@ class _openState extends State<open> {
   bool isAulasSelect = false;
   List bloquesList = [];
   List aulasList = [];
+  List Aula_bloquesList = [];
   bool isApiCallProcess = false;
   List<Object> images = [];
+  List filteredAulasList = [];
   bool isEditMode = false;
   bool isImageSelected = false;
   var bloquevalue;
+  var aula_bloquevalue;
   var aulavalue;
   var aulavalue2;
   var laboratoriovalue;
@@ -89,7 +92,8 @@ class _openState extends State<open> {
     });
     super.initState();
     getBloques();
-    getAulas();
+    //getAulas();
+    getAula_Bloques();
     solimodel = SolicitudModel();
 
     Future.delayed(Duration.zero, () async {
@@ -146,15 +150,15 @@ class _openState extends State<open> {
       children: <Widget>[
         //Text('$finalName'),
         // ignore: prefer_const_constructors
-        
-          const Text(
-            'Abrir puerta',
-            style: TextStyle(
-              fontSize: 35.0,
-              color: Color.fromARGB(255, 13, 77, 130),
-            ),
+
+        const Text(
+          'Abrir puerta',
+          style: TextStyle(
+            fontSize: 35.0,
+            color: Color.fromARGB(255, 13, 77, 130),
           ),
-       
+        ),
+
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: Row(
@@ -167,97 +171,43 @@ class _openState extends State<open> {
                   padding: const EdgeInsets.only(right: 10),
                   child: DropdownButton<String>(
                     value: bloquevalue,
-                    hint: Text('Elige un edificio'),
+                    hint: const Text('Elige un edificio'),
                     items: bloquesList.map((item) {
                       return DropdownMenuItem(
-                        value: item['id'].toString(),
+                        value: item['nombre_bloque'].toString(),
                         child: Text(item['nombre_bloque'].toString()),
                       );
                     }).toList(),
                     onChanged: (newVal) {
                       setState(() {
                         bloquevalue = newVal;
-                        isBloquesSelect = true;
+                        filteredAulasList = Aula_bloquesList.where((aula) =>
+                                aula['nombre_bloque'].toString() == bloquevalue)
+                            .toList();
+                            aulavalue = null;
                       });
                     },
                   ),
                 ),
-              if (bloquevalue == '1')
+              if (filteredAulasList.isEmpty)
+                const Center(child: CircularProgressIndicator())
+              else
                 Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 10,
-                    top: 10,
-                  ),
-                  child: DropdownButton(
-                    hint: Text('Elija un laboratorio'),
-                    items: aulasList
-                        .where((item) =>
-                            item['nombre_aulas'].startsWith('Laboratorio E'))
-                        .map((item) {
+                  padding: const EdgeInsets.only(right: 10),
+                  child: DropdownButton<String>(
+                    value: aulavalue,
+                    hint: const Text('Elige un aula'),
+                    items: filteredAulasList.map((aula) {
                       return DropdownMenuItem(
-                        value: item['id'].toString(),
-                        child: Text(item['nombre_aulas'].toString()),
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
-                      setState(() {
-                        laboratoriovalue = newVal;
-                        isAulasSelect = true;
-                      });
-                    },
-                    value: laboratoriovalue,
-                  ),
-                ),
-              if (bloquevalue == '2')
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 10,
-                    top: 10,
-                  ),
-                  child: DropdownButton(
-                    hint: Text('Elija un aula'),
-                    items: aulasList
-                        .where(
-                            (item) => item['nombre_aulas'].startsWith('Aula D'))
-                        .map((item) {
-                      return DropdownMenuItem(
-                        value: item['id'].toString(),
-                        child: Text(item['nombre_aulas'].toString()),
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
-                      setState(() {
-                        aulavalue2 = newVal;
-                        isAulasSelect = true;
-                      });
-                    },
-                    value: aulavalue2,
-                  ),
-                ),
-              if (bloquevalue == '3')
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 10,
-                    top: 10,
-                  ),
-                  child: DropdownButton(
-                    hint: Text('Elija un aula'),
-                    items: aulasList
-                        .where(
-                            (item) => item['nombre_aulas'].startsWith('Aula B'))
-                        .map((item) {
-                      return DropdownMenuItem(
-                        value: item['id'].toString(),
-                        child: Text(item['nombre_aulas'].toString()),
+                        value: aula['id'].toString(),
+                        child: Text(aula['nombre_aulas'].toString()),
                       );
                     }).toList(),
                     onChanged: (newVal) {
                       setState(() {
                         aulavalue = newVal;
-                        isAulasSelect = true;
                       });
                     },
-                    value: aulavalue,
                   ),
                 ),
             ],
@@ -271,9 +221,11 @@ class _openState extends State<open> {
             "Save",
             () {
               if (bloquevalue == null ||
-                  (bloquevalue == '1' && laboratoriovalue == null) ||
-                  (bloquevalue == '2' && aulavalue2 == null) ||
-                  (bloquevalue == '3' && aulavalue == null)) {
+                  (bloquevalue == 'A' && aulavalue == null) ||
+                  (bloquevalue == 'B' && aulavalue == null) ||
+                  (bloquevalue == 'C' && aulavalue == null) ||
+                  (bloquevalue == 'D' && aulavalue == null) ||
+                  (bloquevalue == 'E' && aulavalue == null)) {
                 FormHelper.showSimpleAlertDialog(
                   context,
                   "Error detectado",
@@ -286,19 +238,13 @@ class _openState extends State<open> {
                 return;
               } else if (validateAndSave()) {
                 solimodel!.usuario_id = '$finalName';
+                solimodel!.aula_id = aulavalue;
                 solimodel!.tipo_id = tipo;
                 solimodel!.detalle = detalle;
                 solimodel!.estado = estado;
                 solimodel!.fecha_inicial = fecha_inicial;
                 solimodel!.fecha_final = fecha_final;
-                solimodel!.bloque_id = bloquevalue;
-                if (bloquevalue == '1' && laboratoriovalue != null)
-                  solimodel!.aula_id = laboratoriovalue;
-                if (bloquevalue == '2' && aulavalue2 != null)
-                  solimodel!.aula_id = aulavalue2;
-                if (bloquevalue == '3' && aulavalue != null)
-                  solimodel!.aula_id = aulavalue;
-
+                
                 print(solimodel!.toJson());
 
                 setState(() {
@@ -412,58 +358,28 @@ class _openState extends State<open> {
     }
   }
 
-  Future getAulas() async {
+  Future getAula_Bloques() async {
     var url = Uri.http(
       Config.apiURL,
-      Config.aulaAPI,
+      Config.aulaBloque,
     );
 
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
 
-    try {
-      var response = await client.get(
-        url,
-        headers: requestHeaders,
-      );
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
 
-      if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-
-        setState(() {
-          aulasList = data["aulas"];
-        });
-      }
-    } catch (e) {
-      print(e);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      print(data);
+      setState(() {
+        Aula_bloquesList = data["data"];
+      });
     }
   }
 }
 
-Widget _bottoonBack() {
-  return StreamBuilder(builder: (BuildContext context, AsyncSnapshot snapshot) {
-    return Padding(
-      padding: const EdgeInsets.all(6.5),
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.pushNamed(context, "/home");
-        },
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
-            const Color.fromARGB(200, 161, 183, 243),
-          ),
-        ),
-        child: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-            child: const Text(
-              "Regresar",
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            )),
-      ),
-    );
-  });
-}

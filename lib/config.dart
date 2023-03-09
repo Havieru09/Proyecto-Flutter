@@ -9,4 +9,5 @@ class Config {
   static const userAPI = "/usuarios";
   static const soliAPI2 = "/solicitudes2";
   static const tipoAPI = "/tipos";
+  static const aulaBloque = "/aulas_bloque";
 }

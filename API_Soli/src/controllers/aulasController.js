@@ -27,6 +27,27 @@ controller.list = (req, res) => {
   });
 };
 
+controller.listAll = (req, res) => {
+  const query = `SELECT a.id, a.nombre_aulas, b.id as 'bloque_id', b.nombre_bloque
+  FROM aulas as a
+  INNER JOIN bloques as b ON a.bloque_id = b.id`;
+  mysqlConnection.query(query, (err, solicitud) => {
+      if (err) {
+          return res.json({
+              code: 500,
+              error: true,
+              message: err,
+          });
+      }
+      res.json({
+          status_code: 202,
+          message: "Listado",
+          data: solicitud,
+      });
+  });
+};
+
+
 //Insert
 controller.save = (req, res) => {
     const { nombre_aulas } = req.body;
