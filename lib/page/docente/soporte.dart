@@ -158,11 +158,25 @@ class _soporteState extends State<soporte> {
           ),
         ),
 
-        Row(
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (bloquesList.isEmpty)
-                const Center(child: CircularProgressIndicator())
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: DropdownButton<String>(
+                    value: null,
+                    items: [
+                      DropdownMenuItem(
+                        value: null,
+                        child: Text('De momento no hay edificios disponibles',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                    onChanged: null,
+                  ),
+                )
               else
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
@@ -187,7 +201,23 @@ class _soporteState extends State<soporte> {
                   ),
                 ),
               if (filteredAulasList.isEmpty)
-                const Center(child: CircularProgressIndicator())
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: DropdownButton<String>(
+                    value: null,
+                    items: [
+                      DropdownMenuItem(
+                        value: null,
+                        child: Text(bloquevalue == null
+                            ? 'Elige primero un edificio'
+                            : 'De momento no hay aulas disponibles',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                    onChanged: null,
+                  ),
+                )
               else
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
@@ -242,7 +272,7 @@ class _soporteState extends State<soporte> {
             right: 20,
             left: 20,
             bottom: 10,
-            top: 10,
+            top: 0,
           ),
           child: FormHelper.inputFieldWidget(
             context,
@@ -284,7 +314,8 @@ class _soporteState extends State<soporte> {
                   (bloquevalue == 'B' && aulavalue == null) ||
                   (bloquevalue == 'C' && aulavalue == null) ||
                   (bloquevalue == 'D' && aulavalue == null) ||
-                  (bloquevalue == 'E' && aulavalue == null)) {
+                  (bloquevalue == 'E' && aulavalue == null) ||
+                  (tipovalue == null)) {
                 FormHelper.showSimpleAlertDialog(
                   context,
                   "Error detectado",

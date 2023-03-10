@@ -161,11 +161,25 @@ class _openState extends State<open> {
 
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (bloquesList.isEmpty)
-                const Center(child: CircularProgressIndicator())
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: DropdownButton<String>(
+                    value: null,
+                    items: [
+                      DropdownMenuItem(
+                        value: null,
+                        child: Text('De momento no hay edificios disponibles',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                    onChanged: null,
+                  ),
+                )
               else
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
@@ -184,13 +198,29 @@ class _openState extends State<open> {
                         filteredAulasList = Aula_bloquesList.where((aula) =>
                                 aula['nombre_bloque'].toString() == bloquevalue)
                             .toList();
-                            aulavalue = null;
+                        aulavalue = null;
                       });
                     },
                   ),
                 ),
               if (filteredAulasList.isEmpty)
-                const Center(child: CircularProgressIndicator())
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: DropdownButton<String>(
+                    value: null,
+                    items: [
+                      DropdownMenuItem(
+                        value: null,
+                        child: Text(bloquevalue == null
+                            ? 'Elige primero un edificio'
+                            : 'De momento no hay aulas disponibles',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                    onChanged: null,
+                  ),
+                )
               else
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
@@ -244,7 +274,7 @@ class _openState extends State<open> {
                 solimodel!.estado = estado;
                 solimodel!.fecha_inicial = fecha_inicial;
                 solimodel!.fecha_final = fecha_final;
-                
+
                 print(solimodel!.toJson());
 
                 setState(() {
@@ -382,4 +412,3 @@ class _openState extends State<open> {
     }
   }
 }
-

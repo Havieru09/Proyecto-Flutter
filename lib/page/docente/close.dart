@@ -159,11 +159,25 @@ List Aula_bloquesList = [];
 
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (bloquesList.isEmpty)
-                const Center(child: CircularProgressIndicator())
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: DropdownButton<String>(
+                    value: null,
+                    items: [
+                      DropdownMenuItem(
+                        value: null,
+                        child: Text('De momento no hay edificios disponibles',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                    onChanged: null,
+                  ),
+                )
               else
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
@@ -188,7 +202,23 @@ List Aula_bloquesList = [];
                   ),
                 ),
               if (filteredAulasList.isEmpty)
-                const Center(child: CircularProgressIndicator())
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: DropdownButton<String>(
+                    value: null,
+                    items: [
+                      DropdownMenuItem(
+                        value: null,
+                        child: Text(bloquevalue == null
+                            ? 'Elige primero un edificio'
+                            : 'De momento no hay aulas disponibles',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                    onChanged: null,
+                  ),
+                )
               else
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
