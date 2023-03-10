@@ -2,6 +2,7 @@
 
 <?php if (count($aulas) === 0) { ?>
     <p class="no-solicitudes">No hay Salones aun</p>
+    <button class="nuevoSalon boton" id="agregar-salon" onclick="envioSalon()">Agregar Salon</button>
 <?php } else { ?>
 
     <button class="nuevoSalon boton" id="agregar-salon" onclick="envioSalon()">Agregar Salon</button>

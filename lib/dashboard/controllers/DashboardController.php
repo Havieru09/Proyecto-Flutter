@@ -117,11 +117,12 @@ class DashboardController
         session_start();
         isAuth();
         $aulas = [];
-        $url = 'http://localhost:3000/aulas';
+        $url = 'http://localhost:3000/aulasAll';
         $data = file_get_contents($url);
         $obj = json_decode($data);
         // debuguear($obj);
         $aulas = $obj->aulas;
+        // debuguear($aulas);
         $seleccionado = "";
         $router->render('dashboard/salon/salon', [
             'titulo' => 'Gestionar Salones',
@@ -137,10 +138,11 @@ class DashboardController
 
             $obj = json_decode($data);
             $resultado = $obj->aulas;
-            $salon = array_shift($resultado);            
+            $salon = array_shift($resultado);
             $respuesta = [
                 'id' => $salon->id,
                 'salon' => $salon->nombre_aulas,
+                'bloque' => $salon->nombre_bloque,
                 'remitente' => 'salon'
             ];
             echo json_encode($respuesta);
@@ -186,4 +188,25 @@ class DashboardController
 
         }
     }
+    // public static function getBloques(Router $router)
+    // {
+
+    //     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    //         $id = $_POST['id'];
+    //         $url = "http://localhost:3000/bloques";
+    //         $data = file_get_contents($url);
+    //         // debuguear($id);
+    //         $obj = json_decode($data);
+    //         $resultado = $obj->bloques;
+    //         $bloque = array_shift($resultado);     
+    //         // debuguear($bloque);       
+    //         $respuesta = [
+    //             'id' => $bloque->id,
+    //             'bloque' => $bloque->nombre_bloque,
+    //             'remitente' => 'bloque'
+    //         ];
+    //         echo json_encode($respuesta);
+
+    //     }
+    // }
 }

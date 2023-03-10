@@ -26,6 +26,7 @@ $router->get('/crear-salon',[DashboardController::class, 'crear_salon']);
 
 $router->get('/bloque',[DashboardController::class, 'bloque']);
 $router->post('/bloque',[DashboardController::class, 'getBloque']);
+$router->get('/bloque_select',[DashboardController::class, 'getBloques']);
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
 $router->comprobarRutas();

@@ -14,6 +14,7 @@ router.put('/aulas/:id',aulasController.update);
 router.get('/aulas/:id',aulasController.listOne);
 router.get('/aulas_nombre/:nombre_aulas',aulasController.listOneSalon);
 router.get('/aulas_bloque',aulasController.listAll);
+router.get('/aulasAll',aulasController.listAll2);
 //bloques
 router.get('/bloques',bloquesController.list);
 router.post('/bloques',bloquesController.save);
