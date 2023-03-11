@@ -11,10 +11,13 @@ class DashboardController
     public static function dashboard(Router $router){
         session_start();
         isAuth();
-        
-        // debuguear($solicitudes);
+        $url = 'http://localhost:3000/tipos';
+        $data = file_get_contents($url);
+        $obj = json_decode($data);
+        $tipos=$obj->tipos;
         $router->render('dashboard/dashboard', [
-            'titulo' => 'Dashboard'
+            'titulo' => 'Dashboard',
+            'tipos' => $tipos
         ]);
     }
     public static function index(Router $router){
@@ -50,6 +53,8 @@ class DashboardController
                 'tipo' => $solicitud->tipo,
                 'detalle' => $solicitud->detalle,
                 'estado' => $solicitud->estado,
+                'fecha_inicial' => $solicitud->fecha_inicial,
+                'fecha_final' => $solicitud->fecha_final,
                 'remitente' => 'soporte'
             ];
             echo json_encode($respuesta);

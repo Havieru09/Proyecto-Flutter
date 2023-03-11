@@ -7,10 +7,17 @@
         margin-right: 2rem;
     }
 }
+.contenedorGraficos{
+    display: flex;
+
+}
 
 .chart{
-    width: 80%;
-    height: 60rem;
+    display: flex;
+    justify-content: start;
+    // margin: 4rem auto;
+    width: 90%;
+    height: 50rem;
 }
 .listado-solicitudes {
     list-style: none;

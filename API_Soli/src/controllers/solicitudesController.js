@@ -91,12 +91,10 @@ controller.listTwo = (req, res) => {
 
 //Select by id
 controller.listByDate = (req, res) => {
-    const { fecha_inicial, fecha_final, tipo="" } = req.body;
-    if (tipo!="") {
-        var query = `SELECT b.nombre_tipo,count(a.id) num, fecha_inicial FROM solicitud a,tipo b where fecha_inicial BETWEEN '${fecha_inicial}' and '${fecha_final}' and b.nombre_tipo='${tipo}' GROUP by b.nombre_tipo, a.fecha_inicial;`;
-    }else{
-        var query = `SELECT b.nombre_tipo,count(a.id) num, fecha_inicial FROM solicitud a,tipo b where fecha_inicial BETWEEN '${fecha_inicial}' and '${fecha_final}' GROUP by b.nombre_tipo, a.fecha_inicial;`;
-    }
+    const { fecha_inicial, fecha_final, id } = req.body;
+    // var query = `SELECT b.nombre_tipo,count(a.id) num, fecha_inicial FROM solicitud a,tipo b where fecha_inicial BETWEEN '${fecha_inicial}' and '${fecha_final}' and b.nombre_tipo='${tipo}' GROUP by b.nombre_tipo, a.fecha_inicial;`;
+    var query = `SELECT fecha_inicial fecha, b.nombre_tipo tipo, count(a.id) cantidad FROM solicitud a INNER join tipo b on a.tipo_id=b.id where a.fecha_inicial BETWEEN '${fecha_inicial}' and '${fecha_final}' and a.tipo_id= ${id} GROUP by b.nombre_tipo, a.fecha_inicial;`;
+
     // const query = `SELECT b.nombre_tipo,count(a.id) num FROM solicitud a,tipo b where fecha_inicial 
     // BETWEEN '${fecha_inicial}' and '${fecha_final}' and b.id=a.tipo_id GROUP by b.nombre_tipo`;
     mysqlConnection.query(query, (err, solicitud) => {
@@ -110,7 +108,29 @@ controller.listByDate = (req, res) => {
         res.json({
             status_code: 202,
             message: "Listado",
-            data: solicitud,
+            solicitudes: solicitud,
+        });
+    });
+};
+controller.listByAll = (req, res) => {
+
+    // var query = `SELECT b.nombre_tipo,count(a.id) num, fecha_inicial FROM solicitud a,tipo b where fecha_inicial BETWEEN '${fecha_inicial}' and '${fecha_final}' GROUP by b.nombre_tipo, a.fecha_inicial;`;
+    var query = `SELECT fecha_inicial fecha,b.nombre_tipo tipo,count(a.id) cantidad FROM solicitud a,tipo b where b.id = a.tipo_id GROUP by b.nombre_tipo;`;
+
+    // const query = `SELECT b.nombre_tipo,count(a.id) num FROM solicitud a,tipo b where fecha_inicial 
+    // BETWEEN '${fecha_inicial}' and '${fecha_final}' and b.id=a.tipo_id GROUP by b.nombre_tipo`;
+    mysqlConnection.query(query, (err, solicitud) => {
+        if (err) {
+            return res.json({
+                code: 500,
+                error: true,
+                message: err,
+            });
+        }
+        res.json({
+            status_code: 202,
+            message: "Listado",
+            solicitudes: solicitud,
         });
     });
 };
@@ -137,7 +157,7 @@ controller.update = (req, res) => {
             message: "Solicitud actualizada",
             data: solicitud,
         });
-    }); 
+    });
 };
 
 
@@ -186,5 +206,4 @@ module.exports = controller;
 
 
 
-	
-	
+
