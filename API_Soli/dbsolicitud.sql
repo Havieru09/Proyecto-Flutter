@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1:3308
--- Tiempo de generación: 12-03-2023 a las 17:18:10
--- Versión del servidor: 5.7.36
--- Versión de PHP: 7.4.26
+-- Servidor: 127.0.0.1:3306
+-- Tiempo de generación: 12-03-2023 a las 21:25:50
+-- Versión del servidor: 5.7.40
+-- Versión de PHP: 8.0.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `aulas`;
 CREATE TABLE IF NOT EXISTS `aulas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre_aulas` varchar(15) NOT NULL,
+  `nombre_aulas` varchar(60) NOT NULL,
   `bloque_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_aula_idx` (`bloque_id`)
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `rol` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre_rol` varchar(25) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `rol`
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `solicitud` (
   KEY `FK_aula_id` (`aula_id`),
   KEY `FK_usuario_id` (`usuario_id`),
   KEY `FK_tipo_id` (`tipo_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `solicitud`
@@ -124,7 +124,11 @@ INSERT INTO `solicitud` (`id`, `usuario_id`, `aula_id`, `tipo_id`, `detalle`, `e
 (1, 9, 13, 3, 'Abrir puerta', 'terminado', '2023-03-01', '2023-03-09'),
 (2, 9, 13, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09'),
 (3, 9, 14, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09'),
-(4, 9, 15, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09');
+(4, 9, 15, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09'),
+(51, 10, 13, 3, 'Abrir puerta', 'pendiente', '2023-03-12', '2023-03-12'),
+(52, 10, 16, 1, 'no funciona el proyector', 'pendiente', '2023-03-12', '2023-03-12'),
+(53, 10, 17, 2, 'no enciendo el computador del docente', 'pendiente', '2023-03-12', '2023-03-12'),
+(54, 10, 16, 2, 'se averio la pc', 'pendiente', '2023-03-12', '2023-03-12');
 
 -- --------------------------------------------------------
 
@@ -158,17 +162,17 @@ INSERT INTO `tipo` (`id`, `nombre_tipo`) VALUES
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(25) NOT NULL,
-  `apellido` varchar(25) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `apellido` varchar(45) NOT NULL,
   `cedula` varchar(10) NOT NULL,
-  `direccion` varchar(25) NOT NULL,
+  `direccion` varchar(100) NOT NULL,
   `usuario` varchar(25) NOT NULL,
   `correo` varchar(25) NOT NULL,
   `psw` varchar(25) NOT NULL,
   `rol_id` int(12) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_rol_id` (`rol_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `usuario`
@@ -177,7 +181,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 INSERT INTO `usuario` (`id`, `nombre`, `apellido`, `cedula`, `direccion`, `usuario`, `correo`, `psw`, `rol_id`) VALUES
 (8, 'Juan', 'Valdez', '0934567899', 'Av Orellana', 'juan', 'juan@ups.edu.ec', '123', 1),
 (9, 'Joe', 'Llerena', '0934567899', 'Av Orellana', 'joelle', 'joe@ups.edu.ec', '123', 3),
-(10, 'Javier', 'Murillo', '0952903839', 'Av Orellana', 'havieru', 'jmurillor2@ups.edu.ec', '123', 2);
+(10, 'Javier', 'Murillo', '0952903839', 'Av Orellana', 'havieru', 'jmurillor2@ups.edu.ec', '123', 2),
+(11, 'Josue Gabriel', 'Montesdeoca Soriano', '0927599001', 'Guasmo central coop. los últimos seremos los primeros mz c villa 14', 'jmontesdeocas', 'jmontesdeocas@ups.edu.ec', '123', 4);
 
 --
 -- Restricciones para tablas volcadas
