@@ -4,7 +4,7 @@ const controller = {};
 //Select
 controller.list = (req, res) => {
   const { usuario, psw, rol } = req.body;
-  const query = `SELECT * FROM usuario where rol <> "admin"`;
+  const query = `SELECT * FROM usuario where rol_id <> '1'`;
   mysqlConnection.query(query, [usuario, psw, rol], (
     err,
     rows
@@ -49,8 +49,9 @@ controller.listOne = (req, res) => {
 
 //Select user by correo
 controller.listOneCorreo = (req, res) => {
-  const { correo } = req.params;
-  const query = `SELECT usuario FROM usuario WHERE correo = '${correo}'`;
+  const { parametro } = req.params;
+  const [correo, cedula] = parametro.split('&');
+  const query = `SELECT usuario FROM usuario WHERE correo = '${correo}' or cedula = '${cedula}'`;
   mysqlConnection.query(query, (err, rows) => {
     if (err) {
       return res.json({
@@ -69,10 +70,10 @@ controller.listOneCorreo = (req, res) => {
 
 //Insert
 controller.save = (req, res) => {
-  const { usuario, correo, psw, rol } = req.body;
-  const query = `INSERT INTO usuario(usuario, correo, psw, rol)
-    VALUES(?,?,?,?)`;
-  mysqlConnection.query(query, [usuario, correo, psw, rol], (err) => {
+  const { nombre, apellido, cedula, direccion, usuario, correo, psw, rol_id } = req.body;
+  const query = `INSERT INTO usuario(nombre, apellido, cedula, direccion, usuario, correo, psw, rol_id)
+    VALUES(?,?,?,?,?,?,?,?)`;
+  mysqlConnection.query(query, [nombre, apellido, cedula, direccion, usuario, correo, psw, rol_id], (err) => {
     if (!err) {
       res.json({
         error: false,
@@ -90,10 +91,10 @@ controller.save = (req, res) => {
 
 //update
 controller.update = (req, res) => {
-  const { usuario, psw, rol } = req.body;
+  const { usuario, psw, rol_id } = req.body;
   const { id } = req.params;
-  const query = `UPDATE usuario SET usuario = '${usuario}', psw = '${psw}', rol = '${rol}' WHERE id = '${id}'`;
-  mysqlConnection.query(query, [usuario, psw, rol, id], (err) => {
+  const query = `UPDATE usuario SET usuario = '${usuario}', psw = '${psw}', rol_id = '${rol_id}' WHERE id = '${id}'`;
+  mysqlConnection.query(query, [usuario, psw, rol_id, id], (err) => {
     if (!err) {
       res.json({
         error: false,
