@@ -90,8 +90,9 @@ CREATE TABLE IF NOT EXISTS `rol` (
 
 INSERT INTO `rol` (`id`, `nombre_rol`) VALUES
 (1, 'admin'),
-(2, 'soporte'),
-(3, 'docente');
+(2, 'cliente'),
+(3, 'mantenimiento'),
+(4, 'laboratorista');
 
 -- --------------------------------------------------------
 
