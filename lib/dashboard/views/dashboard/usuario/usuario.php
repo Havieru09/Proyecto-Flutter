@@ -4,23 +4,22 @@
 <?php if (count($usuarios) === 0) { ?>
     <p class="no-solicitudes">No hay usuarios aun</p>
 <?php } else { ?>
+    <?php //debuguear($usuarios)?>
     <div class="contenedor-opciones">
         <button class="boton nuevoUser" id="agregar-Usuario" onclick="envioUsuario()">Agregar Usuario</button>
         <form action="/usuarios" class="buscador" method="post">
             <select name="roles">
                 <option class="opciones" value="todos">TODOS</option>
-                <option class="opciones" value="soporte" <?php echo $resultado = "soporte" == $seleccionado ? 'selected' : '' ?>>SOPORTE</option>
-                <option class="opciones" value="docente" <?php echo $resultado = "docente" == $seleccionado ? 'selected' : '' ?>>DOCENTE</option>
-                <!-- <?php foreach ($selects as $select) { ?>
-                    <option class="opciones" value="<?php echo $select->rol ?>" <?php echo $resultado = $select->rol == $seleccionado ? 'selected' : '' ?>><?php echo $select->rol ?></option>
-                <?php } ?> -->
+                <?php foreach ($roles as $rol) { ?>
+                    <option class="opciones" value="<?php echo $rol->id ?>" ><?php echo strtoupper($rol->nombre_rol)?></option>
+                <?php } ?>
             </select>
             <input type="submit" value="buscar">
         </form>
     </div>
     <ul class="listado-solicitudes">
         <?php foreach ($usuarios as $usuario) { ?>
-            <div class="card usuarios" >
+            <div class="card usuarios">
                 <li>
                     <span class="titulo">
                         Usuario:
@@ -34,7 +33,7 @@
 
                     </div>
                     <label>
-                        <?php echo $usuario->rol ?>
+                        <?php echo $usuario->nombre_rol ?>
                     </label>
                     <div class="id">
                         <?php echo $usuario->id ?>

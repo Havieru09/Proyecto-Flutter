@@ -69,9 +69,11 @@ class DashboardController
         isAuth();
         $usuarios = [];
         $url = 'http://localhost:3000/usuarios';
-        $data = file_get_contents($url);
-        $obj = json_decode($data);
+        $obj = json_decode(file_get_contents($url));
         $usuarios = $obj->usuario;
+        $url_rol = 'http://localhost:3000/usuarios_rol'; 
+        $obj = json_decode(file_get_contents($url_rol));
+        $rol= $obj->rol;
         $seleccionado = "";
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($_POST['roles'] == 'docente') {
@@ -90,7 +92,7 @@ class DashboardController
         $router->render('dashboard/usuario/usuario', [
             'titulo' => 'Gestionar Docentes',
             'usuarios' => $usuarios,
-            'selects' => $obj->usuario,
+            'roles' => $rol,
             'seleccionado' => $seleccionado
         ]);
     }

@@ -37,5 +37,6 @@ router.get('/usuarios2/:parametro', usuariosController.listOneCorreo);
 router.get('/usuarios/:id',usuariosController.listOne);
 router.post('/usuarios',usuariosController.save);
 router.put('/usuarios/:id',usuariosController.update);
+router.get('/usuarios_rol',usuariosController.listRol);
 
 module.exports = router;

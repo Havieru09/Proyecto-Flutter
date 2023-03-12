@@ -4,7 +4,7 @@ const controller = {};
 //Select
 controller.list = (req, res) => {
   const { usuario, psw, rol } = req.body;
-  const query = `SELECT * FROM usuario where rol_id <> '1'`;
+  const query = `SELECT *, b.nombre_rol from usuario a INNER join rol b on a.rol_id=b.id where a.rol_id <> '1';`;
   mysqlConnection.query(query, [usuario, psw, rol], (
     err,
     rows
@@ -26,6 +26,33 @@ controller.list = (req, res) => {
     }
   });
 };
+
+controller.listRol = (req, res) => {
+  const { usuario, psw, rol } = req.body;
+  const query = `SELECT * from rol where id <> '1';`;
+  mysqlConnection.query(query, [usuario, psw, rol], (
+    err,
+    rows
+  ) => {
+    if (!err) {
+      res.json({
+        status_code: 202,
+        message: "Listado",
+        rol: rows,
+        //authData
+      });
+      console.log(rows);
+    } else {
+      res.json({
+        code: 500,
+        error: true,
+        message: err,
+      });
+    }
+  });
+};
+
+
 
 //Select by id
 controller.listOne = (req, res) => {

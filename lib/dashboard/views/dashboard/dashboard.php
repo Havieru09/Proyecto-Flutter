@@ -5,7 +5,8 @@
     <!-- <input type="date"> -->
   </div>
 <div class="contenedor-sm">
-  
+  <br/>
+  <h3>Porcentajes de solicitudes</h3>
   <div id="chart_div" class="chart" onload="mostarGrafico()"></div>
   <h3>Filtra las solicitudes que desee</h3>
   <form class="formulario">
