@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-int finalName = 0;
+String finalName = '';
 String titulo= '';
 
 class SplashScreenSoporte extends StatefulWidget {
@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreenSoporte> {
     getValidationData().whenComplete(() async {
       Timer(
           Duration(seconds: 2),
-          () => finalName == null || finalName == 0
+          () => finalName == null || finalName == ''
               ? Navigator.pushReplacementNamed(context, '/')
               : Navigator.pushReplacementNamed(context, '/second'));
     });
@@ -30,12 +30,12 @@ class _SplashScreenState extends State<SplashScreenSoporte> {
   Future getValidationData() async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
-    var obtName = sharedPreferences.getInt('name');
+    var obtName = sharedPreferences.getString('name');
     if ('$finalName' == null) {
     }
     // Si no hay ningún valor guardado, utilizamos una cadena vacía
     setState(() {
-      finalName = obtName! as int;
+      finalName = obtName! ;
     });
     print(finalName);
   }

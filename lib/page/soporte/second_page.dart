@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_plataforma/models/solicitudes2.dart';
 import 'package:proyecto_plataforma/widgets/cabeceraBack.dart';
 import 'package:proyecto_plataforma/widgets/footer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,8 +24,8 @@ class _SecondPageState extends State<SecondPage> {
       try {
         final SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-        var obtName = sharedPreferences.getInt('name');
-        if (obtName == null || obtName == 0) {
+        var obtName = sharedPreferences.getString('name');
+        if (obtName == null || obtName == '') {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -50,7 +51,7 @@ class _SecondPageState extends State<SecondPage> {
         }
         // Si no hay ningún valor guardado, utilizamos una cadena vacía
         setState(() {
-          finalName = obtName! as int;
+          finalName = obtName!;
         });
       } on Exception catch (e) {
         print(e);
@@ -93,10 +94,10 @@ return Scaffold(
 
   Widget loadUsers() {
     return FutureBuilder(
-      future: ApiService.getSolicitudes(),
+      future: ApiService.getSolicitudes3(SolicitudModel2(tipo: finalName == 'laboratorista'? 'mantenimiento' : 'laboratorista')),
       builder: (
         BuildContext context,
-        AsyncSnapshot<List<SolicitudModel>?> model,
+        AsyncSnapshot<List<SolicitudModel2>?> model,
       ) {
         //print(model.data);
         if (model.hasData) {
@@ -127,7 +128,7 @@ return Scaffold(
                 itemBuilder: (context, index) {
                   return listar(
                     model: users[index],
-                    onDelete: (SolicitudModel model) {
+                    onDelete: (SolicitudModel2 model) {
                       setState(() {
                         isApiCallProcess = true;
                       });

@@ -184,6 +184,38 @@ class ApiService {
     }
   }
 
+  static Future<List<SolicitudModel2>?> getSolicitudes3(
+    SolicitudModel2 model,
+  ) async {
+    var url = Uri.http(
+      Config.apiURL,
+      Config.soliAPI3 + "/" + model.tipo.toString(),
+    );
+    print(url);
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      var response = await client.get(
+        url,
+        headers: requestHeaders,
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        return solicitudesFromJson2(data["data"]);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+
   static Future<bool> deleteUser(userId) async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',

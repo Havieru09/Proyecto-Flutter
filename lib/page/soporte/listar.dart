@@ -4,12 +4,14 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:proyecto_plataforma/models/aulas.dart';
+import 'package:proyecto_plataforma/models/solicitudes2.dart';
 import 'package:proyecto_plataforma/page/soporte/third_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/solicitud.dart';
 
 class listar extends StatefulWidget {
-  final SolicitudModel? model;
+  final SolicitudModel2? model;
+  
   final Function? onDelete;
 
   const listar({
@@ -22,7 +24,7 @@ class listar extends StatefulWidget {
   _MyApiState createState() => _MyApiState();
 }
 
-int finalName = 0;
+String finalName = '';
 
 class _MyApiState extends State<listar> {
   @override
@@ -31,8 +33,8 @@ class _MyApiState extends State<listar> {
       try {
         final SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-        var obtName = sharedPreferences.getInt('name');
-        if (obtName == null || obtName == 0) {
+        var obtName = sharedPreferences.getString('name');
+        if (obtName == null || obtName == '') {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -58,7 +60,8 @@ class _MyApiState extends State<listar> {
         }
         // Si no hay ningún valor guardado, utilizamos una cadena vacía
         setState(() {
-          finalName = obtName! as int;
+          finalName = obtName! ;
+          //print(widget.model!.id);
         });
       } on Exception catch (e) {
         print(e);
@@ -83,7 +86,7 @@ class _MyApiState extends State<listar> {
 
         // },
         ListTile(
-          title: Text("Solicitud: ${widget.model!.tipo_id!}"),
+          title: Text("Solicitud: ${widget.model!.tipo!}"),
           trailing: Column(
             children: [
               Icon(

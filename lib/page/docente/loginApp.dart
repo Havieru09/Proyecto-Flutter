@@ -32,12 +32,14 @@ class _loginApp extends State<loginApp> {
   final _psw = TextEditingController();
   String name = "";
   String dato = "";
-  String rol = "";
+  int rol = 0;
+  String nameRol = '';
   int id = 0;
   String correo = '';
   List<String> _correo = [];
   List<String> _contra = [];
-  List<String> _rol = [];
+  List<int> _rol = [];
+  List<String> _nameRol = [];
   List<int> _id = [];
 
   @override
@@ -168,11 +170,13 @@ class _loginApp extends State<loginApp> {
             UserList.forEach((objeto) {
               final correo = objeto['correo'];
               final password = objeto['psw'];
-              final rol = objeto['rol'];
+              final rol = objeto['rol_id'];
               final idUser = objeto['id'];
+              final nombre_rol = objeto['nombre_rol'];
               _correo.add(correo);
               _contra.add(password);
               _rol.add(rol);
+              _nameRol.add(nombre_rol);
               _id.add(idUser);
             });
 
@@ -184,8 +188,9 @@ class _loginApp extends State<loginApp> {
                 existe = true;
                 name = _correo[i];
                 id = _correo[i] == dato ? _id[i] : 0;
-                rol = (_correo[i] == dato ? _rol[i] : null)!;
-                print(rol);
+                rol = (_correo[i] == dato ? _rol[i] : 0);
+                nameRol = (_correo[i] == dato ? _nameRol[i] : '');
+                //print(nameRol);
                 break;
               } else {
                 existe = false;
@@ -193,15 +198,15 @@ class _loginApp extends State<loginApp> {
             }
 
             if (existe) {
-              if (rol == 'docente') {
+              if (rol == 2) {
                 final SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
                 sharedPreferences.setInt('name', id);
                 Navigator.pushNamed(context, "/splash");
-              } else if (rol == 'soporte') {
+              } else if (rol == 3 || rol == 4 ) {
                 final SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
-                sharedPreferences.setInt('name', id);
+                sharedPreferences.setString('name', nameRol);
                 Navigator.pushNamed(context, "/splashSoporte");
               } else {
                 showDialog(

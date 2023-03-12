@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:proyecto_plataforma/widgets/cabeceraBack.dart';
 import 'package:proyecto_plataforma/widgets/footer.dart';
 
-int finalName = 0;
+String finalName = '';
 
 class ThirdPage extends StatefulWidget {
   final String? contacts;
@@ -32,7 +32,7 @@ class _ThirdPageState extends State<ThirdPage> {
       try {
         final SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-        var obtName = sharedPreferences.getInt('name');
+        var obtName = sharedPreferences.getString('name');
         if (obtName == null || obtName == 0) {
           showDialog(
             context: context,
@@ -59,7 +59,7 @@ class _ThirdPageState extends State<ThirdPage> {
         }
         // Si no hay ningún valor guardado, utilizamos una cadena vacía
         setState(() {
-          finalName = obtName! as int;
+          finalName = obtName! ;
         });
       } on Exception catch (e) {
         print(e);
@@ -68,6 +68,7 @@ class _ThirdPageState extends State<ThirdPage> {
 
     super.initState();
     final jsonResponse = json.decode(widget.contacts!) as Map<String, dynamic>;
+    print (jsonResponse);
   }
 
   @override
@@ -85,7 +86,7 @@ class _ThirdPageState extends State<ThirdPage> {
                 ),
               ),
             ),
-            const footer(),
+            //const footer(),
           ],
         ),
       ),
@@ -189,7 +190,7 @@ class _ThirdPageState extends State<ThirdPage> {
                     ),
                   ),
                   Text(
-                    " ${jsonResponse['tipo_id']}",
+                    " ${jsonResponse['tipo']}",
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 30.0,
@@ -253,172 +254,177 @@ class _ThirdPageState extends State<ThirdPage> {
     String id = "${jsonResponse['id']}";
 
     String apiUrl = "http://127.0.0.1:3000/solicitudes/$id";
-    print(apiUrl);
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 0),
-      child: Wrap(
-        spacing: 50,
-        children: [
-          FilledButton.icon(
-              onPressed: () async {
-                var response = await http.put(
-                  Uri.parse(apiUrl),
-                  headers: {
-                    "Content-Type": "application/json",
+    //print(apiUrl);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 0),
+        child: Wrap(
+          spacing: 5,
+          children: [
+            Visibility(
+              visible: jsonResponse['estado'] != "en_camino" ,
+              child: FilledButton.icon(
+                  onPressed: () async {
+                    var response = await http.put(
+                      Uri.parse(apiUrl),
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: json.encode({
+                        "estado": "en_camino",
+                        "fecha_final": DateTime.now().toString(),
+                        
+                        //
+                      }),
+                    );
+                    if (response.statusCode == 200) {
+                      // ignore: use_build_context_synchronously
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Solicitud Actualizada'),
+                            content: const Text(
+                                'La Solicitud ha sido actualizada con exito'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Cerrar'),
+                                onPressed: () {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/second',
+                                    (route) => false,
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Error'),
+                            content: const Text(
+                                'Lo sentimos, hubo un problema al actualizar la solicitud intente nuevamente'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Cerrar'),
+                                onPressed: () {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/second',
+                                    (route) => false,
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
-                  body: json.encode({
-                    "estado": "en_camino",
-                    "fecha_final": DateTime.now().toString(),
-                    
-                    //
-                  }),
-                );
-                if (response.statusCode == 200) {
-                  // ignore: use_build_context_synchronously
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Solicitud Actualizada'),
-                        content: const Text(
-                            'La Solicitud ha sido actualizada con exito'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Cerrar'),
-                            onPressed: () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                '/second',
-                                (route) => false,
-                              );
-                            },
-                          ),
-                        ],
-                      );
+                  icon: const Icon(
+                    Icons.directions_walk_outlined,
+                    size: 30,
+                  ),
+                  label: const Text(
+                    "En camino",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Color(0xff231F47)),
+                    foregroundColor: MaterialStatePropertyAll(Colors.white),
+                    padding: MaterialStatePropertyAll(EdgeInsets.all(15)),
+                  )),
+            ),
+            FilledButton.icon(
+                onPressed: () async {
+                  var response = await http.put(
+                    Uri.parse(apiUrl),
+                    headers: {
+                      "Content-Type": "application/json",
                     },
+                    body: json.encode({
+                      "estado": "terminado",
+                      "fecha_final": DateTime.now().toString(),
+    
+                      //
+                    }),
                   );
-                } else {
-                  // ignore: use_build_context_synchronously
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Error'),
-                        content: const Text(
-                            'Lo sentimos, hubo un problema al actualizar la solicitud intente nuevamente'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Cerrar'),
-                            onPressed: () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                '/second',
-                                (route) => false,
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-              icon: const Icon(
-                Icons.directions_walk_outlined,
-                size: 30,
-              ),
-              label: const Text(
-                "En camino",
-                style: TextStyle(
-                  fontSize: 18,
+                  if (response.statusCode == 200) {
+                    // ignore: use_build_context_synchronously
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Solicitud Actualizada'),
+                          content: const Text(
+                              'La Solicitud ha sido actualizada con exito'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Cerrar'),
+                              onPressed: () {
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  '/second',
+                                  (route) => false,
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    // ignore: use_build_context_synchronously
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Error'),
+                          content: const Text(
+                              'Lo sentimos, hubo un problema al actualizar la solicitud intente nuevamente'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Cerrar'),
+                              onPressed: () {
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  '/second',
+                                  (route) => false,
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+                icon: const Icon(
+                  Icons.check_box_rounded,
+                  size: 30,
                 ),
-              ),
-              style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(Color(0xff231F47)),
-                foregroundColor: MaterialStatePropertyAll(Colors.white),
-                padding: MaterialStatePropertyAll(EdgeInsets.all(15)),
-              )),
-          FilledButton.icon(
-              onPressed: () async {
-                var response = await http.put(
-                  Uri.parse(apiUrl),
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: json.encode({
-                    "estado": "terminado",
-                    "fecha_final": DateTime.now().toString(),
-
-                    //
-                  }),
-                );
-                if (response.statusCode == 200) {
-                  // ignore: use_build_context_synchronously
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Solicitud Actualizada'),
-                        content: const Text(
-                            'La Solicitud ha sido actualizada con exito'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Cerrar'),
-                            onPressed: () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                '/second',
-                                (route) => false,
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                } else {
-                  // ignore: use_build_context_synchronously
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Error'),
-                        content: const Text(
-                            'Lo sentimos, hubo un problema al actualizar la solicitud intente nuevamente'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Cerrar'),
-                            onPressed: () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                '/second',
-                                (route) => false,
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-              icon: const Icon(
-                Icons.check_box_rounded,
-                size: 30,
-              ),
-              label: const Text(
-                "Realizado",
-                style: TextStyle(
-                  fontSize: 18,
+                label: const Text(
+                  "Realizado",
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
                 ),
-              ),
-              style: const ButtonStyle(
-                backgroundColor:
-                    MaterialStatePropertyAll(Color.fromARGB(255, 31, 71, 43)),
-                foregroundColor: MaterialStatePropertyAll(Colors.white),
-                padding: MaterialStatePropertyAll(EdgeInsets.all(15)),
-              )),
-        ],
+                style: const ButtonStyle(
+                  backgroundColor:
+                      MaterialStatePropertyAll(Color.fromARGB(255, 31, 71, 43)),
+                  foregroundColor: MaterialStatePropertyAll(Colors.white),
+                  padding: MaterialStatePropertyAll(EdgeInsets.all(15)),
+                )),
+          ],
+        ),
       ),
     );
   }

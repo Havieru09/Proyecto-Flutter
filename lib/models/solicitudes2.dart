@@ -2,6 +2,7 @@ List<SolicitudModel2> solicitudesFromJson2(dynamic str) =>
     List<SolicitudModel2>.from((str).map((x) => SolicitudModel2.fromJson(x)));
 
 class SolicitudModel2 {
+  late int? id;
   late String? usuario_id;
   late int? user;
   late String? bloque_id;
@@ -11,6 +12,7 @@ class SolicitudModel2 {
   late String? estado;
 
   SolicitudModel2({
+    this.id,
     this.usuario_id,
     this.user,
     this.bloque_id,
@@ -21,6 +23,7 @@ class SolicitudModel2 {
   });
 
   SolicitudModel2.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     usuario_id = json['usuario'];
     user = json['usuario_id'];
     bloque_id = json['nombre_bloque'];
@@ -32,6 +35,7 @@ class SolicitudModel2 {
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
+    _data['id'] = id;
     _data['usuario_id'] = usuario_id;
     _data['user'] = user;
     _data['bloque_id'] = bloque_id;

@@ -89,6 +89,37 @@ controller.listTwo = (req, res) => {
     });
 };
 
+controller.listThree = (req, res) => {
+    const { id } = req.params;
+    const query = `SELECT  s.id, b.nombre_bloque as 'nombre_bloque', a.nombre_aulas as 'nombre_aulas', u.usuario as 'usuario', 
+    t.nombre_tipo as 'tipo', detalle, estado 
+    FROM solicitud as s 
+    INNER JOIN aulas as a on s.aula_id = a.id
+    INNER JOIN bloques as b on a.bloque_id = b.id
+    INNER JOIN tipo as t on s.tipo_id = t.id
+    INNER JOIN usuario as u on s.usuario_id = u.id 
+    WHERE t.nombre_tipo <> '${id}'
+    ORDER BY CASE estado
+        WHEN 'pendiente' THEN 0
+        WHEN 'en_camino' THEN 1
+        ELSE 2
+    END asc, id asc`;
+    mysqlConnection.query(query, (err, solicitud) => {
+        if (err) {
+            return res.json({
+                code: 500,
+                error: true,
+                message: err,
+            });
+        }
+        res.json({
+            status_code: 202,
+            message: "Listado",
+            data: solicitud,
+        });
+    });
+};
+
 //Select by id
 controller.listByDate = (req, res) => {
     const { fecha_inicial, fecha_final, id } = req.body;

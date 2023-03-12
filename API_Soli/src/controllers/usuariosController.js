@@ -4,7 +4,7 @@ const controller = {};
 //Select
 controller.list = (req, res) => {
   const { usuario, psw, rol } = req.body;
-  const query = `SELECT *, b.nombre_rol from usuario a INNER join rol b on a.rol_id=b.id where a.rol_id <> '1';`;
+  const query = `SELECT a.*, b.nombre_rol from usuario a INNER join rol b on a.rol_id=b.id where a.rol_id <> '1';`;
   mysqlConnection.query(query, [usuario, psw, rol], (
     err,
     rows

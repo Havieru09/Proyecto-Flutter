@@ -27,6 +27,7 @@ router.get('/tipos', tiposController.list);
 router.get('/solicitudes',solicitudesController.list);
 router.get('/solicitudes/:id',solicitudesController.listOne);
 router.get('/solicitudes2/:id',solicitudesController.listTwo);
+router.get('/solicitudes3/:id',solicitudesController.listThree);
 router.post('/solicitudesDate',solicitudesController.listByDate);
 router.get('/solicitudesAll',solicitudesController.listByAll);
 router.post('/solicitudes',solicitudesController.create);
