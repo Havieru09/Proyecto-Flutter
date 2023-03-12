@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 09-03-2023 a las 15:18:49
--- Versión del servidor: 5.7.40
--- Versión de PHP: 8.0.26
+-- Servidor: 127.0.0.1:3308
+-- Tiempo de generación: 12-03-2023 a las 17:18:10
+-- Versión del servidor: 5.7.36
+-- Versión de PHP: 7.4.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -74,6 +74,28 @@ INSERT INTO `bloques` (`id`, `nombre_bloque`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `rol`
+--
+
+DROP TABLE IF EXISTS `rol`;
+CREATE TABLE IF NOT EXISTS `rol` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_rol` varchar(25) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `rol`
+--
+
+INSERT INTO `rol` (`id`, `nombre_rol`) VALUES
+(1, 'admin'),
+(2, 'soporte'),
+(3, 'docente');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `solicitud`
 --
 
@@ -91,30 +113,17 @@ CREATE TABLE IF NOT EXISTS `solicitud` (
   KEY `FK_aula_id` (`aula_id`),
   KEY `FK_usuario_id` (`usuario_id`),
   KEY `FK_tipo_id` (`tipo_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `solicitud`
 --
 
 INSERT INTO `solicitud` (`id`, `usuario_id`, `aula_id`, `tipo_id`, `detalle`, `estado`, `fecha_inicial`, `fecha_final`) VALUES
-(33, 6, 13, 3, 'Abrir puerta', 'terminado', '2023-03-01', '2023-03-09'),
-(34, 6, 13, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09'),
-(35, 6, 14, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09'),
-(36, 6, 15, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09'),
-(37, 6, 13, 3, 'Abrir puerta', 'pendiente', '2023-03-09', '2023-03-09'),
-(38, 6, 15, 3, 'Abrir puerta', 'pendiente', '2023-03-09', '2023-03-09'),
-(39, 6, 15, 3, 'Abrir puerta', 'pendiente', '2023-03-09', '2023-03-09'),
-(40, 6, 15, 4, 'Cerrar puerta', 'pendiente', '2023-03-09', '2023-03-09'),
-(41, 6, 13, 4, 'Cerrar puerta', 'pendiente', '2023-03-09', '2023-03-09'),
-(42, 6, 15, 1, 'no funciona la pc del profe', 'terminado', '2023-03-09', '2023-03-09'),
-(43, 6, 13, 1, 'no funciona la pc del profesor', 'pendiente', '2023-03-09', '2023-03-09'),
-(44, 6, 13, 3, 'Abrir puerta', 'pendiente', '2023-03-09', '2023-03-09'),
-(45, 6, 15, 4, 'Cerrar puerta', 'pendiente', '2023-03-09', '2023-03-09'),
-(46, 6, 15, 1, 'aaaa', 'pendiente', '2023-03-09', '2023-03-09'),
-(47, 6, 16, 3, 'Abrir puerta', 'pendiente', '2023-03-09', '2023-03-09'),
-(48, 6, 17, 4, 'Cerrar puerta', 'pendiente', '2023-03-09', '2023-03-09'),
-(49, 6, 15, 2, 'aaaaa', 'terminado', '2023-03-09', '2023-03-09');
+(1, 9, 13, 3, 'Abrir puerta', 'terminado', '2023-03-01', '2023-03-09'),
+(2, 9, 13, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09'),
+(3, 9, 14, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09'),
+(4, 9, 15, 3, 'Abrir puerta', 'terminado', '2023-03-09', '2023-03-09');
 
 -- --------------------------------------------------------
 
@@ -148,23 +157,26 @@ INSERT INTO `tipo` (`id`, `nombre_tipo`) VALUES
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(25) NOT NULL,
+  `apellido` varchar(25) NOT NULL,
+  `cedula` varchar(10) NOT NULL,
+  `direccion` varchar(25) NOT NULL,
   `usuario` varchar(25) NOT NULL,
   `correo` varchar(25) NOT NULL,
   `psw` varchar(25) NOT NULL,
-  `rol` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  `rol_id` int(12) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_rol_id` (`rol_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `usuario`, `correo`, `psw`, `rol`) VALUES
-(1, 'Pepe', 'pepe@ups.ec', '1234', 'admin'),
-(4, 'Joe Llerena', 'joe@ups.ec', '123', 'docente'),
-(5, 'Yajaira Bermeo', 'yaja@ups.ec', '123', 'soporte'),
-(6, 'Gabriel', 'jmontesdeocas@ups.ec', '123', 'docente'),
-(7, 'Javier', 'jmurillor2@ups.ec', '123', 'soporte');
+INSERT INTO `usuario` (`id`, `nombre`, `apellido`, `cedula`, `direccion`, `usuario`, `correo`, `psw`, `rol_id`) VALUES
+(8, 'Juan', 'Valdez', '0934567899', 'Av Orellana', 'juan', 'juan@ups.edu.ec', '123', 1),
+(9, 'Joe', 'Llerena', '0934567899', 'Av Orellana', 'joelle', 'joe@ups.edu.ec', '123', 3),
+(10, 'Javier', 'Murillo', '0952903839', 'Av Orellana', 'havieru', 'jmurillor2@ups.edu.ec', '123', 2);
 
 --
 -- Restricciones para tablas volcadas
@@ -183,6 +195,13 @@ ALTER TABLE `solicitud`
   ADD CONSTRAINT `FK_aula_id` FOREIGN KEY (`aula_id`) REFERENCES `aulas` (`id`),
   ADD CONSTRAINT `FK_tipo_id` FOREIGN KEY (`tipo_id`) REFERENCES `tipo` (`id`),
   ADD CONSTRAINT `FK_usuario_id` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`);
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `FK_rol_id` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`),
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
