@@ -33,7 +33,7 @@ router.post('/solicitudes',solicitudesController.create);
 router.put('/solicitudes/:id',solicitudesController.update);
 //usuarios
 router.get('/usuarios',usuariosController.list);
-router.get('/usuarios2/:correo', usuariosController.listOneCorreo);
+router.get('/usuarios2/:parametro', usuariosController.listOneCorreo);
 router.get('/usuarios/:id',usuariosController.listOne);
 router.post('/usuarios',usuariosController.save);
 router.put('/usuarios/:id',usuariosController.update);
