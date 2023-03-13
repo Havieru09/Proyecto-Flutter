@@ -8,9 +8,7 @@
         <a class="boton mostrarDash" id="agregar-Usuario" href="/dashboard">Mostar dashboard</a>
         <a class="boton mostrarSoli" id="agregar-Usuario" href="/solicitudes">Mostar Solicitudes</a>
     </div>
-    <ul class="listado-solicitudes">
-        
-
+    <ul class="listado-solicitudes">    
         <?php foreach ($solicitudes as $solicitud) { ?>
             <div class="card solicitudes">
                 <li>

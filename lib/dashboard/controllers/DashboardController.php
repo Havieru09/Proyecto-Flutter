@@ -3,24 +3,27 @@
 namespace Controllers;
 
 use Model\Solicitud;
+use Model\Usuario;
 use MVC\Router;
 
 class DashboardController
 {
     //Solicitudes
-    public static function dashboard(Router $router){
+    public static function dashboard(Router $router)
+    {
         session_start();
         isAuth();
         $url = 'http://localhost:3000/tipos';
         $data = file_get_contents($url);
         $obj = json_decode($data);
-        $tipos=$obj->tipos;
+        $tipos = $obj->tipos;
         $router->render('dashboard/dashboard', [
             'titulo' => 'Dashboard',
             'tipos' => $tipos
         ]);
     }
-    public static function index(Router $router){
+    public static function index(Router $router)
+    {
         session_start();
         isAuth();
         $solicitudes = [];
@@ -34,7 +37,8 @@ class DashboardController
             'solicitudes' => $solicitudes
         ]);
     }
-    public static function getRequest(Router $router){
+    public static function getRequest(Router $router)
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             // debuguear($id);
@@ -63,29 +67,32 @@ class DashboardController
     }
 
     //Usuarios
-    public static function usuario(Router $router){
+    public static function usuario(Router $router)
+    {
 
         session_start();
         isAuth();
         $usuarios = [];
         $url = 'http://localhost:3000/usuarios';
-        $obj = json_decode(file_get_contents($url));
-        $usuarios = $obj->usuario;
-        $url_rol = 'http://localhost:3000/usuarios_rol'; 
+        $objU = json_decode(file_get_contents($url));
+        // debuguear($objU);
+        // $usuarios = new Usuario($objU->usuario);
+        $usuarios = $objU->usuario;
+        // debuguear($usuarios);
+        $url_rol = 'http://localhost:3000/usuarios_rol';
         $obj = json_decode(file_get_contents($url_rol));
-        $rol= $obj->rol;
+        $rol = $obj->rol;
         $seleccionado = "";
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($_POST['roles'] == 'docente') {
-                $usuarios = array_filter($obj->usuario, function ($usuario) {
-                    return $usuario->rol == 'docente';
-                });
+            // debuguear();
+            if ($_POST['roles'] != "todos") {
                 $seleccionado = $_POST['roles'];
-            } elseif ($_POST['roles'] == 'soporte') {
-                $usuarios = array_filter($obj->usuario, function ($usuario) {
-                    return $usuario->rol == 'soporte';
+                $usuarios = array_filter($objU->usuario, function ($usuario) {
+
+                    return $usuario->rol_id == $_POST['roles'];
                 });
-                $seleccionado = $_POST['roles'];
+
+                // $seleccionado = $_POST['roles'];
             }
         }
         session_start();
@@ -96,22 +103,27 @@ class DashboardController
             'seleccionado' => $seleccionado
         ]);
     }
-    public static function getUser(Router $router){
+    public static function getUser(Router $router)
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             $url = "http://localhost:3000/usuarios/{$id}";
             $data = file_get_contents($url);
-
+            // debuguear($data);
             $obj = json_decode($data);
             $resultado = $obj->usuario;
             $usuario = array_shift($resultado);
-            // debuguear($usuario);
+
             $respuesta = [
                 'id' => $usuario->id,
                 'correo' => $usuario->correo,
+                'nombre' => $usuario->nombre,
+                'apellido' => $usuario->apellido,
+                'cedula' => $usuario->cedula,
+                'direccion' => $usuario->direccion,
                 'psw' => $usuario->psw,
                 'usuario' => $usuario->usuario,
-                'rol' => $usuario->rol,
+                'rol_id' => $usuario->rol_id,
                 'remitente' => 'docente'
             ];
             echo json_encode($respuesta);
@@ -120,20 +132,38 @@ class DashboardController
     }
 
     //Salones
-    public static function salon(Router $router){
+    public static function salon(Router $router)
+    {
         session_start();
         isAuth();
+        $seleccionado = "";
         $aulas = [];
         $url = 'http://localhost:3000/aulasAll';
         $data = file_get_contents($url);
         $obj = json_decode($data);
+        $url_bloque = 'http://localhost:3000/bloques';
+
+        $obj_bloque = json_decode(file_get_contents($url_bloque));
+        $bloques = $obj_bloque->bloques;
         // debuguear($obj);
         $aulas = $obj->aulas;
-        // debuguear($aulas);
-        $seleccionado = "";
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // debuguear($aulas);
+            if ($_POST['bloques'] != "todos") {
+                $seleccionado = $_POST['bloques'];
+                $aulas = array_filter($obj->aulas, function ($aula) {
+                    return $aula->id_bloque == $_POST['bloques'];
+                });
+
+                // $seleccionado = $_POST['roles'];
+            }
+        }
+
         $router->render('dashboard/salon/salon', [
             'titulo' => 'Gestionar Salones',
-            'aulas' => $aulas
+            'aulas' => $aulas,
+            'seleccionado' => $seleccionado,
+            'bloques' => $bloques
         ]);
     }
     public static function getSalon(Router $router)
@@ -159,7 +189,8 @@ class DashboardController
     }
 
     //bloque
-    public static function bloque(Router $router){
+    public static function bloque(Router $router)
+    {
         session_start();
         isAuth();
         $bloques = [];
@@ -184,7 +215,7 @@ class DashboardController
             // debuguear($id);
             $obj = json_decode($data);
             $resultado = $obj->bloques;
-            $bloque = array_shift($resultado);     
+            $bloque = array_shift($resultado);
             // debuguear($bloque);       
             $respuesta = [
                 'id' => $bloque->id,
@@ -195,25 +226,25 @@ class DashboardController
 
         }
     }
-    // public static function getBloques(Router $router)
-    // {
+// public static function getBloques(Router $router)
+// {
 
-    //     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //         $id = $_POST['id'];
-    //         $url = "http://localhost:3000/bloques";
-    //         $data = file_get_contents($url);
-    //         // debuguear($id);
-    //         $obj = json_decode($data);
-    //         $resultado = $obj->bloques;
-    //         $bloque = array_shift($resultado);     
-    //         // debuguear($bloque);       
-    //         $respuesta = [
-    //             'id' => $bloque->id,
-    //             'bloque' => $bloque->nombre_bloque,
-    //             'remitente' => 'bloque'
-    //         ];
-    //         echo json_encode($respuesta);
+//     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+//         $id = $_POST['id'];
+//         $url = "http://localhost:3000/bloques";
+//         $data = file_get_contents($url);
+//         // debuguear($id);
+//         $obj = json_decode($data);
+//         $resultado = $obj->bloques;
+//         $bloque = array_shift($resultado);     
+//         // debuguear($bloque);       
+//         $respuesta = [
+//             'id' => $bloque->id,
+//             'bloque' => $bloque->nombre_bloque,
+//             'remitente' => 'bloque'
+//         ];
+//         echo json_encode($respuesta);
 
-    //     }
-    // }
+//     }
+// }
 }

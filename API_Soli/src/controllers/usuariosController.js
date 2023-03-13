@@ -118,10 +118,10 @@ controller.save = (req, res) => {
 
 //update
 controller.update = (req, res) => {
-  const { usuario, psw, rol_id } = req.body;
+  const { nombre, apellido, direccion,usuario, psw, rol_id } = req.body;
   const { id } = req.params;
-  const query = `UPDATE usuario SET usuario = '${usuario}', psw = '${psw}', rol_id = '${rol_id}' WHERE id = '${id}'`;
-  mysqlConnection.query(query, [usuario, psw, rol_id, id], (err) => {
+  const query = `UPDATE usuario SET nombre = '${nombre}',apellido = '${apellido}',direccion = '${direccion}',usuario = '${usuario}', psw = '${psw}', rol_id = '${rol_id}' WHERE id = '${id}'`;
+  mysqlConnection.query(query, [nombre, apellido, direccion,usuario, psw, rol_id, id], (err) => {
     if (!err) {
       res.json({
         error: false,
