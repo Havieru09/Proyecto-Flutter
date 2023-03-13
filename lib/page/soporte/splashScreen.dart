@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreenSoporte> {
     setState(() {
       finalName = obtName! ;
     });
-    print(finalName);
+    //print(finalName);
   }
 
   // Método que se ejecuta al iniciar la aplicación

@@ -121,6 +121,7 @@ class _soporteState extends State<soporte> {
       }
     });
     super.initState();
+    
     getBloques();
     getAula_Bloques();
     getTipos();
@@ -262,6 +263,9 @@ class _soporteState extends State<soporte> {
               setState(() {
                 tipovalue = newVal;
                 isAulasSelect = true;
+                if (isAulasSelect) {
+                  _mensajeSoporte();
+                }
               });
             },
             value: tipovalue,
@@ -336,7 +340,7 @@ class _soporteState extends State<soporte> {
                 solimodel!.fecha_final = fecha_final;
                 
 
-                print(solimodel!.toJson());
+                //print(solimodel!.toJson());
 
                 setState(() {
                   isApiCallProcess = true;
@@ -469,7 +473,7 @@ class _soporteState extends State<soporte> {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      print(data);
+      //print(data);
       setState(() {
         Aula_bloquesList = data["data"];
       });
@@ -503,4 +507,24 @@ class _soporteState extends State<soporte> {
       print(e);
     }
   }
+
+  Future _mensajeSoporte() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Importante'),
+          content: const Text(
+              'Al seleccionar el tipo de mantenimiento tenga en cuenta que si desea un soporte sobre los equipos del laboratorio, debe seleccionar el tipo de mantenimiento "laboratorista"'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cerrar'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }

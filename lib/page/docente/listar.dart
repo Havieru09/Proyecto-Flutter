@@ -139,19 +139,6 @@ class _UserListState extends State<UserList> {
                 itemBuilder: (context, index) {
                   return UserItem(
                     model: users[index],
-                    onDelete: (SolicitudModel2 model) {
-                      setState(() {
-                        isApiCallProcess = true;
-                      });
-
-                      ApiService.deleteUser(model.aula_id).then(
-                        (response) {
-                          setState(() {
-                            isApiCallProcess = false;
-                          });
-                        },
-                      );
-                    },
                   );
                 },
               ),

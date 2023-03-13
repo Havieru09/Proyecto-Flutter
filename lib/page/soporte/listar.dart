@@ -35,6 +35,7 @@ class _MyApiState extends State<listar> {
             await SharedPreferences.getInstance();
         var obtName = sharedPreferences.getString('name');
         if (obtName == null || obtName == '') {
+          // ignore: use_build_context_synchronously
           showDialog(
             context: context,
             builder: (BuildContext context) {

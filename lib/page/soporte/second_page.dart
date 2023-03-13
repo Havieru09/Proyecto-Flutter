@@ -124,23 +124,11 @@ return Scaffold(
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                itemCount: users.length,
-                itemBuilder: (context, index) {
+                itemCount: users.length, // Se utiliza para indicar el número de elementos en la lista
+                itemBuilder: (context, index) { // Se utiliza para generar los elementos en la lista
                   return listar(
                     model: users[index],
-                    onDelete: (SolicitudModel2 model) {
-                      setState(() {
-                        isApiCallProcess = true;
-                      });
-
-                      ApiService.deleteUser(model.aula_id).then(
-                        (response) {
-                          setState(() {
-                            isApiCallProcess = false;
-                          });
-                        },
-                      );
-                    },
+                    
                   );
                 },
               ),

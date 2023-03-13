@@ -191,7 +191,7 @@ class ApiService {
       Config.apiURL,
       Config.soliAPI3 + "/" + model.tipo.toString(),
     );
-    print(url);
+    //print(url);
 
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',

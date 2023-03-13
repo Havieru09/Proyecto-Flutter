@@ -59,7 +59,7 @@ class _ThirdPageState extends State<ThirdPage> {
         }
         // Si no hay ningún valor guardado, utilizamos una cadena vacía
         setState(() {
-          finalName = obtName! ;
+          finalName = obtName!;
         });
       } on Exception catch (e) {
         print(e);
@@ -78,15 +78,21 @@ class _ThirdPageState extends State<ThirdPage> {
         child: Column(
           children: [
             const CabeceraBack(),
-            Form(
-              child: Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[_dsoli(context)],
+            Expanded(
+              child: SingleChildScrollView(
+                child: Form(
+                  child: Column(
+                    children: <Widget>[
+                      _dsoli(context),
+                    ],
+                  ),
                 ),
               ),
             ),
-            //const footer(),
+            SizedBox(
+              height: 20,
+            ),
+            const footer(),
           ],
         ),
       ),
@@ -97,13 +103,13 @@ class _ThirdPageState extends State<ThirdPage> {
     final dynamic jsonResponse =
         json.decode(widget.contacts!) as Map<String, dynamic>;
 
-    print(jsonResponse);
+    //print(jsonResponse);
     // size = MediaQuery.of(context).size;
 
     return Column(
       //Column
 
-      mainAxisAlignment: MainAxisAlignment.start, //centrado
+      mainAxisAlignment: MainAxisAlignment.spaceBetween, //centrado
       children: <Widget>[
         const Text(
           "Detalle de la Solicitud",
@@ -262,7 +268,7 @@ class _ThirdPageState extends State<ThirdPage> {
           spacing: 5,
           children: [
             Visibility(
-              visible: jsonResponse['estado'] != "en_camino" ,
+              visible: jsonResponse['estado'] != "en_camino",
               child: FilledButton.icon(
                   onPressed: () async {
                     var response = await http.put(
@@ -273,7 +279,7 @@ class _ThirdPageState extends State<ThirdPage> {
                       body: json.encode({
                         "estado": "en_camino",
                         "fecha_final": DateTime.now().toString(),
-                        
+
                         //
                       }),
                     );
@@ -338,7 +344,8 @@ class _ThirdPageState extends State<ThirdPage> {
                     ),
                   ),
                   style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Color(0xff231F47)),
+                    backgroundColor:
+                        MaterialStatePropertyAll(Color(0xff231F47)),
                     foregroundColor: MaterialStatePropertyAll(Colors.white),
                     padding: MaterialStatePropertyAll(EdgeInsets.all(15)),
                   )),
@@ -353,7 +360,7 @@ class _ThirdPageState extends State<ThirdPage> {
                     body: json.encode({
                       "estado": "terminado",
                       "fecha_final": DateTime.now().toString(),
-    
+
                       //
                     }),
                   );
