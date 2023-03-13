@@ -16,7 +16,7 @@ class LoginController
             if (empty($alertas)) {
                 $usuario = Usuario::where('correo', $auth->correo);
 
-                if (!$usuario || $usuario->rol !== 'admin') {
+                if (!$usuario || $usuario->rol_id !== '1') {
                     Usuario::setAlerta('error', 'El usuario no existe o no tiene acceso');
                 } else {
                     if ($_POST['contraseña'] == $usuario->contraseña) {
