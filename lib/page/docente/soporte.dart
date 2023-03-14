@@ -35,6 +35,7 @@ class _soporteState extends State<soporte> {
   List bloquesList = [];
   List aulasList = [];
   List tiposList = [];
+  List _bloquesList = [];
   List Aula_bloquesList = [];
   bool isApiCallProcess = false;
   List<Object> images = [];
@@ -121,7 +122,7 @@ class _soporteState extends State<soporte> {
       }
     });
     super.initState();
-    
+
     getBloques();
     getAula_Bloques();
     getTipos();
@@ -163,81 +164,83 @@ class _soporteState extends State<soporte> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (bloquesList.isEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: DropdownButton<String>(
-                    value: null,
-                    items: [
-                      DropdownMenuItem(
-                        value: null,
-                        child: Text('De momento no hay edificios disponibles',
-                          style: TextStyle(color: Colors.grey),
-                        ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: DropdownButton<String>(
+                  value: null,
+                  items: [
+                    DropdownMenuItem(
+                      value: null,
+                      child: Text(
+                        'De momento no hay edificios disponibles',
+                        style: TextStyle(color: Colors.grey),
                       ),
-                    ],
-                    onChanged: null,
-                  ),
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: DropdownButton<String>(
-                    value: bloquevalue,
-                    hint: const Text('Elige un edificio'),
-                    items: bloquesList.map((item) {
-                      return DropdownMenuItem(
-                        value: item['nombre_bloque'].toString(),
-                        child: Text(item['nombre_bloque'].toString()),
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
-                      setState(() {
-                        bloquevalue = newVal;
-                        filteredAulasList = Aula_bloquesList.where((aula) =>
-                                aula['nombre_bloque'].toString() == bloquevalue)
-                            .toList();
-                            aulavalue = null;
-                      });
-                    },
-                  ),
+                    ),
+                  ],
+                  onChanged: null,
                 ),
-              if (filteredAulasList.isEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: DropdownButton<String>(
-                    value: null,
-                    items: [
-                      DropdownMenuItem(
-                        value: null,
-                        child: Text(bloquevalue == null
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: DropdownButton<String>(
+                  value: bloquevalue,
+                  hint: const Text('Elige un edificio'),
+                  items: bloquesList.map((item) {
+                    return DropdownMenuItem(
+                      value: item['nombre_bloque'].toString(),
+                      child: Text(item['nombre_bloque'].toString()),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    setState(() {
+                      bloquevalue = newVal;
+                      filteredAulasList = Aula_bloquesList.where((aula) =>
+                              aula['nombre_bloque'].toString() == bloquevalue)
+                          .toList();
+                      aulavalue = null;
+                    });
+                  },
+                ),
+              ),
+            if (filteredAulasList.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: DropdownButton<String>(
+                  value: null,
+                  items: [
+                    DropdownMenuItem(
+                      value: null,
+                      child: Text(
+                        bloquevalue == null
                             ? 'Elige primero un edificio'
                             : 'De momento no hay aulas disponibles',
-                          style: TextStyle(color: Colors.grey),
-                        ),
+                        style: TextStyle(color: Colors.grey),
                       ),
-                    ],
-                    onChanged: null,
-                  ),
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: DropdownButton<String>(
-                    value: aulavalue,
-                    hint: const Text('Elige un aula'),
-                    items: filteredAulasList.map((aula) {
-                      return DropdownMenuItem(
-                        value: aula['id'].toString(),
-                        child: Text(aula['nombre_aulas'].toString()),
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
-                      setState(() {
-                        aulavalue = newVal;
-                      });
-                    },
-                  ),
+                    ),
+                  ],
+                  onChanged: null,
                 ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: DropdownButton<String>(
+                  value: aulavalue,
+                  hint: const Text('Elige un aula'),
+                  items: filteredAulasList.map((aula) {
+                    return DropdownMenuItem(
+                      value: aula['id'].toString(),
+                      child: Text(aula['nombre_aulas'].toString()),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    setState(() {
+                      aulavalue = newVal;
+                    });
+                  },
+                ),
+              ),
           ],
         ),
         Padding(
@@ -313,6 +316,24 @@ class _soporteState extends State<soporte> {
           child: FormHelper.submitButton(
             "Save",
             () {
+              bloquesList.forEach((element) {
+                final bloque = element['nombre_bloque'];
+                _bloquesList.add(bloque);
+              });
+              for (int i = 0; i < _bloquesList.length; i++) {
+                if (bloquevalue == _bloquesList[i] && aulavalue == null) {
+                   FormHelper.showSimpleAlertDialog(
+                  context,
+                  "Error detectado",
+                  "Hay campos vacios, favor de seleccionar la opcion faltante",
+                  "OK",
+                  () {
+                    Navigator.of(context).pop();
+                  },
+                );
+                return;
+                } 
+              }
               if (bloquevalue == null ||
                   (bloquevalue == 'A' && aulavalue == null) ||
                   (bloquevalue == 'B' && aulavalue == null) ||
@@ -338,7 +359,6 @@ class _soporteState extends State<soporte> {
                 solimodel!.tipo_id = tipovalue;
                 solimodel!.fecha_inicial = fecha_inicial;
                 solimodel!.fecha_final = fecha_final;
-                
 
                 //print(solimodel!.toJson());
 
@@ -526,5 +546,4 @@ class _soporteState extends State<soporte> {
       },
     );
   }
-
 }
