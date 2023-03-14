@@ -33,6 +33,7 @@ class _closeState extends State<close> {
   bool isAulasSelect = false;
   List bloquesList = [];
   List aulasList = [];
+  List _bloquesList = [];
 List Aula_bloquesList = [];
   bool isApiCallProcess = false;
   List<Object> images = [];
@@ -248,6 +249,25 @@ List Aula_bloquesList = [];
           child: FormHelper.submitButton(
             "Save",
             () {
+              bloquesList.forEach((element) {
+                final bloque = element['nombre_bloque'];
+                _bloquesList.add(bloque);
+
+              });
+              for (int i = 0; i < _bloquesList.length; i++) {
+                if (bloquevalue == _bloquesList[i] && aulavalue == null) {
+                   FormHelper.showSimpleAlertDialog(
+                  context,
+                  "Error detectado",
+                  "Hay campos vacios, favor de seleccionar la opcion faltante",
+                  "OK",
+                  () {
+                    Navigator.of(context).pop();
+                  },
+                );
+                return;
+                }
+              }
               if (bloquevalue == null ||
                   (bloquevalue == 'A' && aulavalue == null) ||
                   (bloquevalue == 'B' && aulavalue == null) ||
@@ -264,6 +284,7 @@ List Aula_bloquesList = [];
                   },
                 );
                 return;
+
               } else if (validateAndSave()) {
                 solimodel!.usuario_id = '$finalName';
                 solimodel!.aula_id = aulavalue;
@@ -272,7 +293,7 @@ List Aula_bloquesList = [];
                 solimodel!.estado = estado;
                 solimodel!.fecha_inicial = fecha_inicial;
                 solimodel!.fecha_final = fecha_final;
-                
+
                 print(solimodel!.toJson());
 
                 setState(() {
@@ -339,7 +360,7 @@ List Aula_bloquesList = [];
                     }
                   },
                 );
-              }
+              } 
             },
             btnColor: HexColor("283B71"),
             borderColor: Colors.white,

@@ -34,6 +34,7 @@ class _openState extends State<open> {
   bool isAulasSelect = false;
   List bloquesList = [];
   List aulasList = [];
+  List _bloquesList = [];
   List Aula_bloquesList = [];
   bool isApiCallProcess = false;
   List<Object> images = [];
@@ -250,6 +251,25 @@ class _openState extends State<open> {
           child: FormHelper.submitButton(
             "Save",
             () {
+              bloquesList.forEach((element) {
+                final bloque = element['nombre_bloque'];
+                _bloquesList.add(bloque);
+
+              });
+              for (int i = 0; i < _bloquesList.length; i++) {
+                if (bloquevalue == _bloquesList[i] && aulavalue == null) {
+                   FormHelper.showSimpleAlertDialog(
+                  context,
+                  "Error detectado",
+                  "Hay campos vacios, favor de seleccionar la opcion faltante",
+                  "OK",
+                  () {
+                    Navigator.of(context).pop();
+                  },
+                );
+                return;
+                }
+              }
               if (bloquevalue == null ||
                   (bloquevalue == 'A' && aulavalue == null) ||
                   (bloquevalue == 'B' && aulavalue == null) ||
@@ -266,6 +286,7 @@ class _openState extends State<open> {
                   },
                 );
                 return;
+
               } else if (validateAndSave()) {
                 solimodel!.usuario_id = '$finalName';
                 solimodel!.aula_id = aulavalue;
@@ -341,7 +362,7 @@ class _openState extends State<open> {
                     }
                   },
                 );
-              }
+              } 
             },
             btnColor: HexColor("283B71"),
             borderColor: Colors.white,
